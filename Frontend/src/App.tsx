@@ -1,8 +1,8 @@
+import Map from "./components/Map";
+
 const App = () => {
   return (
-    <div>
-      Hello
-    </div>
+    <Map/>
   );
 };
 
