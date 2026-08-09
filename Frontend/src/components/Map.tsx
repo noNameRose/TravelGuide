@@ -17,7 +17,7 @@ const Map = () => {
     
     return (
         <>
-            <div id="map-container" ref={mapContainerRef} className="w-[50vw] h-screen"></div>
+            <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen"></div>
         </>
     );
 };

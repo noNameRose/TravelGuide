@@ -1,8 +1,13 @@
 import Map from "./components/Map";
+import SearchTab from "./components/SearchTab";
 
 const App = () => {
   return (
-    <Map/>
+    <div className="flex">
+      <SearchTab/>
+      <Map/>
+    </div>
+
   );
 };
 
