@@ -14,8 +14,10 @@ type ResponseBody = {
 
 type GeoCodingResult = {
     geometry: {
-        lat: number,
-        lg: number
+        location: {
+            lat: number,
+            lng: number
+        }
     }
 };
 
@@ -28,6 +30,12 @@ const SearchTab = () => {
     const [data, setData] = useState<Place[]>([]);
 
     const handleSearch = async () => {
+        const geoCodingUrl = import.meta.env.VITE_GEOCODING_API_URL + `address=${query}&key=${import.meta.env.VITE_PLACE_API_KEY}`;
+        const geoCodingResponse = await fetch(geoCodingUrl);
+        const geoCodingBody = (await geoCodingResponse.json()) as GeoCodingResBody;
+        const lat = geoCodingBody.results[0].geometry.location.lat;
+        const lng = geoCodingBody.results[0].geometry.location.lng;
+       
         const response = await fetch(import.meta.env.VITE_PLACE_API_URL, {
             method: "POST",
             headers: {
@@ -40,8 +48,8 @@ const SearchTab = () => {
                 "locationRestriction": {
                     "circle": {
                         "center": {
-                            "latitude": 41.8781,
-                            "longitude": -87.6298,
+                            "latitude": lat,
+                            "longitude": lng,
                         },
                         "radius": 5000.0
                     }
