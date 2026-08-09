@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import type { CenterType } from "../pages/LandingPage";
 
 const INITIAL_CENTER = [
     -74.0242,
@@ -8,11 +9,10 @@ const INITIAL_CENTER = [
 
 const INITIAL_ZOOM = 10.12;
 
-const Map = () => {
+const Map = ({center}: {center: CenterType}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
-    const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER as [number, number]);
     const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
 
     useEffect(() => {
