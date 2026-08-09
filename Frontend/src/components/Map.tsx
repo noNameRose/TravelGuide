@@ -28,6 +28,13 @@ const Map = ({center}: {center: CenterType}) => {
         }
     }, []);
     
+    useEffect(() => {
+        mapRef.current?.flyTo({
+            center: center,
+            zoom: zoom
+        });
+    }, [center]);
+
     return (
         <>
             <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen"></div>
