@@ -12,6 +12,17 @@ type ResponseBody = {
     places: Place[]
 };
 
+type GeoCodingResult = {
+    geometry: {
+        lat: number,
+        lg: number
+    }
+};
+
+type GeoCodingResBody = {
+    results: GeoCodingResult[]
+}
+
 const SearchTab = () => {
     const [query, setQuery] = useState<string>("");
     const [data, setData] = useState<Place[]>([]);
