@@ -1,12 +1,14 @@
-import Map from "./components/Map";
-import SearchTab from "./components/SearchTab";
+import { Route, Routes } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+
 
 const App = () => {
   return (
-    <div className="flex">
-      <SearchTab/>
-      <Map/>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<LandingPage/>}/>
+      </Routes>
+    </>
 
   );
 };
