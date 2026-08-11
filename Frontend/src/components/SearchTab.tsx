@@ -81,7 +81,11 @@ const SearchTab = ({handleCenterChange}: {handleCenterChange: (center: CenterTyp
                     <button className="border-2 bg-amber-400 p-1.5 font-bold rounded-xl " onClick={handleSearch}>Search</button>
                 </label>
             
-            {data.map(place => (<PlaceComponent name={place.displayName.text} uri=""/>))}
+            {data.map(place => (<PlaceComponent 
+                                        maxHeightPx={place.photos[0].heightPx}
+                                        maxWidthPx={place.photos[0].widthPx}
+                                        name={place.displayName.text} 
+                                        uri={place.photos[0].name}/>))}
         </div>
     );
 };
