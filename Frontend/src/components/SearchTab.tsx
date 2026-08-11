@@ -42,7 +42,7 @@ const SearchTab = ({handleCenterChange}: {handleCenterChange: (center: CenterTyp
             method: "POST",
             headers: {
                 "Content-type": "application/json",
-                "X-Goog-FieldMask": "places.displayName",
+                "X-Goog-FieldMask": "places.displayName,places.photos",
                 "X-Goog-Api-Key": import.meta.env.VITE_PLACE_API_KEY
             },
             body: JSON.stringify({
