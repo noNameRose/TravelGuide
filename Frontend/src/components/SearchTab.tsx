@@ -1,4 +1,5 @@
 import { useState} from "react";
+import type { CenterType } from "../pages/LandingPage";
 
 
 type Place = {
@@ -25,7 +26,7 @@ type GeoCodingResBody = {
     results: GeoCodingResult[]
 }
 
-const SearchTab = () => {
+const SearchTab = ({handleCenterChange}: {handleCenterChange: (center: CenterType) => void}) => {
     const [query, setQuery] = useState<string>("");
     const [data, setData] = useState<Place[]>([]);
 
@@ -36,7 +37,7 @@ const SearchTab = () => {
         const geoCodingBody = (await geoCodingResponse.json()) as GeoCodingResBody;
         const lat = geoCodingBody.results[0].geometry.location.lat;
         const lng = geoCodingBody.results[0].geometry.location.lng;
-       
+        handleCenterChange([lng, lat]);
         const response = await fetch(import.meta.env.VITE_PLACE_API_URL, {
             method: "POST",
             headers: {
@@ -45,7 +46,7 @@ const SearchTab = () => {
                 "X-Goog-Api-Key": import.meta.env.VITE_PLACE_API_KEY
             },
             body: JSON.stringify({
-                "includedTypes": ["tourist_attraction", "observation_deck", "state_park"],
+                "includedTypes": ["tourist_attraction", "observation_deck", "state_park", "beach", "lake"],
                 "locationRestriction": {
                     "circle": {
                         "center": {

@@ -14,7 +14,7 @@ const LandingPage = () => {
     
     return (
         <div className="flex">
-            <SearchTab/>
+            <SearchTab handleCenterChange={setCenter}/>
             <Map center={center}/>
         </div>
     );
