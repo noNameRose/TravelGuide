@@ -7,7 +7,14 @@ type Place = {
     displayName: {
         text: string,
         languageCode: string
-    }
+    },
+    photos: Photo[]
+};
+
+type Photo = {
+    name: string,
+    widthPx: number,
+    heightPx: number
 };
 
 type ResponseBody = {
