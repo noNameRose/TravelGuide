@@ -3,16 +3,17 @@ import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 type MarkerProp = {
-    map: mapboxgl.Map
+    map: mapboxgl.Map,
+    location: [number, number]
 };
 
-const Marker = ({map}: MarkerProp) => {
+const Marker = ({map, location}: MarkerProp) => {
     const contentRef = useRef(document.createElement("div"));
     const markerRef = useRef<mapboxgl.Marker | null>(null);
 
     useEffect(() => {
         markerRef.current = new mapboxgl.Marker(contentRef.current)
-            .setLngLat([0, 0])
+            .setLngLat(location)
             .addTo(map);
 
         return () => {
