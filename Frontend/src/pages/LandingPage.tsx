@@ -14,7 +14,10 @@ const LandingPage = () => {
     const [data, setData] = useState<Place[]>([]);
     return (
         <div className="flex">
-            <SearchTab handleCenterChange={setCenter}/>
+            <SearchTab 
+                handleCenterChange={setCenter}
+                handleData={setData}
+            />
             <Map center={center}/>
         </div>
     );

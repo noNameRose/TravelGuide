@@ -46,7 +46,7 @@ type SearchTabProp = {
     handleData: (places: Place[]) => void
 }
 
-const SearchTab = ({handleCenterChange}: SearchTabProp) => {
+const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
     const [query, setQuery] = useState<string>("");
 
     const handleSearch = async () => {
@@ -78,7 +78,7 @@ const SearchTab = ({handleCenterChange}: SearchTabProp) => {
             })
         });
         const body = (await response.json()) as ResponseBody;
-        setData(body.places);
+        handleData(body.places);
     }
     return (
         <div className="w-[50vw] h-screen">
