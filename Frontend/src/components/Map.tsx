@@ -48,7 +48,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
                 places.map(place => (
                     <Marker
                         map={mapRef.current as mapboxgl.Map}
-                        location={[place.location.longtitude, place.location.latitude]}
+                        location={[place.location.longitude, place.location.latitude]}
                     />
                 ))
             )}

@@ -13,7 +13,7 @@ export type Place = {
 
 type Location = {
     latitude: number,
-    longtitude: number
+    longitude: number
 }
 
 type Photo = {
