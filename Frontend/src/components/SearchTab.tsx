@@ -79,7 +79,7 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
         handleData(body.places);
     }
     return (
-        <div className="w-[50vw] h-screen">
+        <div>
             <label className="flex gap-4">
                 <input 
                     className="border-2 p-1.5"

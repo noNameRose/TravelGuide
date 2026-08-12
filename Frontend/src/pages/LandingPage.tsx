@@ -15,7 +15,7 @@ const LandingPage = () => {
     const [data, setData] = useState<Place[]>([]);
     return (
         <div className="flex">
-            <div>
+            <div className="w-[50vw] h-screen">
                 <SearchTab 
                     handleCenterChange={setCenter}
                     handleData={setData}
