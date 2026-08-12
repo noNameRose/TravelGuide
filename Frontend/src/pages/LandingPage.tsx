@@ -24,7 +24,10 @@ const LandingPage = () => {
                     places={data}
                 />
             </div>
-            <Map center={center}/>
+            <Map 
+                center={center} 
+                places={data}
+            />
         </div>
     );
 };
