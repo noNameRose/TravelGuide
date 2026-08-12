@@ -12,7 +12,7 @@ const INITIAL_ZOOM = 10.12;
 const Map = ({center}: {center: CenterType}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
-
+    const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
 
     useEffect(() => {
@@ -21,6 +21,10 @@ const Map = ({center}: {center: CenterType}) => {
             container: mapContainerRef.current as HTMLDivElement,
             center: center,
             zoom: zoom
+        });
+
+        mapRef.current.on("load", () => {
+            setMapLoaded(true);
         });
 
         return () => {
