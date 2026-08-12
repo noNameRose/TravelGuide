@@ -1,7 +1,5 @@
 import { useState} from "react";
 import type { CenterType } from "../pages/LandingPage";
-import PlaceComponent from "./PlaceComponent";
-import PlaceList from "./PlaceList";
 
 
 export type Place = {
@@ -91,7 +89,6 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
                 />
                 <button className="border-2 bg-amber-400 p-1.5 font-bold rounded-xl " onClick={handleSearch}>Search</button>
             </label>
-            <PlaceList places={data}/>
         </div>
     );
 };
