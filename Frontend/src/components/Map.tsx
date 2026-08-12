@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import type { CenterType } from "../pages/LandingPage";
+import type { Place } from "./SearchTab";
 
 const INITIAL_CENTER = [
     -74.0242,
@@ -9,7 +10,7 @@ const INITIAL_CENTER = [
 
 const INITIAL_ZOOM = 10.12;
 
-const Map = ({center}: {center: CenterType}) => {
+const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
