@@ -7,7 +7,7 @@ type PlaceListProp = {
 
 const PlaceList = ({places}: PlaceListProp) => {
     return (
-        <div className="flex flex-wrap items-center justify-center h-full overflow-scroll">
+        <div className="flex flex-wrap items-center justify-center h-full overflow-scroll gap-5">
             {places.map(place => (
                 <PlaceComponent
                     name={place.displayName.text}
