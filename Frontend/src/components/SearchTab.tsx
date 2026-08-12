@@ -1,9 +1,10 @@
 import { useState} from "react";
 import type { CenterType } from "../pages/LandingPage";
 import PlaceComponent from "./PlaceComponent";
+import PlaceList from "./PlaceList";
 
 
-type Place = {
+export type Place = {
     displayName: {
         text: string,
         languageCode: string
@@ -71,21 +72,16 @@ const SearchTab = ({handleCenterChange}: {handleCenterChange: (center: CenterTyp
     }
     return (
         <div className="w-[50vw] h-screen">
-                <label className="flex gap-4">
-                    <input 
-                        className="border-2 p-1.5"
-                        value={query} 
-                        onChange={(e) => setQuery(e.target.value)} 
-                        placeholder="Place"
-                    />
-                    <button className="border-2 bg-amber-400 p-1.5 font-bold rounded-xl " onClick={handleSearch}>Search</button>
-                </label>
-            
-            {data.map(place => (<PlaceComponent 
-                                        maxHeightPx={place.photos[0].heightPx}
-                                        maxWidthPx={place.photos[0].widthPx}
-                                        name={place.displayName.text} 
-                                        uri={place.photos[0].name}/>))}
+            <label className="flex gap-4">
+                <input 
+                    className="border-2 p-1.5"
+                    value={query} 
+                    onChange={(e) => setQuery(e.target.value)} 
+                    placeholder="Place"
+                />
+                <button className="border-2 bg-amber-400 p-1.5 font-bold rounded-xl " onClick={handleSearch}>Search</button>
+            </label>
+            <PlaceList places={data}/>
         </div>
     );
 };
