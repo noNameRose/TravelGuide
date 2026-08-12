@@ -43,7 +43,6 @@ type GeoCodingResBody = {
 
 const SearchTab = ({handleCenterChange}: {handleCenterChange: (center: CenterType) => void}) => {
     const [query, setQuery] = useState<string>("");
-    const [data, setData] = useState<Place[]>([]);
 
     const handleSearch = async () => {
         const changedQuery = query.replace(" ", "+");

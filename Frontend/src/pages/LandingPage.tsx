@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Map from "../components/Map";
-import SearchTab from "../components/SearchTab";
+import SearchTab, { type Place } from "../components/SearchTab";
 
 export type CenterType = [number, number];
 
@@ -11,7 +11,7 @@ const INITIAL_CENTER = [
 
 const LandingPage = () => {
     const [center, setCenter] = useState<CenterType>(INITIAL_CENTER as CenterType);
-    
+    const [data, setData] = useState<Place[]>([]);
     return (
         <div className="flex">
             <SearchTab handleCenterChange={setCenter}/>
