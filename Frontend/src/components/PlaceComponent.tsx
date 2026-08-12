@@ -8,7 +8,20 @@ const PlaceComponent = ({name, uri, maxHeightPx, maxWidthPx}: PlaceProp) => {
     const imgURL = import.meta.env.VITE_PLACE_PICTURE_API_URL + uri + `/media?key=${import.meta.env.VITE_PLACE_API_KEY}&maxHeightPx=${maxHeightPx}&maxWidthPx=${maxWidthPx}`
     return (
         <div>
-            <img src={imgURL}/>
+            <div
+                style={
+                    {
+                        width: "500px",
+                        height: "500px",
+                        backgroundImage: `url(${imgURL})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        
+                    }
+                }
+            >
+
+            </div>
             <p>{name}</p>
         </div>
     );
