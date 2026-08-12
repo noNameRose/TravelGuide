@@ -5,12 +5,18 @@ import PlaceList from "./PlaceList";
 
 
 export type Place = {
+    location: Location
     displayName: {
         text: string,
         languageCode: string
     },
     photos: Photo[]
 };
+
+type Location = {
+    latitude: number,
+    longtitude: number
+}
 
 type Photo = {
     name: string,
@@ -51,7 +57,7 @@ const SearchTab = ({handleCenterChange}: {handleCenterChange: (center: CenterTyp
             method: "POST",
             headers: {
                 "Content-type": "application/json",
-                "X-Goog-FieldMask": "places.displayName,places.photos",
+                "X-Goog-FieldMask": "places.displayName,places.photos,places.location",
                 "X-Goog-Api-Key": import.meta.env.VITE_PLACE_API_KEY
             },
             body: JSON.stringify({
