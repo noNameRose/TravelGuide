@@ -23,10 +23,10 @@ const Marker = ({map}: MarkerProp) => {
         <>
             {createPortal(
                 <div
-                    className=""
+                    className="bg-contain bg-no-repeat cursor-pointer transition w-[37px] h-[40px]"
                     style={
                         {
-                            backgroundImage: ""
+                            backgroundImage: "url(../assets/sg-marker.svg)"
                         }
                     }
                 >
