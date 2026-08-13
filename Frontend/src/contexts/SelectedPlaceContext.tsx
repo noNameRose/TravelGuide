@@ -2,7 +2,7 @@ import { createContext } from "react";
 import type { Place } from "../components/SearchTab";
 
 type SelectedPlaceProp = {
-    selectedPlaced: Place,
+    selectedPlaced: Place | null,
     setSelectedPlaced: (place: Place) => void
 };
 
