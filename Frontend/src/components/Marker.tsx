@@ -1,6 +1,7 @@
 import mapboxgl from "mapbox-gl";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import SelectedPlaceContext from "../contexts/SelectedPlaceContext";
 
 type MarkerProp = {
     map: mapboxgl.Map,
@@ -13,6 +14,7 @@ const Marker = ({map, location, imgName, placeName}: MarkerProp) => {
     const contentRef = useRef(document.createElement("div"));
     const markerRef = useRef<mapboxgl.Marker | null>(null);
     const imgURL = import.meta.env.VITE_PLACE_PICTURE_API_URL + imgName + `/media?key=${import.meta.env.VITE_PLACE_API_KEY}&maxHeightPx=${300}&maxWidthPx=${300}`;
+    const selectedPlaceContext = useContext(SelectedPlaceContext);
     useEffect(() => {
         markerRef.current = new mapboxgl.Marker(contentRef.current)
             .setLngLat(location)

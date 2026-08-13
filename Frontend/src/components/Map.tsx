@@ -4,6 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import type { CenterType } from "../pages/LandingPage";
 import type { Place } from "./SearchTab";
 import Marker from "./Marker";
+import SelectedPlaceContext from "../contexts/SelectedPlaceContext";
 
 const INITIAL_CENTER = [
     -74.0242,
@@ -46,7 +47,15 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     return (
         <>
             <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen"></div>
-            {mapLoaded && (
+            <SelectedPlaceContext
+                value={
+                    {
+                        selectedPlaced: selectedPlace,
+                        setSelectedPlaced: setSelectedPlace
+                    }
+                }
+            >
+                {mapLoaded && (
                 places.map(place => (
                     <Marker
                         key={place.displayName.text}
@@ -57,6 +66,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
                     />
                 ))
             )}
+            </SelectedPlaceContext>
         </>
     );
 };
