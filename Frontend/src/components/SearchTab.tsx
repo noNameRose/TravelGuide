@@ -70,7 +70,7 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
                             "latitude": lat,
                             "longitude": lng,
                         },
-                        "radius": 5000.0
+                        "radius": 10000.0
                     }
                 }
             })
