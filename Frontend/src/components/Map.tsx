@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import type { CenterType } from "../pages/LandingPage";
 import type { Place } from "./SearchTab";
 import Marker from "./Marker";
@@ -47,7 +48,9 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
             {mapLoaded && (
                 places.map(place => (
                     <Marker
+                        key={place.displayName.text}
                         map={mapRef.current as mapboxgl.Map}
+                        imgName={place.photos[0].name}
                         location={[place.location.longitude, place.location.latitude]}
                     />
                 ))

@@ -4,13 +4,14 @@ import { createPortal } from "react-dom";
 
 type MarkerProp = {
     map: mapboxgl.Map,
-    location: [number, number]
+    location: [number, number],
+    imgName: string
 };
 
-const Marker = ({map, location}: MarkerProp) => {
+const Marker = ({map, location, imgName}: MarkerProp) => {
     const contentRef = useRef(document.createElement("div"));
     const markerRef = useRef<mapboxgl.Marker | null>(null);
-
+    const imgURL = import.meta.env.VITE_PLACE_PICTURE_API_URL + imgName + `/media?key=${import.meta.env.VITE_PLACE_API_KEY}&maxHeightPx=${300}&maxWidthPx=${300}`;
     useEffect(() => {
         markerRef.current = new mapboxgl.Marker(contentRef.current)
             .setLngLat(location)
@@ -24,10 +25,10 @@ const Marker = ({map, location}: MarkerProp) => {
         <>
             {createPortal(
                 <div
-                    className="bg-contain bg-no-repeat cursor-pointer transition w-[37px] h-[40px]"
+                    className="bg-cover bg-no-repeat cursor-pointer bg-center transition w-[60px] h-[60px] rounded-[50%] bg-red-400"
                     style={
                         {
-                            backgroundImage: "url(../assets/sg-marker.svg)"
+                            backgroundImage: `url(${imgURL})`
                         }
                     }
                 >
