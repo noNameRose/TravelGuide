@@ -53,6 +53,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
                         map={mapRef.current as mapboxgl.Map}
                         imgName={place.photos[0].name}
                         location={[place.location.longitude, place.location.latitude]}
+                        placeName={place.displayName.text}
                     />
                 ))
             )}
