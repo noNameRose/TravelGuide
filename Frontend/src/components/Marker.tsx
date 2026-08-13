@@ -3,15 +3,16 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import SelectedPlaceContext from "../contexts/SelectedPlaceContext";
 import gsap from "gsap";
+import type { Place } from "./SearchTab";
 
 type MarkerProp = {
     map: mapboxgl.Map,
     location: [number, number],
     imgName: string,
-    placeName: string
+    place: Place
 };
 
-const Marker = ({map, location, imgName, placeName}: MarkerProp) => {
+const Marker = ({map, location, imgName, place}: MarkerProp) => {
     const contentRef = useRef(document.createElement("div"));
     const markerRef = useRef<mapboxgl.Marker | null>(null);
     const imgURL = import.meta.env.VITE_PLACE_PICTURE_API_URL + imgName + `/media?key=${import.meta.env.VITE_PLACE_API_KEY}&maxHeightPx=${300}&maxWidthPx=${300}`;
