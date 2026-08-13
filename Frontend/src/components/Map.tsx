@@ -44,6 +44,15 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
         });
     }, [center]);
 
+    useEffect(() => {
+        if (!selectedPlace)
+            return;
+        mapRef.current?.flyTo({
+            center: [selectedPlace.location.longitude, selectedPlace.location.latitude],
+            zoom: 14
+        })
+    }, [selectedPlace]);
+
     return (
         <>
             <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen"></div>

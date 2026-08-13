@@ -50,6 +50,7 @@ const Marker = ({map, location, imgName, place}: MarkerProp) => {
                 <div
                     onMouseOver={() => setIsHover(true)}
                     onMouseOut={() => setIsHover(false)}
+                    onClick={() => selectedPlaceContext?.setSelectedPlaced(place)}
                     ref={domRef}
                     className="bg-cover bg-no-repeat cursor-pointer bg-center w-[60px] h-[60px] rounded-[50%] bg-red-400"
                     style={
