@@ -17,6 +17,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
+    const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
 
     useEffect(() => {
         mapRef.current = new mapboxgl.Map({
