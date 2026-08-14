@@ -37,16 +37,21 @@ type GeoCodingResult = {
 
 type GeoCodingResBody = {
     results: GeoCodingResult[]
-}
+};
 
 type SearchTabProp = {
     handleCenterChange: (center: CenterType) => void,
     handleData: (places: Place[]) => void
-}
+};
+
+type Prediction = {
+    description: "string"
+};
 
 const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
     const [query, setQuery] = useState<string>("");
     const sessionToken = useRef<string>(crypto.randomUUID());
+    const [searchResults, setSearchResults] = useState<Prediction[]>([]);
 
     const handleSearch = async () => {
         const changedQuery = query.replace(" ", "+");
