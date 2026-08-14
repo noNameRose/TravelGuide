@@ -11,8 +11,8 @@ const PlaceComponent = ({name, uri, maxHeightPx, maxWidthPx}: PlaceProp) => {
             <div
                 style={
                     {
-                        width: "500px",
-                        height: "500px",
+                        width: "250px",
+                        height: "250px",
                         backgroundImage: `url(${imgURL})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
