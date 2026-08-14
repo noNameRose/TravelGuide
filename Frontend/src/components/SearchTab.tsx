@@ -1,4 +1,4 @@
-import { useRef, useState} from "react";
+import { useEffect, useRef, useState} from "react";
 import type { CenterType } from "../pages/LandingPage";
 
 
@@ -48,10 +48,28 @@ type Prediction = {
     description: "string"
 };
 
+type PredictionResBody = {
+    predictions: Prediction[];
+}
+
 const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
     const [query, setQuery] = useState<string>("");
-    const sessionToken = useRef<string>(crypto.randomUUID());
     const [searchResults, setSearchResults] = useState<Prediction[]>([]);
+    const sessionToken = useRef<string>(crypto.randomUUID());
+    const timeoutId = useRef<number | null>(null);
+    const DEBOUNCE_TIME = 1000;
+
+    useEffect(() => {
+        if (timeoutId.current) {
+            clearTimeout(timeoutId.current);
+        }
+        timeoutId.current = setTimeout(async () => {
+            const predictionURL = import.meta.env.VITE_PREDICTION_API_URL + `input=${query}&key=${import.meta.env.VITE_PLACE_API_KEY}`;
+            const predictionResponse = await fetch(predictionURL);
+            const body = (await predictionResponse.json()) as PredictionResBody;
+            setSearchResults(body.predictions);
+        }, DEBOUNCE_TIME);
+    }, [query]);
 
     const handleSearch = async () => {
         const changedQuery = query.replace(" ", "+");
@@ -83,7 +101,8 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
         });
         const body = (await response.json()) as ResponseBody;
         handleData(body.places);
-    }
+    };
+
     return (
         <div>
             <label className="flex gap-4">
