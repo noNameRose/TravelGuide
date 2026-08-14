@@ -20,6 +20,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
     const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+    const [searchingRange, setSearchingRange] = useState<number>(20);
 
     useEffect(() => {
         mapRef.current = new mapboxgl.Map({
@@ -48,7 +49,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
             zoom: zoom
         });
         if (mapLoaded) {
-            const circle = turf.circle(center, 20, {units: "kilometers"});
+            const circle = turf.circle(center, searchingRange, {units: "kilometers"});
 
             mapRef.current.addSource("circle-source", {
                 type: "geojson",
