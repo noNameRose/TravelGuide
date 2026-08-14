@@ -5,6 +5,7 @@ import type { CenterType } from "../pages/LandingPage";
 import type { Place } from "./SearchTab";
 import Marker from "./Marker";
 import SelectedPlaceContext from "../contexts/SelectedPlaceContext";
+import * as turf from "@turf/turf";
 
 const INITIAL_CENTER = [
     -74.0242,
@@ -38,10 +39,44 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     }, []);
     
     useEffect(() => {
-        mapRef.current?.flyTo({
+        if (!mapRef.current) {
+            return;
+        }
+
+        mapRef.current.flyTo({
             center: center,
             zoom: zoom
         });
+        if (mapLoaded) {
+            const circle = turf.circle(center, 20, {units: "kilometers"});
+
+            mapRef.current.addSource("circle-source", {
+                type: "geojson",
+                data: circle
+            });
+
+            mapRef.current.addLayer({
+                id: "circle",
+                type: "fill",
+                source: "circle-source",
+                paint: {
+                    'fill-color': '#007cbf',
+                    'fill-opacity': 0.3
+                }
+            });
+        }
+
+        return () => {
+            if (!mapRef.current) {
+                return;
+            }
+            if (mapRef.current.getLayer("circle")) {
+                mapRef.current.removeLayer("circle");
+            }
+            if (mapRef.current.getSource("circle-source")) {
+                mapRef.current.removeSource("circle-source");
+            }
+        }
     }, [center]);
 
     useEffect(() => {
