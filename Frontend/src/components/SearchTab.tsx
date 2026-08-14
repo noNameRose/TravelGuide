@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useRef, useState} from "react";
 import type { CenterType } from "../pages/LandingPage";
 
 
@@ -46,6 +46,7 @@ type SearchTabProp = {
 
 const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
     const [query, setQuery] = useState<string>("");
+    const sessionToken = useRef<string>(crypto.randomUUID());
 
     const handleSearch = async () => {
         const changedQuery = query.replace(" ", "+");
