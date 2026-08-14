@@ -59,17 +59,17 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
     const timeoutId = useRef<number | null>(null);
     const DEBOUNCE_TIME = 1000;
 
-    useEffect(() => {
-        if (timeoutId.current) {
-            clearTimeout(timeoutId.current);
-        }
-        timeoutId.current = setTimeout(async () => {
-            const predictionURL = import.meta.env.VITE_PREDICTION_API_URL + `input=${query}&key=${import.meta.env.VITE_PLACE_API_KEY}`;
-            const predictionResponse = await fetch(predictionURL);
-            const body = (await predictionResponse.json()) as PredictionResBody;
-            setSearchResults(body.predictions);
-        }, DEBOUNCE_TIME);
-    }, [query]);
+    // useEffect(() => {
+    //     if (timeoutId.current) {
+    //         clearTimeout(timeoutId.current);
+    //     }
+    //     timeoutId.current = setTimeout(async () => {
+    //         const predictionURL = import.meta.env.VITE_PREDICTION_API_URL + `input=${query}&key=${import.meta.env.VITE_PLACE_API_KEY}`;
+    //         const predictionResponse = await fetch(predictionURL);
+    //         const body = (await predictionResponse.json()) as PredictionResBody;
+    //         setSearchResults(body.predictions);
+    //     }, DEBOUNCE_TIME);
+    // }, [query]);
 
     const handleSearch = async () => {
         const changedQuery = query.replace(" ", "+");
