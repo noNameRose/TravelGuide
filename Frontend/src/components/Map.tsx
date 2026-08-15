@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { GeoJSONSource, type Source } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { CenterType } from "../pages/LandingPage";
 import type { Place } from "./SearchTab";
 import Marker from "./Marker";
 import SelectedPlaceContext from "../contexts/SelectedPlaceContext";
 import * as turf from "@turf/turf";
+import RangeController from "./RangeController";
 
 const INITIAL_CENTER = [
     -74.0242,
@@ -81,6 +82,14 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     }, [center]);
 
     useEffect(() => {
+        if (mapRef.current && mapRef.current.getSource("circle-source")) {
+        const circle = turf.circle(center, searchingRange, {units: "kilometers"});
+           const source =  (mapRef.current.getSource("circle-source") as GeoJSONSource);
+           source.setData(circle);
+        }
+    }, [searchingRange]);
+
+    useEffect(() => {
         if (!selectedPlace)
             return;
         mapRef.current?.flyTo({
@@ -91,7 +100,11 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
 
     return (
         <>
-            <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen"></div>
+            <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen">
+                <RangeController
+                    handleChangeRange={setSearchingRange}
+                />
+            </div>
             <SelectedPlaceContext
                 value={
                     {
