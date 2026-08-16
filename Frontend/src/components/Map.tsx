@@ -9,11 +9,6 @@ import * as turf from "@turf/turf";
 import RangeController from "./RangeController";
 import SearchRadiusContext from "../contexts/SearchRadiusContext";
 
-const INITIAL_CENTER = [
-    -74.0242,
-    40.6941
-];
-
 const INITIAL_ZOOM = 10.12;
 
 const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
