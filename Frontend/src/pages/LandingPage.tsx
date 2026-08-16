@@ -12,7 +12,7 @@ const INITIAL_CENTER = [
 ];
 
 const INITIAL_SEARCH_RADIUS = 2;
-const MAX_SEARCH_RADIUS = 10;
+const MAX_SEARCH_RADIUS = 20;
 const MIN_SEARCH_RADIUS = 2;
 
 const LandingPage = () => {
