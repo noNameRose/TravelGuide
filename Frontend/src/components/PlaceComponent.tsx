@@ -9,20 +9,20 @@ const PlaceComponent = ({name, uri, maxHeightPx, maxWidthPx}: PlaceProp) => {
     return (
         <div>
             <div
+                className="rounded-2xl"
                 style={
                     {
-                        width: "250px",
-                        height: "250px",
+                        width: "270px",
+                        height: "180px",
                         backgroundImage: `url(${imgURL})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
-                        
                     }
                 }
             >
 
             </div>
-            <p>{name}</p>
+            <p className="font-medium">{name}</p>
         </div>
     );
 };
