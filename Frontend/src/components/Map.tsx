@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import mapboxgl, { GeoJSONSource, type Source } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { CenterType } from "../pages/LandingPage";
@@ -7,6 +7,7 @@ import Marker from "./Marker";
 import SelectedPlaceContext from "../contexts/SelectedPlaceContext";
 import * as turf from "@turf/turf";
 import RangeController from "./RangeController";
+import SearchRadiusContext from "../contexts/SearchRadiusContext";
 
 const INITIAL_CENTER = [
     -74.0242,
@@ -21,7 +22,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
     const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
-    const [searchingRange, setSearchingRange] = useState<number>(20);
+    const searchRadiusContext = useContext(SearchRadiusContext);
 
     useEffect(() => {
         mapRef.current = new mapboxgl.Map({
@@ -50,7 +51,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
             zoom: zoom
         });
         if (mapLoaded) {
-            const circle = turf.circle(center, searchingRange, {units: "kilometers"});
+            const circle = turf.circle(center, searchRadiusContext, {units: "kilometers"});
 
             mapRef.current.addSource("circle-source", {
                 type: "geojson",
@@ -83,11 +84,11 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
 
     useEffect(() => {
         if (mapRef.current && mapRef.current.getSource("circle-source")) {
-        const circle = turf.circle(center, searchingRange, {units: "kilometers"});
+        const circle = turf.circle(center, searchRadiusContext, {units: "kilometers"});
            const source =  (mapRef.current.getSource("circle-source") as GeoJSONSource);
            source.setData(circle);
         }
-    }, [searchingRange]);
+    }, [searchRadiusContext]);
 
     useEffect(() => {
         if (!selectedPlace)
@@ -101,9 +102,9 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     return (
         <>
             <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen">
-                <RangeController
+                {/* <RangeController
                     handleChangeRange={setSearchingRange}
-                />
+                /> */}
             </div>
             <SelectedPlaceContext
                 value={
