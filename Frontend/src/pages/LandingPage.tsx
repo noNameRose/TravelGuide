@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Map from "../components/Map";
 import SearchTab, { type Place } from "../components/SearchTab";
 import PlaceList from "../components/PlaceList";
@@ -22,14 +22,22 @@ const LandingPage = () => {
     const [location, setLocation] = useState<[number, number] | null>(null);
     const [data, setData] = useState<Place[]>([]);
 
+    const timeoutId = useRef<number | null>(null);
+    const DEBOUNCE_TIME = 1000;
+
     useEffect(() => {
         if (!location) {
             return;
         }
-        searchPlaces(location, searchRadius * 1000)
-        .then((body: {places: Place[]}) => {
+        if (timeoutId.current) {
+            clearTimeout(timeoutId.current);
+        }
+        
+        timeoutId.current = setTimeout(async () => {
+            const body = (await searchPlaces(location, searchRadius * 1000)) as {places: Place[]};
             setData(body.places);
-        });
+        }, DEBOUNCE_TIME);
+
     }, [searchRadius]);
 
     return (
