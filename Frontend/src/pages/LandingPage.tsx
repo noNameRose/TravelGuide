@@ -2,6 +2,7 @@ import { useState } from "react";
 import Map from "../components/Map";
 import SearchTab, { type Place } from "../components/SearchTab";
 import PlaceList from "../components/PlaceList";
+import SearchRadiusContext from "../contexts/SearchRadiusContext";
 
 export type CenterType = [number, number];
 
@@ -17,21 +18,25 @@ const LandingPage = () => {
     const [searchRadius, setSearchRadius] = useState<number>(INITIAL_SEARCH_RADIUS);
     const [data, setData] = useState<Place[]>([]);
     return (
-        <div className="flex">
-            <div className="w-[50vw] h-screen">
-                <SearchTab 
-                    handleCenterChange={setCenter}
-                    handleData={setData}
-                />
-                <PlaceList
+        <SearchRadiusContext
+            value={searchRadius}
+        >
+            <div className="flex">
+                <div className="w-[50vw] h-screen">
+                    <SearchTab 
+                        handleCenterChange={setCenter}
+                        handleData={setData}
+                    />
+                    <PlaceList
+                        places={data}
+                    />
+                </div>
+                <Map 
+                    center={center} 
                     places={data}
                 />
             </div>
-            <Map 
-                center={center} 
-                places={data}
-            />
-        </div>
+        </SearchRadiusContext>
     );
 };
 

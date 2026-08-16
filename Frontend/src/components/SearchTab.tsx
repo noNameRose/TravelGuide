@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState} from "react";
+import { useContext, useEffect, useRef, useState} from "react";
 import type { CenterType } from "../pages/LandingPage";
+import SearchRadiusContext from "../contexts/SearchRadiusContext";
 
 
 export type Place = {
@@ -53,6 +54,7 @@ type PredictionResBody = {
 }
 
 const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
+    const searchRadius = useContext(SearchRadiusContext);
     const [query, setQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<Prediction[]>([]);
     const sessionToken = useRef<string>(crypto.randomUUID());
@@ -94,7 +96,7 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
                             "latitude": lat,
                             "longitude": lng,
                         },
-                        "radius": 10000.0
+                        "radius": searchRadius
                     }
                 }
             })
