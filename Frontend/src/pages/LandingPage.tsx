@@ -10,8 +10,11 @@ const INITIAL_CENTER = [
     40.6941
 ];
 
+const INITIAL_SEARCH_RADIUS = 2000;
+
 const LandingPage = () => {
     const [center, setCenter] = useState<CenterType>(INITIAL_CENTER as CenterType);
+    const [searchRadius, setSearchRadius] = useState<number>(INITIAL_SEARCH_RADIUS);
     const [data, setData] = useState<Place[]>([]);
     return (
         <div className="flex">
