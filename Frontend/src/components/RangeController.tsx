@@ -16,21 +16,24 @@ const RangeController = () => {
 
     useEffect(() => {
         if (circle.current)
-            lastX.current = circle.current.getBoundingClientRect().x;
+            lastX.current = gsap.getProperty(circle.current, "x") as number;
         draggle.current = Draggable.create(circle.current, {
             bounds: bar.current,
             type: "x",
             onDrag: () => {
+                if (!circle.current)
+                    return;
                 if (!searchRadiusContext) {
                     return;
                 }
-                const currentX = circle.current?.getBoundingClientRect().x;
+                const currentX = gsap.getProperty(circle.current, "x") as number;
+                const newRad = ((currentX/((gsap.getProperty(bar.current, "width") as number))) * (searchRadiusContext.maxRadius - searchRadiusContext.minRadius)) + searchRadiusContext.minRadius;
                 if (currentX && currentX > lastX.current) {
-                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal + CHANGE_AMOUNT);
+                    searchRadiusContext.handleRadiusChange((lastRad: number) => newRad);
                     lastX.current = currentX;
                 }
                 else if (currentX && currentX < lastX.current) {
-                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal - CHANGE_AMOUNT);
+                    searchRadiusContext.handleRadiusChange((lastVal: number) => newRad);
                     lastX.current = currentX;
                 }
             }
