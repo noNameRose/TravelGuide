@@ -18,6 +18,7 @@ const MIN_SEARCH_RADIUS = 2;
 const LandingPage = () => {
     const [center, setCenter] = useState<CenterType>(INITIAL_CENTER as CenterType);
     const [searchRadius, setSearchRadius] = useState<number>(INITIAL_SEARCH_RADIUS);
+    const [location, setLocation] = useState<[number, number] | null>(null);
     const [data, setData] = useState<Place[]>([]);
     return (
         <SearchRadiusContext
