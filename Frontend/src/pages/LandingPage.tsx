@@ -11,7 +11,7 @@ const INITIAL_CENTER = [
     40.6941
 ];
 
-const INITIAL_SEARCH_RADIUS = 2000;
+const INITIAL_SEARCH_RADIUS = 2;
 
 const LandingPage = () => {
     const [center, setCenter] = useState<CenterType>(INITIAL_CENTER as CenterType);
