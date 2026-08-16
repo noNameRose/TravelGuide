@@ -5,6 +5,8 @@ import SearchRadiusContext from "../contexts/SearchRadiusContext";
 
 gsap.registerPlugin(Draggable);
 
+const CHANGE_AMOUNT = 0.3;
+
 const RangeController = () => {
     const circle = useRef<HTMLDivElement | null>(null);
     const bar = useRef<HTMLDivElement | null>(null);
@@ -24,11 +26,11 @@ const RangeController = () => {
                 }
                 const currentX = circle.current?.getBoundingClientRect().x;
                 if (currentX && currentX > lastX.current) {
-                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal + 1);
+                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal + CHANGE_AMOUNT);
                     lastX.current = currentX;
                 }
                 else if (currentX && currentX < lastX.current) {
-                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal - 1);
+                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal - CHANGE_AMOUNT);
                     lastX.current = currentX;
                 }
             }
