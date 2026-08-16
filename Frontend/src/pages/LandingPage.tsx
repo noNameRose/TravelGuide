@@ -13,6 +13,7 @@ const INITIAL_CENTER = [
 
 const INITIAL_SEARCH_RADIUS = 2;
 const MAX_SEARCH_RADIUS = 10;
+const MIN_SEARCH_RADIUS = 2;
 
 const LandingPage = () => {
     const [center, setCenter] = useState<CenterType>(INITIAL_CENTER as CenterType);
@@ -23,7 +24,8 @@ const LandingPage = () => {
             value={{
                 radius: searchRadius,
                 maxRadius: MAX_SEARCH_RADIUS,
-                handleRadiusChange: setSearchRadius
+                handleRadiusChange: setSearchRadius,
+                minRadius: MIN_SEARCH_RADIUS
             }}
         >
             <div className="flex">
