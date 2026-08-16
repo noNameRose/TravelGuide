@@ -34,6 +34,7 @@ const LandingPage = () => {
                     <SearchTab 
                         handleCenterChange={setCenter}
                         handleData={setData}
+                        handleLocationChange={setLocation}
                     />
                     <PlaceList
                         places={data}

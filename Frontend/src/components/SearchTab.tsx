@@ -42,7 +42,8 @@ type GeoCodingResBody = {
 
 type SearchTabProp = {
     handleCenterChange: (center: CenterType) => void,
-    handleData: (places: Place[]) => void
+    handleData: (places: Place[]) => void,
+    handleLocationChange: (location: [number, number]) => void
 };
 
 type Prediction = {
@@ -53,7 +54,7 @@ type PredictionResBody = {
     predictions: Prediction[];
 }
 
-const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
+const SearchTab = ({handleCenterChange, handleData, handleLocationChange}: SearchTabProp) => {
     const searchRadiusContext = useContext(SearchRadiusContext);
     const [query, setQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<Prediction[]>([]);
@@ -81,6 +82,7 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
         const lat = geoCodingBody.results[0].geometry.location.lat;
         const lng = geoCodingBody.results[0].geometry.location.lng;
         handleCenterChange([lng, lat]);
+        handleLocationChange([lng, lat]);
         const response = await fetch(import.meta.env.VITE_PLACE_API_URL, {
             method: "POST",
             headers: {
