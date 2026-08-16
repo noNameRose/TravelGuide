@@ -1,5 +1,11 @@
 import { createContext } from "react";
 
-const SearchRadiusContext = createContext<number>(0);
+type SearchChingRadiusType = {
+    radius: number,
+    handleRadiusChange: (func: ((range: number) => number)) => void,
+    maxRadius: number
+};
+
+const SearchRadiusContext = createContext<SearchChingRadiusType | null>(null);
 
 export default SearchRadiusContext;
