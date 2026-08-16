@@ -1,12 +1,14 @@
 import gsap from "gsap";
 import { Draggable } from "gsap/all";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
+import SearchRadiusContext from "../contexts/SearchRadiusContext";
 
 gsap.registerPlugin(Draggable);
 
 const RangeController = () => {
     const circle = useRef<HTMLDivElement | null>(null);
     const bar = useRef<HTMLDivElement | null>(null);
+    const searchRadiusContext = useContext(SearchRadiusContext);
     const draggle = useRef<GSAPDraggableVars | null>(null);
     const lastX = useRef<number>(0);
 
@@ -17,13 +19,16 @@ const RangeController = () => {
             bounds: bar.current,
             type: "x",
             onDrag: () => {
+                if (!searchRadiusContext) {
+                    return;
+                }
                 const currentX = circle.current?.getBoundingClientRect().x;
                 if (currentX && currentX > lastX.current) {
-                    handleChangeRange((lastVal: number) => lastVal + 1);
+                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal + 1);
                     lastX.current = currentX;
                 }
                 else if (currentX && currentX < lastX.current) {
-                    handleChangeRange((lastVal: number) => lastVal - 1);
+                    searchRadiusContext.handleRadiusChange((lastVal: number) => lastVal - 1);
                     lastX.current = currentX;
                 }
             }
