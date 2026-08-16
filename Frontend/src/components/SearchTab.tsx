@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState} from "react";
 import type { CenterType } from "../pages/LandingPage";
 import SearchRadiusContext from "../contexts/SearchRadiusContext";
+import searchPlaces from "../utils/searchPlaces";
 
 
 export type Place = {
@@ -83,27 +84,7 @@ const SearchTab = ({handleCenterChange, handleData, handleLocationChange}: Searc
         const lng = geoCodingBody.results[0].geometry.location.lng;
         handleCenterChange([lng, lat]);
         handleLocationChange([lng, lat]);
-        const response = await fetch(import.meta.env.VITE_PLACE_API_URL, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-                "X-Goog-FieldMask": "places.displayName,places.photos,places.location",
-                "X-Goog-Api-Key": import.meta.env.VITE_PLACE_API_KEY
-            },
-            body: JSON.stringify({
-                "includedTypes": ["tourist_attraction", "observation_deck", "state_park", "beach", "lake"],
-                "locationRestriction": {
-                    "circle": {
-                        "center": {
-                            "latitude": lat,
-                            "longitude": lng,
-                        },
-                        "radius": (searchRadiusContext?.radius as number) * 1000
-                    }
-                }
-            })
-        });
-        const body = (await response.json()) as ResponseBody;
+        const body = (await searchPlaces([lng, lat], (searchRadiusContext?.radius as number) * 1000));
         handleData(body.places);
     };
 
