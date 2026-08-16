@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(Draggable);
 
-const RangeController = ({handleChangeRange}: {handleChangeRange: (func: (range: number) => number) => void}) => {
+const RangeController = () => {
     const circle = useRef<HTMLDivElement | null>(null);
     const bar = useRef<HTMLDivElement | null>(null);
     const draggle = useRef<GSAPDraggableVars | null>(null);

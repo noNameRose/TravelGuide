@@ -97,9 +97,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     return (
         <>
             <div id="map-container" ref={mapContainerRef} className="w-[50vw] min-h-screen">
-                {/* <RangeController
-                    handleChangeRange={setSearchingRange}
-                /> */}
+                <RangeController/>
             </div>
             <SelectedPlaceContext
                 value={
