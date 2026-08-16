@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Map from "../components/Map";
 import SearchTab, { type Place } from "../components/SearchTab";
 import PlaceList from "../components/PlaceList";
 import SearchRadiusContext from "../contexts/SearchRadiusContext";
+import searchPlaces from "../utils/searchPlaces";
 
 export type CenterType = [number, number];
 
@@ -20,6 +21,17 @@ const LandingPage = () => {
     const [searchRadius, setSearchRadius] = useState<number>(INITIAL_SEARCH_RADIUS);
     const [location, setLocation] = useState<[number, number] | null>(null);
     const [data, setData] = useState<Place[]>([]);
+
+    useEffect(() => {
+        if (!location) {
+            return;
+        }
+        searchPlaces(location, searchRadius * 1000)
+        .then((body: {places: Place[]}) => {
+            setData(body.places);
+        });
+    }, [searchRadius]);
+
     return (
         <SearchRadiusContext
             value={{
