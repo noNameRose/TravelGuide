@@ -1,3 +1,5 @@
+import RatingList from "./RatingList";
+
 type PlaceProp = {
     name: string,
     uri: string,
@@ -20,9 +22,11 @@ const PlaceComponent = ({name, uri, maxHeightPx, maxWidthPx}: PlaceProp) => {
                     }
                 }
             >
-
             </div>
-            <p className="font-medium">{name}</p>
+            <div>
+                <p className="font-medium">{name}</p>
+                <RatingList/>
+            </div>
         </div>
     );
 };
