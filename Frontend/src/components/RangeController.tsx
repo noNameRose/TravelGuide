@@ -8,13 +8,24 @@ const RangeController = ({handleChangeRange}: {handleChangeRange: (func: (range:
     const circle = useRef<HTMLDivElement | null>(null);
     const bar = useRef<HTMLDivElement | null>(null);
     const draggle = useRef<GSAPDraggableVars | null>(null);
+    const lastX = useRef<number>(0);
 
     useEffect(() => {
+        if (circle.current)
+            lastX.current = circle.current.getBoundingClientRect().x;
         draggle.current = Draggable.create(circle.current, {
             bounds: bar.current,
             type: "x",
             onDrag: () => {
-                handleChangeRange((lastVal: number) => lastVal + 1);
+                const currentX = circle.current?.getBoundingClientRect().x;
+                if (currentX && currentX > lastX.current) {
+                    handleChangeRange((lastVal: number) => lastVal + 1);
+                    lastX.current = currentX;
+                }
+                else if (currentX && currentX < lastX.current) {
+                    handleChangeRange((lastVal: number) => lastVal - 1);
+                    lastX.current = currentX;
+                }
             }
         });
 
