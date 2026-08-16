@@ -20,7 +20,11 @@ const LandingPage = () => {
     const [data, setData] = useState<Place[]>([]);
     return (
         <SearchRadiusContext
-            value={searchRadius}
+            value={{
+                radius: searchRadius,
+                maxRadius: MAX_SEARCH_RADIUS,
+                handleRadiusChange: setSearchRadius
+            }}
         >
             <div className="flex">
                 <div className="w-[50vw] h-screen">

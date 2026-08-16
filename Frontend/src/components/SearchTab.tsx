@@ -54,7 +54,7 @@ type PredictionResBody = {
 }
 
 const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
-    const searchRadius = useContext(SearchRadiusContext);
+    const searchRadiusContext = useContext(SearchRadiusContext);
     const [query, setQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<Prediction[]>([]);
     const sessionToken = useRef<string>(crypto.randomUUID());
@@ -96,7 +96,7 @@ const SearchTab = ({handleCenterChange, handleData}: SearchTabProp) => {
                             "latitude": lat,
                             "longitude": lng,
                         },
-                        "radius": searchRadius * 1000
+                        "radius": (searchRadiusContext?.radius as number) * 1000
                     }
                 }
             })
