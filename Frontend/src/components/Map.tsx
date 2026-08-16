@@ -51,7 +51,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
             zoom: zoom
         });
         if (mapLoaded) {
-            const circle = turf.circle(center, searchRadiusContext, {units: "kilometers"});
+            const circle = turf.circle(center, (searchRadiusContext?.radius as number), {units: "kilometers"});
 
             mapRef.current.addSource("circle-source", {
                 type: "geojson",
@@ -84,7 +84,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
 
     useEffect(() => {
         if (mapRef.current && mapRef.current.getSource("circle-source")) {
-        const circle = turf.circle(center, searchRadiusContext, {units: "kilometers"});
+        const circle = turf.circle(center, (searchRadiusContext?.radius as number), {units: "kilometers"});
            const source =  (mapRef.current.getSource("circle-source") as GeoJSONSource);
            source.setData(circle);
         }
