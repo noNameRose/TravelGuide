@@ -74,17 +74,46 @@ const TravelDiaryPage = () => {
             const origin = turf.point([trip.start.lng, trip.start.lat]);
             const destination = turf.point([trip.end.lng, trip.end.lat]);
             const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
-
+            const line = arcLine as GeoJSON.Feature<GeoJSON.LineString>;
             const totalLength = turf.length(arcLine);
-            const animatedLine = {
+            const animatedLine: GeoJSON.Feature<GeoJSON.LineString> = {
                 type: "Feature",
                 properties: [],
                 geometry: {
                     type: "LineString",
-                    coordinates: {}
+                    coordinates: []
                 }
             };
+            mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, {
+                type: "geojson",
+                "data": animatedLine
+            });
+            mapRef.current?.addLayer({
+                'id': `${LAYER_NAME}-${i}`,
+                'type': 'line',
+                'source': `${SOURCE_NAME}-${i}`,
+                'layout': {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                'paint': {
+                    'line-color': '#3887be',
+                    'line-width': 5,
+                }
+            });
             
+            const progress = { t: 0};
+            tl.current.to(progress, {
+                t: 1,
+                duration: 2,
+                onUpdate: () => {
+                    const slices = turf.lineSliceAlong(line, 0, totalLength * progress.t);
+                    animatedLine.geometry.coordinates = slices.geometry.coordinates;
+                    const source = mapRef.current?.getSource(`${SOURCE_NAME}-${i}`) as mapboxgl.GeoJSONSource;
+                    source.setData(animatedLine);
+                }
+            })
+        
 
         }
 
