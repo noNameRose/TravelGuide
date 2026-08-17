@@ -11,7 +11,7 @@ type Trip = {
     end: coordinate
 }
 
-const TravelMap = ({trips}: {trips: Trip}) => {
+const TravelMap = ({trips}: {trips: Trip[]}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
