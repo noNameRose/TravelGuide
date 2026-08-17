@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState} from "react";
 import type { CenterType } from "../pages/LandingPage";
 import SearchRadiusContext from "../contexts/SearchRadiusContext";
 import searchPlaces from "../utils/searchPlaces";
+import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 
 
 export type Place = {
@@ -28,18 +29,6 @@ type ResponseBody = {
     places: Place[]
 };
 
-type GeoCodingResult = {
-    geometry: {
-        location: {
-            lat: number,
-            lng: number
-        }
-    }
-};
-
-type GeoCodingResBody = {
-    results: GeoCodingResult[]
-};
 
 type SearchTabProp = {
     handleCenterChange: (center: CenterType) => void,
@@ -76,10 +65,7 @@ const SearchTab = ({handleCenterChange, handleData, handleLocationChange}: Searc
     // }, [query]);
 
     const handleSearch = async () => {
-        const changedQuery = query.replace(" ", "+");
-        const geoCodingUrl = import.meta.env.VITE_GEOCODING_API_URL + `address=${changedQuery}&key=${import.meta.env.VITE_PLACE_API_KEY}`;
-        const geoCodingResponse = await fetch(geoCodingUrl);
-        const geoCodingBody = (await geoCodingResponse.json()) as GeoCodingResBody;
+        const geoCodingBody = (await searchCoordinate(query)) as GeoCodingResBody;
         const lat = geoCodingBody.results[0].geometry.location.lat;
         const lng = geoCodingBody.results[0].geometry.location.lng;
         handleCenterChange([lng, lat]);
