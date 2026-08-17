@@ -58,4 +58,16 @@ export class SpotList {
 
         return trips;
     }
+
+    public clone() {
+        const newList = new SpotList();
+        let current: Spot | null = this.start;
+        while (current !== null) {
+            if (current !== null) {
+                newList.addSpot(current.clone());
+            }
+            current = current.next;
+        }
+        return newList;
+    }
 }

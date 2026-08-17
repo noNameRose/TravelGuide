@@ -20,6 +20,18 @@ export class Spot {
         return new this.Builder();
     }
 
+    public clone() {
+        return Spot.builder()
+                    .name(this.name)
+                    .location({
+                        lng: this.location.lng,
+                        lat: this.location.lat
+                    })
+                    .prev(null)
+                    .next(null)
+                    .build();
+    }
+
     public static Builder = class {
         private _name: string = "";
         private _location: coordinate = {lng: 0, lat: 0};
