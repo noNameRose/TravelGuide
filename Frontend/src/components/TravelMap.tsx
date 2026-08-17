@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
 import type { SpotList } from "../features/SpotRender/SpotList";
@@ -14,6 +14,7 @@ export type Trip = {
 const TravelMap = ({trips}: {trips: Trip[]}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
+    const [mapLoaded, setMapLoaded] = useState<boolean>(false);
 
     useEffect(() => {
         mapRef.current = new mapboxgl.Map({
@@ -27,24 +28,7 @@ const TravelMap = ({trips}: {trips: Trip[]}) => {
         const arcLine = turf.greatCircle(origin, destination, {npoints: 100});
 
         mapRef.current.on("load", () => {
-            mapRef.current?.addSource("flight-arc", {
-                type: "geojson",
-                "data": arcLine
-            });
-            mapRef.current?.addLayer({
-                'id': 'flight-arc-layer',
-                'type': 'line',
-                'source': 'flight-arc',
-                'layout': {
-                    'line-cap': 'round',
-                    'line-join': 'round'
-                },
-                'paint': {
-                    'line-color': '#3887be',
-                    'line-width': 10,
-                
-                }
-            });
+            setMapLoaded(true);
         });
 
         return () => {
