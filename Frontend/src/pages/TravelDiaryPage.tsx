@@ -52,13 +52,32 @@ INITIAL_LIST.addSpot(Spot.builder()
 
 const TravelDiaryPage = () => {
     const [spotList, setSpotList] = useState<SpotList>(INITIAL_LIST);
+    const [showInput, setShowInput] = useState<boolean>(false);
+    const [query, setQuery] = useState<string>("");
     return (
         <div className="flex">
-            <div className="w-[30vw] h-screen">
+            <div className="w-[30vw] h-screen flex flex-col gap-4">
                 <DiaryList
                     spotList={spotList}
                 />
-            </div>
+                <div className="flex flex-col gap-2">
+                    {showInput && 
+                            <div className="flex gap-4">
+                                <input
+                                        className="border-2 p-2"
+                                        placeholder="Place"
+                                        value={query}
+                                        onChange={e => setQuery(e.target.value)}
+                                />
+                                <button className="bg-green-400 p-2">Save</button>
+                            </div>
+                        }
+                        <button 
+                            className="p-[.5em] rounded-[.3em] bg-blue-200 cursor-pointer"
+                            onClick={() => setShowInput(!showInput)}
+                        >{showInput ? "Close" : "Add"}</button>
+                    </div>
+                </div>
             <div className="w-[70vw] h-screen">
                 <TravelMap
                     trips={spotList.getTrips()}
