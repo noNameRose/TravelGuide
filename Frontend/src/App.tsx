@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
+import TravelDiaryPage from "./pages/TravelDiaryPage";
 
 
 const App = () => {
@@ -7,6 +8,7 @@ const App = () => {
     <>
       <Routes>
         <Route path="/" element={<LandingPage/>}/>
+        <Route path="/travel-diary" element={<TravelDiaryPage/>}/>
       </Routes>
     </>
 
