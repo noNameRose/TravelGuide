@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
+import type { SpotList } from "../features/SpotRender/SpotList";
 
 const INITIAL_ZOOM = 10.12;
 
-const TravelMap = () => {
+const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
