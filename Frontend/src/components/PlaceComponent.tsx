@@ -9,7 +9,15 @@ type PlaceProp = {
 const PlaceComponent = ({name, uri, maxHeightPx, maxWidthPx}: PlaceProp) => {
     const imgURL = import.meta.env.VITE_PLACE_PICTURE_API_URL + uri + `/media?key=${import.meta.env.VITE_PLACE_API_KEY}&maxHeightPx=${maxHeightPx}&maxWidthPx=${maxWidthPx}`
     return (
-        <div>
+        <div 
+            className="flex flex-col gap-2 p-3 pb-[5rem]"
+            style={
+                {
+                    backgroundColor: "white",
+                    borderRadius: "1.75rem"
+                }
+            }
+        >
             <div
                 className="rounded-2xl"
                 style={
@@ -23,7 +31,7 @@ const PlaceComponent = ({name, uri, maxHeightPx, maxWidthPx}: PlaceProp) => {
                 }
             >
             </div>
-            <div>
+            <div className="flex flex-col gap-2 w-[270px]">
                 <p className="font-medium">{name}</p>
                 <RatingList/>
             </div>
