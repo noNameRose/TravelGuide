@@ -11,7 +11,8 @@ export type Trip = {
     end: coordinate
 }
 
-const TravelMap = ({trips}: {trips: Trip[]}) => {
+const TravelMap = ({spotList}: {spotList: SpotList}) => {
+    const trips = spotList.getTrips();
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
@@ -41,39 +42,41 @@ const TravelMap = ({trips}: {trips: Trip[]}) => {
             const origin = turf.point([trip.start.lng, trip.start.lat]);
             const destination = turf.point([trip.end.lng, trip.end.lat]);
             const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
-            mapRef.current?.addSource(`flight-arc-${count}`, {
-                type: "geojson",
-                "data": arcLine
-            });
-            mapRef.current?.addLayer({
-                'id': `flight-arc-layer-${count}`,
-                'type': 'line',
-                'source': `flight-arc-${count}`,
-                'layout': {
-                    'line-cap': 'round',
-                    'line-join': 'round'
-                },
-                'paint': {
-                    'line-color': '#3887be',
-                    'line-width': 5,
-                }
-            });
+            if (!mapRef.current?.getSource(`flight-arc-${count}`)) {
+                mapRef.current?.addSource(`flight-arc-${count}`, {
+                    type: "geojson",
+                    "data": arcLine
+                });
+                mapRef.current?.addLayer({
+                    'id': `flight-arc-layer-${count}`,
+                    'type': 'line',
+                    'source': `flight-arc-${count}`,
+                    'layout': {
+                        'line-cap': 'round',
+                        'line-join': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#3887be',
+                        'line-width': 5,
+                    }
+                });
+            }
             count++;
         }
 
         return () => {
-            if (!mapRef.current)
-                return;
-            for (let i = count; i >= 0; i--) {
-                if (mapRef.current.getLayer(`flight-arc-layer-${i}`)) {
-                    mapRef.current.removeLayer(`flight-arc-layer-${i}`);
-                }
-                if (mapRef.current.getSource(`flight-arc-${i}`)) {
-                    mapRef.current.removeSource(`flight-arc-${i}`);
-                }
-            }
+            // if (!mapRef.current)
+            //     return;
+            // for (let i = count; i >= 0; i--) {
+            //     if (mapRef.current.getLayer(`flight-arc-layer-${i}`)) {
+            //         mapRef.current.removeLayer(`flight-arc-layer-${i}`);
+            //     }
+            //     if (mapRef.current.getSource(`flight-arc-${i}`)) {
+            //         mapRef.current.removeSource(`flight-arc-${i}`);
+            //     }
+            // }
         }
-    }, [mapLoaded, trips]);
+    }, [mapLoaded, spotList]);
 
     return (
         <div id="map-container" ref={mapContainerRef} className="w-full h-full">
