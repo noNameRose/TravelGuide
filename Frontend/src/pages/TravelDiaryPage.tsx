@@ -3,6 +3,7 @@ import TravelMap from "../components/TravelMap";
 import { Spot } from "../features/SpotRender/Spot";
 import { SpotList } from "../features/SpotRender/SpotList";
 import DiaryList from "../components/DiaryList";
+import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 
 const INITIAL_LIST = new SpotList();
 
@@ -69,7 +70,23 @@ const TravelDiaryPage = () => {
                                         value={query}
                                         onChange={e => setQuery(e.target.value)}
                                 />
-                                <button className="bg-green-400 p-2">Save</button>
+                                <button 
+                                    className="bg-green-400 p-2"
+                                    onClick={async () => {
+                                        const geoCodeBody = (await searchCoordinate(query)) as GeoCodingResBody;
+                                        const lng = geoCodeBody.results[0].geometry.location.lng;
+                                        const lat = geoCodeBody.results[0].geometry.location.lat;
+                                        const newList = spotList.clone();
+                                        newList.addSpot(Spot.builder()
+                                                            .name(query)
+                                                            .location({
+                                                                lng: lng,
+                                                                lat: lat,
+                                                            }).build()
+                                        );
+                                        setSpotList(newList)
+                                    }}
+                                >Save</button>
                             </div>
                         }
                         <button 
