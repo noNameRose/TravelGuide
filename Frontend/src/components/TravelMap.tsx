@@ -40,18 +40,6 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         if (!mapLoaded) {
             return;
         }
-        const tripNum = trips.length;
-        if (isPlay) {
-            for (let i = tripNum - 1; i >= 0; i--) {
-                if (mapRef.current?.getLayer(`flight-arc-layer-${i}`)) {
-                    mapRef.current.removeLayer(`flight-arc-layer-${i}`);
-                }
-                if (mapRef.current?.getSource(`flight-arc-${i}`)) {
-                    mapRef.current.removeSource(`flight-arc-${i}`);
-                }
-            }
-            return;
-        }
         let count = 0;
         for (const trip of trips) {
             const origin = turf.point([trip.start.lng, trip.start.lat]);
@@ -91,7 +79,23 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             //     }
             // }
         }
-    }, [mapLoaded, spotList, isPlay]);
+    }, [mapLoaded, spotList]);
+
+    useEffect(() => {
+        if (!isPlay || !mapLoaded) {
+            return;
+        }
+        const tripNum = trips.length;
+        for (let i = tripNum - 1; i >= 0; i--) {
+            if (mapRef.current?.getLayer(`flight-arc-layer-${i}`)) {
+                mapRef.current.removeLayer(`flight-arc-layer-${i}`);
+            }
+            if (mapRef.current?.getSource(`flight-arc-${i}`)) {
+                mapRef.current.removeSource(`flight-arc-${i}`);
+            }
+        }
+
+    }, [isPlay]);
 
     return (
         <div id="map-container" ref={mapContainerRef} className="w-full h-full">
