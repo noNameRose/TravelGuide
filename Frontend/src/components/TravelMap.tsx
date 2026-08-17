@@ -3,6 +3,7 @@ import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
 import type { SpotList } from "../features/SpotRender/SpotList";
 import type { coordinate } from "../features/SpotRender/Spot";
+import { LAYER_NAME, SOURCE_NAME } from "../pages/TravelDiaryPage";
 
 const INITIAL_ZOOM = 10.12;
 
@@ -42,15 +43,15 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             const origin = turf.point([trip.start.lng, trip.start.lat]);
             const destination = turf.point([trip.end.lng, trip.end.lat]);
             const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
-            if (!mapRef.current?.getSource(`flight-arc-${count}`)) {
-                mapRef.current?.addSource(`flight-arc-${count}`, {
+            if (!mapRef.current?.getSource(`${SOURCE_NAME}-${count}`)) {
+                mapRef.current?.addSource(`${SOURCE_NAME}-${count}`, {
                     type: "geojson",
                     "data": arcLine
                 });
                 mapRef.current?.addLayer({
-                    'id': `flight-arc-layer-${count}`,
+                    'id': `${LAYER_NAME}-${count}`,
                     'type': 'line',
-                    'source': `flight-arc-${count}`,
+                    'source': `${SOURCE_NAME}-${count}`,
                     'layout': {
                         'line-cap': 'round',
                         'line-join': 'round'

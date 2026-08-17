@@ -49,6 +49,8 @@ INITIAL_LIST.addSpot(Spot.builder()
                         .build()
 );
 
+export const SOURCE_NAME = "flight-arc";
+export const LAYER_NAME = "flight-arc-layer";
 
 
 
