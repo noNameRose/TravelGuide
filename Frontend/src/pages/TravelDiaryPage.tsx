@@ -59,10 +59,12 @@ const TravelDiaryPage = () => {
     const [spotList, setSpotList] = useState<SpotList>(INITIAL_LIST);
     const [showInput, setShowInput] = useState<boolean>(false);
     const [query, setQuery] = useState<string>("");
+    const [isPlay, setIsPlay] = useState<boolean>(false);
 
     useEffect(() => {
         tl.current = gsap.timeline();
 
+        
         
         return () => {
             if (tl.current) {
