@@ -15,17 +15,13 @@ const TravelMap = ({trips}: {trips: Trip[]}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
-
+    
     useEffect(() => {
         mapRef.current = new mapboxgl.Map({
             accessToken: import.meta.env.VITE_MAPBOX_API,
             container: mapContainerRef.current as HTMLDivElement,
             zoom: INITIAL_ZOOM
         });
-
-        const origin = turf.point([-122.414, 37.776]); 
-        const destination = turf.point([-77.032, 38.913]);
-        const arcLine = turf.greatCircle(origin, destination, {npoints: 100});
 
         mapRef.current.on("load", () => {
             setMapLoaded(true);
@@ -35,6 +31,37 @@ const TravelMap = ({trips}: {trips: Trip[]}) => {
             mapRef.current?.remove();
         };
     }, []);
+
+    useEffect(() => {
+        if (!mapLoaded) {
+            return;
+        }
+
+        let count = 0;
+        for (const trip of trips) {
+            const origin = turf.point([trip.start.lng, trip.start.lat]);
+            const destination = turf.point([trip.end.lng, trip.end.lat]);
+            const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
+            mapRef.current?.addSource(`flight-arc-${count}`, {
+                type: "geojson",
+                "data": arcLine
+            });
+            mapRef.current?.addLayer({
+                'id': `flight-arc-layer-${count}`,
+                'type': 'line',
+                'source': `flight-arc-${count}`,
+                'layout': {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                'paint': {
+                    'line-color': '#3887be',
+                    'line-width': 5,
+                }
+            });
+            count++;
+        }
+    }, [mapLoaded]);
 
     return (
         <div id="map-container" ref={mapContainerRef} className="w-full h-full">
