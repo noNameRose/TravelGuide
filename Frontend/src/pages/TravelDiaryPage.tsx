@@ -61,7 +61,6 @@ const TravelDiaryPage = () => {
     const [spotList, setSpotList] = useState<SpotList>(INITIAL_LIST);
     const [showInput, setShowInput] = useState<boolean>(false);
     const [query, setQuery] = useState<string>("");
-    const mapRef = useRef<mapboxgl.Map | null>(null);
     const [isPlay, setIsPlay] = useState<boolean>(false);
 
     useEffect(() => {
@@ -172,7 +171,6 @@ const TravelDiaryPage = () => {
                     </div>
                 <div className="w-[70vw] h-screen">
                     <TravelMap
-                        mapRef={mapRef}
                         spotList={spotList}
                     />
                 </div>

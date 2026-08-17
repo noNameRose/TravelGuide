@@ -13,8 +13,9 @@ export type Trip = {
     end: coordinate
 }
 
-const TravelMap = ({spotList, mapRef}: {spotList: SpotList, mapRef: RefObject<mapboxgl.Map | null>}) => {
+const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const trips = spotList.getTrips();
+    const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const isPlay = useContext(IsPlayContext);
