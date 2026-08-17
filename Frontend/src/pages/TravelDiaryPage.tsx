@@ -38,6 +38,14 @@ INITIAL_LIST.addSpot(Spot.builder()
                         })
                         .build()
 );
+INITIAL_LIST.addSpot(Spot.builder()
+                        .name("Hanoi")
+                        .location({
+                            lng: 105.8048,
+                            lat: 21.0285
+                        })
+                        .build()
+);
 
 
 
