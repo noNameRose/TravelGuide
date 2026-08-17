@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
 import type { SpotList } from "../features/SpotRender/SpotList";
 import type { coordinate } from "../features/SpotRender/Spot";
 import { LAYER_NAME, SOURCE_NAME } from "../pages/TravelDiaryPage";
+import IsPlayContext from "../contexts/IsPlayContext";
 
 const INITIAL_ZOOM = 10.12;
 
@@ -17,6 +18,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+    const isPlay = useContext(IsPlayContext);
     
     useEffect(() => {
         mapRef.current = new mapboxgl.Map({
@@ -36,6 +38,18 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
 
     useEffect(() => {
         if (!mapLoaded) {
+            return;
+        }
+        const tripNum = trips.length;
+        if (isPlay) {
+            for (let i = tripNum - 1; i >= 0; i--) {
+                if (mapRef.current?.getLayer(`flight-arc-layer-${i}`)) {
+                    mapRef.current.removeLayer(`flight-arc-layer-${i}`);
+                }
+                if (mapRef.current?.getSource(`flight-arc-${i}`)) {
+                    mapRef.current.removeSource(`flight-arc-${i}`);
+                }
+            }
             return;
         }
         let count = 0;
@@ -77,7 +91,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             //     }
             // }
         }
-    }, [mapLoaded, spotList]);
+    }, [mapLoaded, spotList, isPlay]);
 
     return (
         <div id="map-container" ref={mapContainerRef} className="w-full h-full">

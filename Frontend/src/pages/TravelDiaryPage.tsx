@@ -5,6 +5,7 @@ import { SpotList } from "../features/SpotRender/SpotList";
 import DiaryList from "../components/DiaryList";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 import gsap from "gsap";
+import IsPlayContext from "../contexts/IsPlayContext";
 
 const INITIAL_LIST = new SpotList();
 
@@ -74,51 +75,56 @@ const TravelDiaryPage = () => {
         }
     }, [])
     return (
-        <div className="flex">
-            <div className="w-[30vw] h-screen flex flex-col gap-4">
-                <DiaryList
-                    spotList={spotList}
-                />
-                <div className="flex flex-col gap-2">
-                    {showInput && 
-                            <div className="flex gap-4">
-                                <input
-                                        className="border-2 p-2"
-                                        placeholder="Place"
-                                        value={query}
-                                        onChange={e => setQuery(e.target.value)}
-                                />
-                                <button 
-                                    className="bg-green-400 p-2"
-                                    onClick={async () => {
-                                        const geoCodeBody = (await searchCoordinate(query)) as GeoCodingResBody;
-                                        const lng = geoCodeBody.results[0].geometry.location.lng;
-                                        const lat = geoCodeBody.results[0].geometry.location.lat;
-                                        const newList = spotList.clone();
-                                        newList.addSpot(Spot.builder()
-                                                            .name(query)
-                                                            .location({
-                                                                lng: lng,
-                                                                lat: lat,
-                                                            }).build()
-                                        );
-                                        setSpotList(newList)
-                                    }}
-                                >Save</button>
-                            </div>
-                        }
-                        <button 
-                            className="p-[.5em] rounded-[.3em] bg-blue-200 cursor-pointer"
-                            onClick={() => setShowInput(!showInput)}
-                        >{showInput ? "Close" : "Add"}</button>
+        <IsPlayContext
+            value={isPlay}
+        >
+            <div className="flex">
+                <div className="w-[30vw] h-screen flex flex-col gap-4">
+                    <DiaryList
+                        spotList={spotList}
+                    />
+                    <div className="flex flex-col gap-2">
+                        {showInput && 
+                                <div className="flex gap-4">
+                                    <input
+                                            className="border-2 p-2"
+                                            placeholder="Place"
+                                            value={query}
+                                            onChange={e => setQuery(e.target.value)}
+                                    />
+                                    <button 
+                                        className="bg-green-400 p-2"
+                                        onClick={async () => {
+                                            const geoCodeBody = (await searchCoordinate(query)) as GeoCodingResBody;
+                                            const lng = geoCodeBody.results[0].geometry.location.lng;
+                                            const lat = geoCodeBody.results[0].geometry.location.lat;
+                                            const newList = spotList.clone();
+                                            newList.addSpot(Spot.builder()
+                                                                .name(query)
+                                                                .location({
+                                                                    lng: lng,
+                                                                    lat: lat,
+                                                                }).build()
+                                            );
+                                            setSpotList(newList)
+                                        }}
+                                    >Save</button>
+                                </div>
+                            }
+                            <button 
+                                className="p-[.5em] rounded-[.3em] bg-blue-200 cursor-pointer"
+                                onClick={() => setShowInput(!showInput)}
+                            >{showInput ? "Close" : "Add"}</button>
+                            <button className="bg-amber-300 p-2 cursor-pointer"  onClick={() => setIsPlay(true)}>Play</button>
+                        </div>
                     </div>
+                <div className="w-[70vw] h-screen">
+                    <TravelMap
+                        spotList={spotList}
+                    />
                 </div>
-            <div className="w-[70vw] h-screen">
-                <TravelMap
-                    spotList={spotList}
-                />
             </div>
-        </div>
+         </IsPlayContext>
     );
 };
 
