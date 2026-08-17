@@ -6,7 +6,7 @@ import type { coordinate } from "../features/SpotRender/Spot";
 
 const INITIAL_ZOOM = 10.12;
 
-type Trip = {
+export type Trip = {
     start: coordinate,
     end: coordinate
 }
