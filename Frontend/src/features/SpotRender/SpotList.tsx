@@ -41,4 +41,21 @@ export class SpotList {
         }
         return list;
     }
+
+
+    public getTrips() {
+        const trips = [];
+        let current: Spot | null = this.start;
+        while (current !== null) {
+            if (current.next !== null) {
+                trips.push({
+                    start: current.location,
+                    end: current.next.location
+                })
+            }
+            current = current.next;
+        }
+
+        return trips;
+    }
 }
