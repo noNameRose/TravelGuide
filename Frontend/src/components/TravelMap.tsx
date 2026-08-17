@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, type Ref, type RefObject } from "react";
 import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
 import type { SpotList } from "../features/SpotRender/SpotList";
@@ -13,9 +13,8 @@ export type Trip = {
     end: coordinate
 }
 
-const TravelMap = ({spotList}: {spotList: SpotList}) => {
+const TravelMap = ({spotList, mapRef}: {spotList: SpotList, mapRef: RefObject<mapboxgl.Map | null>}) => {
     const trips = spotList.getTrips();
-    const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const isPlay = useContext(IsPlayContext);
