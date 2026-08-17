@@ -7,6 +7,7 @@ const DiaryList = ({spotList}: {spotList: SpotList}) => {
         <div className="flex flex-col gap-4">
             {spots.map(spot => (
                 <input
+                    key={spot.name}
                     className="p-2 font-medium border-2 rounded-3xl"
                     value={spot.name}
                 />
