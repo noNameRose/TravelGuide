@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TravelMap from "../components/TravelMap";
 import { Spot } from "../features/SpotRender/Spot";
 import { SpotList } from "../features/SpotRender/SpotList";
 import DiaryList from "../components/DiaryList";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
+import gsap from "gsap";
 
 const INITIAL_LIST = new SpotList();
 
@@ -52,9 +53,22 @@ INITIAL_LIST.addSpot(Spot.builder()
 
 
 const TravelDiaryPage = () => {
+    const tl = useRef<GSAPTimeline | null>(null);
     const [spotList, setSpotList] = useState<SpotList>(INITIAL_LIST);
     const [showInput, setShowInput] = useState<boolean>(false);
     const [query, setQuery] = useState<string>("");
+
+    useEffect(() => {
+        tl.current = gsap.timeline();
+
+        
+        return () => {
+            if (tl.current) {
+                tl.current.kill();
+                tl.current = null;
+            }
+        }
+    }, [])
     return (
         <div className="flex">
             <div className="w-[30vw] h-screen flex flex-col gap-4">
