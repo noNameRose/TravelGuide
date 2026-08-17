@@ -53,6 +53,7 @@ const TravelDiaryPage = () => {
             </div>
             <div className="w-[70vw] h-screen">
                 <TravelMap
+                    trips={spotList.getTrips()}
                 />
             </div>
         </div>
