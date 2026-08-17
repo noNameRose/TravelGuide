@@ -6,6 +6,7 @@ import DiaryList from "../components/DiaryList";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 import gsap from "gsap";
 import IsPlayContext from "../contexts/IsPlayContext";
+import * as turf from "@turf/turf";
 
 const INITIAL_LIST = new SpotList();
 
@@ -64,6 +65,27 @@ const TravelDiaryPage = () => {
 
     useEffect(() => {
         tl.current = gsap.timeline();
+        
+        const tripNum = spotList.spots - 1;
+        const trips = spotList.getTrips();
+        for (let i = 0; i < tripNum; i++) {
+            const trip = trips[i];
+            const origin = turf.point([trip.start.lng, trip.start.lat]);
+            const destination = turf.point([trip.end.lng, trip.end.lat]);
+            const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
+
+            const totalLength = turf.length(arcLine);
+            const animatedLine = {
+                type: "Feature",
+                properties: [],
+                geometry: {
+                    type: "LineString",
+                    coordinates: {}
+                }
+            };
+            
+
+        }
 
         
         
