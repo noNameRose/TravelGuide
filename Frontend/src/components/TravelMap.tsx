@@ -20,7 +20,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const markerRef = useRef<mapboxgl.Marker | null>(null);
-    const plane = useRef<HTMLDivElement | null>(null);
+    const plane = useRef<SVGSVGElement | null>(null);
     const markerContentRef = useRef(document.createElement("div"));
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const isPlayContext = useContext(IsPlayContext);
@@ -227,11 +227,17 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             {
                 createPortal(
                     <div 
-                        className="w-[30px] h-[30px] transform scale-0"
-                        ref={plane}
+                        className="w-[30px] h-[30px]"
                     >
-
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.94737L22 14V16L14 13.4737V18.8333L17 20.5V22L12.5 21L8 22V20.5L11 18.8333V13.4737L3 16V14L11 8.94737V3.5C11 2.67157 11.6716 2 12.5 2C13.3284 2 14 2.67157 14 3.5V8.94737Z"></path></svg>
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            ref={plane}
+                            viewBox="0 0 24 24" 
+                            className="transform scale-0"
+                            fill="currentColor">
+                            <path d="M14 8.94737L22 14V16L14 13.4737V18.8333L17 20.5V22L12.5 21L8 22V20.5L11 18.8333V13.4737L3 16V14L11 8.94737V3.5C11 2.67157 11.6716 2 12.5 2C13.3284 2 14 2.67157 14 3.5V8.94737Z">
+                            </path>
+                        </svg>
                     </div>, 
                     
                     markerContentRef.current)
