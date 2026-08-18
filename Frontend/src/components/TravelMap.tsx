@@ -84,16 +84,16 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     }, [mapLoaded, spotList]);
 
     useEffect(() => {
-        if (!isPlay || !mapLoaded) {
+        if (!isPlay || !mapLoaded || !mapRef.current) {
             return;
         }
         tl.current = gsap.timeline();
         const tripNum = trips.length;
         for (let i = tripNum - 1; i >= 0; i--) {
-            if (mapRef.current?.getLayer(`flight-arc-layer-${i}`)) {
+            if (mapRef.current.getLayer(`flight-arc-layer-${i}`)) {
                 mapRef.current.removeLayer(`flight-arc-layer-${i}`);
             }
-            if (mapRef.current?.getSource(`flight-arc-${i}`)) {
+            if (mapRef.current.getSource(`flight-arc-${i}`)) {
                 mapRef.current.removeSource(`flight-arc-${i}`);
             }
         }
@@ -129,7 +129,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             const velocity = 500;
             const duration = totalLength/velocity;
             const progress = { t: 0 };
-            tl.current?.to(progress, {
+            tl.current.to(progress, {
                 t: 1,
                 ease: "power4",
                 duration: duration,
