@@ -133,7 +133,6 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             const progress = { t: 0 };
             tl.current.to(progress, {
                 t: 1,
-                ease: "power4",
                 duration: duration,
                 onUpdate: () => {
                     let remaining = totalLength * progress.t;
