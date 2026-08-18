@@ -97,13 +97,16 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 mapRef.current.removeSource(`flight-arc-${i}`);
             }
         }
-
+        const camera = {
+            zoom: mapRef.current.getZoom(),
+            lng: trips[0].start.lng,
+            lat: trips[0].end.lat
+        };
         for (let i = 0; i < tripNum; i++) {
             const trip = trips[i];
             const origin = turf.point([trip.start.lng, trip.start.lat]);
             const destination = turf.point([trip.end.lng, trip.end.lat]);
             const arcLine = turf.greatCircle(origin, destination, { npoints: 1000 });
-
             const segments: GeoJSON.Feature<GeoJSON.LineString>[] =
                 arcLine.geometry.type === "MultiLineString"
                     ? arcLine.geometry.coordinates.map((coords) => turf.lineString(coords))
@@ -135,14 +138,25 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 duration: duration,
                 onUpdate: () => {
                     let remaining = totalLength * progress.t;
+                    let lastCoord: [number, number] | null = null;
                     animatedLine.geometry.coordinates = segments.map((seg, idx) => {
                         const segLen = segmentLengths[idx];
                         const drawn = Math.max(0, Math.min(remaining, segLen));
                         remaining -= segLen;
-                        return drawn > 0 ? turf.lineSliceAlong(seg, 0, drawn).geometry.coordinates : [];
+                        if (drawn <= 0)
+                            return [];
+                        const sliceCoords = turf.lineSliceAlong(seg, 0, drawn).geometry.coordinates as [number, number][];
+                        lastCoord = sliceCoords[sliceCoords.length - 1];
+                        return sliceCoords;
                     });
                     const source = mapRef.current?.getSource(`${SOURCE_NAME}-${i}`) as mapboxgl.GeoJSONSource;
                     source?.setData(animatedLine);
+
+                    if (lastCoord) {
+                        mapRef.current?.jumpTo({
+                            center: lastCoord,
+                        })
+                    }
                 }
             });
         }
