@@ -6,6 +6,7 @@ import type { coordinate } from "../features/SpotRender/Spot";
 import { LAYER_NAME, SOURCE_NAME } from "../pages/TravelDiaryPage";
 import IsPlayContext from "../contexts/IsPlayContext";
 import gsap from "gsap";
+import { createPortal } from "react-dom";
 
 const INITIAL_ZOOM = 10.12;
 
@@ -18,6 +19,8 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const trips = spotList.getTrips();
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
+    const markerRef = useRef<mapboxgl.Marker | null>(null);
+    const markerContentRef = useRef(document.createElement("div"));
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const isPlayContext = useContext(IsPlayContext);
     const tl = useRef<GSAPTimeline | null>(null);
@@ -103,6 +106,11 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             lng: trips[0].start.lng,
             lat: trips[0].end.lat
         };
+
+        markerRef.current = new mapboxgl.Marker(markerContentRef.current)
+                            .setLngLat([camera.lng, camera.lat])
+                            .addTo(mapRef.current);
+            
         for (let i = 0; i < tripNum; i++) {
             const trip = trips[i];
             const origin = turf.point([trip.start.lng, trip.start.lat]);
@@ -178,9 +186,13 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     }, [isPlayContext]);
 
     return (
-        <div id="map-container" ref={mapContainerRef} className="w-full h-full">
-            
-        </div>
+        <>
+            <div id="map-container" ref={mapContainerRef} className="w-full h-full">
+            </div>
+            {
+                createPortal(<div className="bg-blue-500 w-[50px] h-[50px] rounded-[50%]"></div>, markerContentRef.current)
+            }
+        </>
     );
 };
 
