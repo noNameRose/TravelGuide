@@ -69,7 +69,7 @@ const TravelDiaryPage = () => {
             }}
         >
             <div className="flex">
-                <div className="w-[30vw] h-screen flex flex-col gap-4">
+                <div className="w-[30vw] h-screen flex flex-col gap-4 overflow-scroll">
                     <DiaryList
                         spotList={spotList}
                     />
