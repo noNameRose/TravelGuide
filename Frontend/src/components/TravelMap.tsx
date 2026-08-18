@@ -109,17 +109,12 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             lat: trips[0].start.lat
         };
         
-        const bearing = turf.bearing(
-            turf.point([trips[0].end.lng, trips[0].end.lat]),
-            turf.point([trips[0].start.lng, trips[0].start.lat])
-        );
 
         markerRef.current = new mapboxgl.Marker(markerContentRef.current, {
-            rotation: bearing,
+            rotation: 0,
             rotationAlignment: "map"
         })
         .setLngLat([camera.lng, camera.lat])
-        .setRotation(bearing)
         .addTo(mapRef.current);
 
 
@@ -128,6 +123,12 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             const trip = trips[i];
             const origin = turf.point([trip.start.lng, trip.start.lat]);
             const destination = turf.point([trip.end.lng, trip.end.lat]);
+            tl.current.to({}, {
+                onUpdate: () => {
+                    const bearing = turf.bearing(origin, destination);
+                    markerRef.current?.setRotation(bearing);
+                }
+            })
             const arcLine = turf.greatCircle(origin, destination, { npoints: 1000 });
             const segments: GeoJSON.Feature<GeoJSON.LineString>[] =
                 arcLine.geometry.type === "MultiLineString"
