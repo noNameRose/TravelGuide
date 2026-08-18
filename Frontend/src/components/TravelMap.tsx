@@ -151,7 +151,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 layout: { "line-cap": "round", "line-join": "round" },
                 paint: { "line-color": "#3887be", "line-width": 5 }
             });
-            const velocity = 500;
+            const velocity = 1000;
             const duration = totalLength/velocity;
             const progress = { t: 0 };
 
