@@ -42,29 +42,31 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         if (!mapLoaded) {
             return;
         }
-        for (let i = 0; i < trips.length; i++) {
-            const trip = trips[i];
-            const origin = turf.point([trip.start.lng, trip.start.lat]);
-            const destination = turf.point([trip.end.lng, trip.end.lat]);
-            const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
-            if (!mapRef.current?.getSource(`${SOURCE_NAME}-${i}`)) {
-                mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, {
-                    type: "geojson",
-                    "data": arcLine
-                });
-                mapRef.current?.addLayer({
-                    'id': `${LAYER_NAME}-${i}`,
-                    'type': 'line',
-                    'source': `${SOURCE_NAME}-${i}`,
-                    'layout': {
-                        'line-cap': 'round',
-                        'line-join': 'round'
-                    },
-                    'paint': {
-                        'line-color': '#3887be',
-                        'line-width': 5,
-                    }
-                });
+        if (isPlayContext && !isPlayContext.isPlay) {
+            for (let i = 0; i < trips.length; i++) {
+                const trip = trips[i];
+                const origin = turf.point([trip.start.lng, trip.start.lat]);
+                const destination = turf.point([trip.end.lng, trip.end.lat]);
+                const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
+                if (!mapRef.current?.getSource(`${SOURCE_NAME}-${i}`)) {
+                    mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, {
+                        type: "geojson",
+                        "data": arcLine
+                    });
+                    mapRef.current?.addLayer({
+                        'id': `${LAYER_NAME}-${i}`,
+                        'type': 'line',
+                        'source': `${SOURCE_NAME}-${i}`,
+                        'layout': {
+                            'line-cap': 'round',
+                            'line-join': 'round'
+                        },
+                        'paint': {
+                            'line-color': '#3887be',
+                            'line-width': 5,
+                        }
+                    });
+                }
             }
         }
 
@@ -80,7 +82,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             //     }
             // }
         }
-    }, [mapLoaded, spotList]);
+    }, [mapLoaded, spotList, isPlayContext]);
 
     useEffect(() => {
         if (!isPlayContext || !isPlayContext.isPlay || !mapLoaded || !mapRef.current) {
@@ -158,6 +160,12 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 }
             });
         }
+
+        tl.current.to({}, {
+            onComplete: () => {
+                isPlayContext.handlePlayChange(false);
+            }
+        })
         
 
         return () => {
