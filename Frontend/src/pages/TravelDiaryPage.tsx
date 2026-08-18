@@ -63,7 +63,10 @@ const TravelDiaryPage = () => {
 
     return (
         <IsPlayContext
-            value={isPlay}
+            value={{
+                isPlay: isPlay,
+                handlePlayChange: setIsPlay
+            }}
         >
             <div className="flex">
                 <div className="w-[30vw] h-screen flex flex-col gap-4">

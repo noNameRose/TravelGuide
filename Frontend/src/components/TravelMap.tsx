@@ -19,7 +19,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
-    const isPlay = useContext(IsPlayContext);
+    const isPlayContext = useContext(IsPlayContext);
     const tl = useRef<GSAPTimeline | null>(null);
     
     useEffect(() => {
@@ -84,7 +84,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     }, [mapLoaded, spotList]);
 
     useEffect(() => {
-        if (!isPlay || !mapLoaded || !mapRef.current) {
+        if (!isPlayContext || !isPlayContext.isPlay || !mapLoaded || !mapRef.current) {
             return;
         }
         tl.current = gsap.timeline();
@@ -169,7 +169,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             }
         }
 
-    }, [isPlay]);
+    }, [isPlayContext]);
 
     return (
         <div id="map-container" ref={mapContainerRef} className="w-full h-full">

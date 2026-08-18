@@ -1,5 +1,10 @@
 import { createContext } from "react";
 
-const IsPlayContext = createContext<boolean>(false);
+type IsPlayType = {
+    isPlay: boolean,
+    handlePlayChange: (isPlay: boolean) => void
+}
+
+const IsPlayContext = createContext<IsPlayType | null>(null);
 
 export default IsPlayContext;
