@@ -42,20 +42,20 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         if (!mapLoaded) {
             return;
         }
-        let count = 0;
-        for (const trip of trips) {
+        for (let i = 0; i < trips.length; i++) {
+            const trip = trips[i];
             const origin = turf.point([trip.start.lng, trip.start.lat]);
             const destination = turf.point([trip.end.lng, trip.end.lat]);
             const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
-            if (!mapRef.current?.getSource(`${SOURCE_NAME}-${count}`)) {
-                mapRef.current?.addSource(`${SOURCE_NAME}-${count}`, {
+            if (!mapRef.current?.getSource(`${SOURCE_NAME}-${i}`)) {
+                mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, {
                     type: "geojson",
                     "data": arcLine
                 });
                 mapRef.current?.addLayer({
-                    'id': `${LAYER_NAME}-${count}`,
+                    'id': `${LAYER_NAME}-${i}`,
                     'type': 'line',
-                    'source': `${SOURCE_NAME}-${count}`,
+                    'source': `${SOURCE_NAME}-${i}`,
                     'layout': {
                         'line-cap': 'round',
                         'line-join': 'round'
@@ -66,7 +66,6 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                     }
                 });
             }
-            count++;
         }
 
         return () => {
