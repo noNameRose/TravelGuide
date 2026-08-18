@@ -163,7 +163,8 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                     if (lastCoord) {
                         mapRef.current?.jumpTo({
                             center: lastCoord,
-                        })
+                        });
+                        markerRef.current?.setLngLat(lastCoord);
                     }
                 }
             });
