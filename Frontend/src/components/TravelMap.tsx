@@ -20,6 +20,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const markerRef = useRef<mapboxgl.Marker | null>(null);
+    const plane = useRef<HTMLDivElement | null>(null);
     const markerContentRef = useRef(document.createElement("div"));
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const isPlayContext = useContext(IsPlayContext);
@@ -107,14 +108,22 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             lng: trips[0].start.lng,
             lat: trips[0].start.lat
         };
+        
+        const bearing = turf.bearing(
+            turf.point([trips[0].end.lng, trips[0].end.lat]),
+            turf.point([trips[0].start.lng, trips[0].start.lat])
+        );
 
         markerRef.current = new mapboxgl.Marker(markerContentRef.current, {
-            rotation: 0,
+            rotation: bearing,
             rotationAlignment: "map"
         })
         .setLngLat([camera.lng, camera.lat])
+        .setRotation(bearing)
         .addTo(mapRef.current);
-            
+
+
+    
         for (let i = 0; i < tripNum; i++) {
             const trip = trips[i];
             const origin = turf.point([trip.start.lng, trip.start.lat]);
@@ -145,7 +154,12 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             const velocity = 500;
             const duration = totalLength/velocity;
             const progress = { t: 0 };
-            tl.current.to(progress, {
+
+            tl.current
+            .to(plane.current, {
+                transform: "scale(1)"
+            })
+            .to(progress, {
                 t: 1,
                 duration: duration,
                 onUpdate: () => {
@@ -182,7 +196,11 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                         }
                     }
                 }
-            });
+            })
+            .to(plane.current, {
+                transform: "scale(0)"
+            }, "-=1")
+            ;
         }
 
         tl.current.to({}, {
@@ -207,7 +225,10 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             </div>
             {
                 createPortal(
-                    <div className="w-[30px] h-[30px]">
+                    <div 
+                        className="w-[30px] h-[30px] transform scale-0"
+                        ref={plane}
+                    >
 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.94737L22 14V16L14 13.4737V18.8333L17 20.5V22L12.5 21L8 22V20.5L11 18.8333V13.4737L3 16V14L11 8.94737V3.5C11 2.67157 11.6716 2 12.5 2C13.3284 2 14 2.67157 14 3.5V8.94737Z"></path></svg>
                     </div>, 
