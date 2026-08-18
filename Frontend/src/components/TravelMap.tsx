@@ -104,7 +104,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         const camera = {
             zoom: mapRef.current.getZoom(),
             lng: trips[0].start.lng,
-            lat: trips[0].end.lat
+            lat: trips[0].start.lat
         };
 
         markerRef.current = new mapboxgl.Marker(markerContentRef.current)
