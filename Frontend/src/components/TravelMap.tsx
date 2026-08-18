@@ -199,7 +199,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             })
             .to(plane.current, {
                 transform: "scale(0)"
-            }, "-=1")
+            }, "-=0.5")
             ;
         }
 
