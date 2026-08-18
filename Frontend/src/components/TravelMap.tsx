@@ -191,7 +191,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             <div id="map-container" ref={mapContainerRef} className="w-full h-full">
             </div>
             {
-                createPortal(<div className="bg-blue-500 w-[50px] h-[50px] rounded-[50%]"></div>, markerContentRef.current)
+                createPortal(<div className="bg-blue-500 w-[30px] h-[30px] rounded-[50%]"></div>, markerContentRef.current)
             }
         </>
     );
