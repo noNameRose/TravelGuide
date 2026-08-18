@@ -108,9 +108,12 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             lat: trips[0].start.lat
         };
 
-        markerRef.current = new mapboxgl.Marker(markerContentRef.current)
-                            .setLngLat([camera.lng, camera.lat])
-                            .addTo(mapRef.current);
+        markerRef.current = new mapboxgl.Marker(markerContentRef.current, {
+            rotation: 0,
+            rotationAlignment: "map"
+        })
+        .setLngLat([camera.lng, camera.lat])
+        .addTo(mapRef.current);
             
         for (let i = 0; i < tripNum; i++) {
             const trip = trips[i];
@@ -148,6 +151,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 onUpdate: () => {
                     let remaining = totalLength * progress.t;
                     let lastCoord: [number, number] | null = null;
+                    let coords: [number, number][] = [];
                     animatedLine.geometry.coordinates = segments.map((seg, idx) => {
                         const segLen = segmentLengths[idx];
                         const drawn = Math.max(0, Math.min(remaining, segLen));
@@ -155,6 +159,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                         if (drawn <= 0)
                             return [];
                         const sliceCoords = turf.lineSliceAlong(seg, 0, drawn).geometry.coordinates as [number, number][];
+                        coords = sliceCoords;
                         lastCoord = sliceCoords[sliceCoords.length - 1];
                         return sliceCoords;
                     });
@@ -165,7 +170,16 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                         mapRef.current?.jumpTo({
                             center: lastCoord,
                         });
-                        markerRef.current?.setLngLat(lastCoord);
+                    }
+
+                    if (coords.length >= 2) {
+                        const bearingAngle = turf.bearing(
+                            turf.point(coords[coords.length - 2]),
+                            turf.point(coords[coords.length - 1])
+                        );
+                        if (lastCoord) {
+                            markerRef.current?.setLngLat(lastCoord).setRotation(bearingAngle);
+                        }
                     }
                 }
             });
