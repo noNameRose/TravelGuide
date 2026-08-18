@@ -69,6 +69,11 @@ const TravelDiaryPage = () => {
             }}
         >
             <div className="flex">
+                <div className="w-[70vw] h-screen">
+                    <TravelMap
+                        spotList={spotList}
+                    />
+                </div>
                 <div className="w-[30vw] h-screen flex flex-col gap-4 overflow-scroll">
                     <DiaryList
                         spotList={spotList}
@@ -108,11 +113,6 @@ const TravelDiaryPage = () => {
                             <button className="bg-amber-300 p-2 cursor-pointer"  onClick={() => setIsPlay(true)}>Play</button>
                         </div>
                     </div>
-                <div className="w-[70vw] h-screen">
-                    <TravelMap
-                        spotList={spotList}
-                    />
-                </div>
             </div>
          </IsPlayContext>
     );
