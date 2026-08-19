@@ -30,7 +30,9 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         mapRef.current = new mapboxgl.Map({
             accessToken: import.meta.env.VITE_MAPBOX_API,
             container: mapContainerRef.current as HTMLDivElement,
-            zoom: INITIAL_ZOOM
+            zoom: INITIAL_ZOOM,
+            projection: "globe",
+            style: import.meta.env.VITE_MAP_STYLE
         });
 
         mapRef.current.on("load", () => {
@@ -117,6 +119,23 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         .setLngLat([camera.lng, camera.lat])
         .addTo(mapRef.current);
 
+        const currentCamera = {
+            zoom: mapRef.current.getZoom(), 
+            lng: mapRef.current.getCenter().lng,
+            lat: mapRef.current.getCenter().lat,
+        };
+
+        tl.current.to(currentCamera, {
+            zoom: mapRef.current.getZoom(),
+            lng: trips[0].start.lng,
+            lat: trips[0].start.lat,
+            duration: 2,
+            onUpdate: () => {
+                mapRef.current?.jumpTo({
+                    center: [currentCamera.lng, currentCamera.lat]}
+                )
+            }
+        });
 
     
         for (let i = 0; i < tripNum; i++) {
