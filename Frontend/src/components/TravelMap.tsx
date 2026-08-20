@@ -18,8 +18,9 @@ export type Trip = {
 type RouteResBody = {
     routes: {
         geometry: {
-            coordinates: [number, number][]
-        }
+            coordinates: [number, number][],
+        },
+        distance: number
     }[]
 };
 
@@ -32,6 +33,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const markerContentRef = useRef(document.createElement("div"));
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const isPlayContext = useContext(IsPlayContext);
+    const routeMap = useRef<Map<string, {distance: number, route: [number, number][]}>>(new Map<string, {distance: number, route: [number, number][]}>());
     const tl = useRef<GSAPTimeline | null>(null);
     
     useEffect(() => {
@@ -94,6 +96,10 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                         fetch(import.meta.env.VITE_DIRECTION_API + `driving/${startLng},${startLat};${endLng},${endLat}?annotations=maxspeed&overview=full&geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_API}`)
                         .then(response => response.json())
                         .then((body: RouteResBody)=> {
+                            routeMap.current.set(`driving-${i}`, {
+                                distance: body.routes[0].distance,
+                                route: body.routes[0].geometry.coordinates
+                            });
                             mapRef.current?.addSource(`driving-${i}`, {
                                 type: "geojson",
                                 "data": {
@@ -151,11 +157,11 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             if (mapRef.current.getSource(`flight-arc-${i}`)) {
                 mapRef.current.removeSource(`flight-arc-${i}`);
             }
-            if (mapRef.current.getSource(`driving-${i}`)) {
-                mapRef.current.removeSource(`driving-${i}`);
-            }
             if (mapRef.current.getLayer(`driving-${i}`)) {
                 mapRef.current.removeLayer(`driving-${i}`);
+            }
+            if (mapRef.current.getSource(`driving-${i}`)) {
+                mapRef.current.removeSource(`driving-${i}`);
             }
         }
         const camera = {
@@ -296,6 +302,45 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                     layout: { "line-cap": "round", "line-join": "round" },
                     paint: { "line-color": "#3887be", "line-width": 5 }
                 });
+
+                const totalLength = (routeMap.current.get(`driving-${i}`)?.distance as number)/1000;
+                const routes = routeMap.current.get(`driving-${i}`)?.route;
+                const velocity = 500;
+                const duration = (totalLength as number)/velocity;
+                const progress = { t: 0 };
+
+                tl.current
+                .to(plane.current, {
+                    transform: "scale(1)"
+                })
+                .to(progress, {
+                    t: 1,
+                    duration: duration,
+                    onUpdate: () => {
+                        animatedLine.geometry.coordinates = (routes as [number, number][]).slice(0, progress.t * (routes?.length as number) + 1) ;
+                        const source = mapRef.current?.getSource(`driving-${i}`) as mapboxgl.GeoJSONSource;
+                        source?.setData(animatedLine);
+
+                        // if (lastCoord) {
+                        //     mapRef.current?.jumpTo({
+                        //         center: lastCoord,
+                        //     });
+                        // }
+
+                        // if (coords.length >= 2) {
+                        //     const bearingAngle = turf.bearing(
+                        //         turf.point(coords[coords.length - 2]),
+                        //         turf.point(coords[coords.length - 1])
+                        //     );
+                        //     if (lastCoord) {
+                        //         markerRef.current?.setLngLat(lastCoord).setRotation(bearingAngle);
+                        //     }
+                        // }
+                    }
+                })
+                // .to(plane.current, {
+                //     transform: "scale(0)"
+                // }, "-=0.5");
             }
         }
 
