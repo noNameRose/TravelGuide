@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import TravelMap from "../components/TravelMap";
-import { Spot } from "../features/SpotRender/Spot";
+import { Spot, type Transportation } from "../features/SpotRender/Spot";
 import { SpotList } from "../features/SpotRender/SpotList";
 import DiaryList from "../components/DiaryList";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
@@ -113,6 +113,7 @@ const TravelDiaryPage = () => {
                                             const newList = spotList.clone();
                                             newList.addSpot(Spot.builder()
                                                                 .name(query)
+                                                                .getHereBy(transQuery as Transportation)
                                                                 .location({
                                                                     lng: lng,
                                                                     lat: lat,
