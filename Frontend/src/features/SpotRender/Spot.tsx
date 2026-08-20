@@ -3,15 +3,19 @@ export type coordinate = {
     lat: number
 };
 
+type Transportation = "flight" | "driving" | "cycling" | "walking";
+
 export class Spot {
     public name: string;
     public location: coordinate;
+    public getHereBy: Transportation | null;
     public prev: Spot | null;
     public next: Spot | null;
 
-    constructor(name: string, location: coordinate, prev: Spot | null, next: Spot | null) {
+    constructor(name: string, location: coordinate, getHereBy: Transportation | null, prev: Spot | null, next: Spot | null) {
         this.name = name;
         this.location = location;
+        this.getHereBy = getHereBy;
         this.prev = prev;
         this.next = next;
     }
@@ -27,6 +31,7 @@ export class Spot {
                         lng: this.location.lng,
                         lat: this.location.lat
                     })
+                    .getHereBy(this.getHereBy)
                     .prev(null)
                     .next(null)
                     .build();
@@ -37,6 +42,7 @@ export class Spot {
         private _location: coordinate = {lng: 0, lat: 0};
         private _prev: Spot | null = null;
         private _next: Spot | null = null;
+        private _getHereBy: Transportation | null = null;
 
         constructor() {
             return this;
@@ -52,6 +58,11 @@ export class Spot {
             return this;
         }
 
+        public getHereBy(transportation: Transportation | null) {
+            this._getHereBy = transportation;
+            return this;
+        }
+
         public prev(prev: Spot | null) {
             this._prev = prev;
             return this;
@@ -63,7 +74,7 @@ export class Spot {
         }
 
         public build() {
-            return new Spot(this._name, this._location, this._prev, this._next);
+            return new Spot(this._name, this._location, this._getHereBy, this._prev, this._next);
         }
         
 
