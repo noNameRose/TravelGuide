@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import TravelMap from "../components/TravelMap";
 import { Spot, type Transportation } from "../features/SpotRender/Spot";
 import { SpotList } from "../features/SpotRender/SpotList";
@@ -62,16 +62,20 @@ const TravelDiaryPage = () => {
     const [transQuery, setTransQuery] = useState<string>("");
     const [isPlay, setIsPlay] = useState<boolean>(false);
 
+    const contextValue = useMemo(() => {
+        return {
+            isPlay: isPlay,
+            handlePlayChange: setIsPlay
+        }
+    }, [isPlay]);
+
     
     const validTransportation = ["flight", "driving", "cycling", "walking"];
     const isInputValid = (validTransportation.includes(transQuery)) && (query !== "");
     
     return (
         <IsPlayContext
-            value={{
-                isPlay: isPlay,
-                handlePlayChange: setIsPlay
-            }}
+            value={contextValue}
         >
             <div className="flex">
                 <div className="w-[70vw] h-screen">
