@@ -51,7 +51,7 @@ export class SpotList {
                 trips.push({
                     start: current.location,
                     end: current.next.location,
-                    transportation: current.getHereBy
+                    transportation: current.next.getHereBy
                 })
             }
             current = current.next;
