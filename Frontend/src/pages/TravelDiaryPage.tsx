@@ -59,8 +59,13 @@ const TravelDiaryPage = () => {
     const [spotList, setSpotList] = useState<SpotList>(INITIAL_LIST);
     const [showInput, setShowInput] = useState<boolean>(false);
     const [query, setQuery] = useState<string>("");
+    const [transQuery, setTransQuery] = useState<string>("");
     const [isPlay, setIsPlay] = useState<boolean>(false);
 
+    
+    const validTransportation = ["flight", "driving", "cycling", "walking"];
+    const isInputValid = (validTransportation.includes(transQuery)) && (query !== "");
+    
     return (
         <IsPlayContext
             value={{
@@ -87,8 +92,20 @@ const TravelDiaryPage = () => {
                                             value={query}
                                             onChange={e => setQuery(e.target.value)}
                                     />
+                                    <input
+                                            className="border-2 p-2"
+                                            placeholder="Get here by"
+                                            value={transQuery}
+                                            onChange={e => setTransQuery(e.target.value)}
+                                    />
                                     <button 
                                         className="bg-green-400 p-2"
+                                        disabled={!isInputValid}
+                                        style={
+                                            {
+                                                opacity: !isInputValid ? 0.5 : 1
+                                            }
+                                        }
                                         onClick={async () => {
                                             const geoCodeBody = (await searchCoordinate(query)) as GeoCodingResBody;
                                             const lng = geoCodeBody.results[0].geometry.location.lng;
