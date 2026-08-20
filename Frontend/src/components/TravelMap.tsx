@@ -195,85 +195,108 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             const trip = trips[i];
             const origin = turf.point([trip.start.lng, trip.start.lat]);
             const destination = turf.point([trip.end.lng, trip.end.lat]);
+            const transportation = trip.transportation;
             tl.current.to({}, {
                 onUpdate: () => {
                     const bearing = turf.bearing(origin, destination);
                     markerRef.current?.setRotation(bearing);
                 }
-            })
-            const arcLine = turf.greatCircle(origin, destination, { npoints: 1000 });
-            const segments: GeoJSON.Feature<GeoJSON.LineString>[] =
-                arcLine.geometry.type === "MultiLineString"
-                    ? arcLine.geometry.coordinates.map((coords) => turf.lineString(coords))
-                    : [turf.lineString(arcLine.geometry.coordinates as [number, number][])];
-
-            const segmentLengths = segments.map((seg) => turf.length(seg));
-            const totalLength = segmentLengths.reduce((a, b) => a + b, 0);
-
-            const animatedLine: GeoJSON.Feature<GeoJSON.MultiLineString> = {
-                type: "Feature",
-                properties: {},
-                geometry: { type: "MultiLineString", coordinates: segments.map(() => []) }
-            };
-
-            mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, { type: "geojson", data: animatedLine });
-            mapRef.current?.addLayer({
-                id: `${LAYER_NAME}-${i}`,
-                type: "line",
-                source: `${SOURCE_NAME}-${i}`,
-                layout: { "line-cap": "round", "line-join": "round" },
-                paint: { "line-color": "#3887be", "line-width": 5 }
             });
-            const velocity = 1000;
-            const duration = totalLength/velocity;
-            const progress = { t: 0 };
 
-            tl.current
-            .to(plane.current, {
-                transform: "scale(1)"
-            })
-            .to(progress, {
-                t: 1,
-                duration: duration,
-                onUpdate: () => {
-                    let remaining = totalLength * progress.t;
-                    let lastCoord: [number, number] | null = null;
-                    let coords: [number, number][] = [];
-                    animatedLine.geometry.coordinates = segments.map((seg, idx) => {
-                        const segLen = segmentLengths[idx];
-                        const drawn = Math.max(0, Math.min(remaining, segLen));
-                        remaining -= segLen;
-                        if (drawn <= 0)
-                            return [];
-                        const sliceCoords = turf.lineSliceAlong(seg, 0, drawn).geometry.coordinates as [number, number][];
-                        coords = sliceCoords;
-                        lastCoord = sliceCoords[sliceCoords.length - 1];
-                        return sliceCoords;
-                    });
-                    const source = mapRef.current?.getSource(`${SOURCE_NAME}-${i}`) as mapboxgl.GeoJSONSource;
-                    source?.setData(animatedLine);
+            if (transportation === "flight") {
+                const arcLine = turf.greatCircle(origin, destination, { npoints: 1000 });
+                const segments: GeoJSON.Feature<GeoJSON.LineString>[] =
+                    arcLine.geometry.type === "MultiLineString"
+                        ? arcLine.geometry.coordinates.map((coords) => turf.lineString(coords))
+                        : [turf.lineString(arcLine.geometry.coordinates as [number, number][])];
 
-                    if (lastCoord) {
-                        mapRef.current?.jumpTo({
-                            center: lastCoord,
+                const segmentLengths = segments.map((seg) => turf.length(seg));
+                const totalLength = segmentLengths.reduce((a, b) => a + b, 0);
+
+                const animatedLine: GeoJSON.Feature<GeoJSON.MultiLineString> = {
+                    type: "Feature",
+                    properties: {},
+                    geometry: { type: "MultiLineString", coordinates: segments.map(() => []) }
+                };
+
+                mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, { type: "geojson", data: animatedLine });
+                mapRef.current?.addLayer({
+                    id: `${LAYER_NAME}-${i}`,
+                    type: "line",
+                    source: `${SOURCE_NAME}-${i}`,
+                    layout: { "line-cap": "round", "line-join": "round" },
+                    paint: { "line-color": "#3887be", "line-width": 5 }
+                });
+
+                const velocity = 1000;
+                const duration = totalLength/velocity;
+                const progress = { t: 0 };
+
+                tl.current
+                .to(plane.current, {
+                    transform: "scale(1)"
+                })
+                .to(progress, {
+                    t: 1,
+                    duration: duration,
+                    onUpdate: () => {
+                        let remaining = totalLength * progress.t;
+                        let lastCoord: [number, number] | null = null;
+                        let coords: [number, number][] = [];
+                        animatedLine.geometry.coordinates = segments.map((seg, idx) => {
+                            const segLen = segmentLengths[idx];
+                            const drawn = Math.max(0, Math.min(remaining, segLen));
+                            remaining -= segLen;
+                            if (drawn <= 0)
+                                return [];
+                            const sliceCoords = turf.lineSliceAlong(seg, 0, drawn).geometry.coordinates as [number, number][];
+                            coords = sliceCoords;
+                            lastCoord = sliceCoords[sliceCoords.length - 1];
+                            return sliceCoords;
                         });
-                    }
+                        const source = mapRef.current?.getSource(`${SOURCE_NAME}-${i}`) as mapboxgl.GeoJSONSource;
+                        source?.setData(animatedLine);
 
-                    if (coords.length >= 2) {
-                        const bearingAngle = turf.bearing(
-                            turf.point(coords[coords.length - 2]),
-                            turf.point(coords[coords.length - 1])
-                        );
                         if (lastCoord) {
-                            markerRef.current?.setLngLat(lastCoord).setRotation(bearingAngle);
+                            mapRef.current?.jumpTo({
+                                center: lastCoord,
+                            });
+                        }
+
+                        if (coords.length >= 2) {
+                            const bearingAngle = turf.bearing(
+                                turf.point(coords[coords.length - 2]),
+                                turf.point(coords[coords.length - 1])
+                            );
+                            if (lastCoord) {
+                                markerRef.current?.setLngLat(lastCoord).setRotation(bearingAngle);
+                            }
                         }
                     }
-                }
-            })
-            .to(plane.current, {
-                transform: "scale(0)"
-            }, "-=0.5")
-            ;
+                })
+                .to(plane.current, {
+                    transform: "scale(0)"
+                }, "-=0.5");
+            }
+            else if (transportation === "driving") {
+                const animatedLine: GeoJSON.Feature<GeoJSON.LineString> = {
+                    type: "Feature",
+                    properties: {},
+                    geometry: { 
+                        type: "LineString", 
+                        coordinates: []
+                    }
+                };
+
+                mapRef.current?.addSource(`driving-${i}`, { type: "geojson", data: animatedLine });
+                mapRef.current?.addLayer({
+                    id: `driving-${i}`,
+                    type: "line",
+                    source: `driving-${i}`,
+                    layout: { "line-cap": "round", "line-join": "round" },
+                    paint: { "line-color": "#3887be", "line-width": 5 }
+                });
+            }
         }
 
         tl.current.to({}, {
