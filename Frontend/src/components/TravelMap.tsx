@@ -321,32 +321,27 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                         animatedLine.geometry.coordinates = (routes as [number, number][]).slice(0, progress.t * (routes?.length as number) + 1) ;
                         const source = mapRef.current?.getSource(`driving-${i}`) as mapboxgl.GeoJSONSource;
                         source?.setData(animatedLine);
-
-                        if (animatedLine.geometry.coordinates.length > 0) {
+                        
+                        const currentCoordLen = animatedLine.geometry.coordinates.length;
+                        if (currentCoordLen > 0) {
                             mapRef.current?.jumpTo({
-                                center: animatedLine.geometry.coordinates[animatedLine.geometry.coordinates.length - 1] as [number, number]
+                                center: animatedLine.geometry.coordinates[currentCoordLen - 1] as [number, number]
                             });
                         }
-                        // if (lastCoord) {
-                        //     mapRef.current?.jumpTo({
-                        //         center: lastCoord,
-                        //     });
-                        // }
 
-                        // if (coords.length >= 2) {
-                        //     const bearingAngle = turf.bearing(
-                        //         turf.point(coords[coords.length - 2]),
-                        //         turf.point(coords[coords.length - 1])
-                        //     );
-                        //     if (lastCoord) {
-                        //         markerRef.current?.setLngLat(lastCoord).setRotation(bearingAngle);
-                        //     }
-                        // }
+                        if (currentCoordLen >= 2) {
+                            const bearingAngle = turf.bearing(
+                                turf.point(animatedLine.geometry.coordinates[currentCoordLen - 2]),
+                                turf.point(animatedLine.geometry.coordinates[currentCoordLen - 1])
+                            );
+                            markerRef.current?.setLngLat(animatedLine.geometry.coordinates[currentCoordLen - 1] as [number, number]).setRotation(bearingAngle);
+                            
+                        }
                     }
                 })
-                // .to(plane.current, {
-                //     transform: "scale(0)"
-                // }, "-=0.5");
+                .to(plane.current, {
+                    transform: "scale(0)"
+                }, "-=0.5");
             }
         }
 
