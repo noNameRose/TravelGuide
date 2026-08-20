@@ -254,12 +254,25 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 const velocity = 1000;
                 const duration = totalLength/velocity;
                 const progress = { t: 0 };
-
+                const currentZoom = mapRef.current?.getZoom() as number;
+                const zoomProgress = {t: 0};
                 tl.current
                 .to(plane.current, {
                     transform: "scale(1)"
                 })
-                .to(progress, {
+                if (currentZoom > 5) {
+                    tl.current.to(zoomProgress, {
+                        t: 1,
+                        onUpdate: () => {
+                            const remaining = zoomProgress.t;
+                            const newZoom = remaining * (5 - (currentZoom)) + (currentZoom);
+                            mapRef.current?.jumpTo({
+                                zoom: newZoom
+                            });
+                        }
+                    });
+                }
+                tl.current.to(progress, {
                     t: 1,
                     duration: duration,
                     onUpdate: () => {
@@ -282,7 +295,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
 
                         if (lastCoord) {
                             mapRef.current?.jumpTo({
-                                center: lastCoord,
+                                center: lastCoord
                             });
                         }
 
