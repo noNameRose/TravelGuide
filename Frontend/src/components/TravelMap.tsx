@@ -151,6 +151,12 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             if (mapRef.current.getSource(`flight-arc-${i}`)) {
                 mapRef.current.removeSource(`flight-arc-${i}`);
             }
+            if (mapRef.current.getSource(`driving-${i}`)) {
+                mapRef.current.removeSource(`driving-${i}`);
+            }
+            if (mapRef.current.getLayer(`driving-${i}`)) {
+                mapRef.current.removeLayer(`driving-${i}`);
+            }
         }
         const camera = {
             zoom: mapRef.current.getZoom(),
