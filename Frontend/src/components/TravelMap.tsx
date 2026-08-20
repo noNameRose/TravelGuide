@@ -316,12 +316,17 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 })
                 .to(progress, {
                     t: 1,
-                    duration: duration,
+                    duration: 15,
                     onUpdate: () => {
                         animatedLine.geometry.coordinates = (routes as [number, number][]).slice(0, progress.t * (routes?.length as number) + 1) ;
                         const source = mapRef.current?.getSource(`driving-${i}`) as mapboxgl.GeoJSONSource;
                         source?.setData(animatedLine);
 
+                        if (animatedLine.geometry.coordinates.length > 0) {
+                            mapRef.current?.jumpTo({
+                                center: animatedLine.geometry.coordinates[animatedLine.geometry.coordinates.length - 1] as [number, number]
+                            });
+                        }
                         // if (lastCoord) {
                         //     mapRef.current?.jumpTo({
                         //         center: lastCoord,
