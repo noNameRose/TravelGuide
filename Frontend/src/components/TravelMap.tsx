@@ -217,7 +217,12 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             tl.current.to({}, {
                 onUpdate: () => {
                     const bearing = turf.bearing(origin, destination);
-                    markerRef.current?.setRotation(bearing);
+                    if (transportation === "flight") {
+                        markerRef.current?.setLngLat([trip.start.lng, trip.start.lat]).setRotation(bearing);
+                    }
+                    else if (transportation === "driving") {
+                        carMakerRef.current?.setLngLat([trip.start.lng, trip.start.lat]).setRotation(bearing);
+                    }
                 }
             });
 
@@ -327,7 +332,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 })
                 .to(progress, {
                     t: 1,
-                    duration: 15,
+                    duration: 100,
                     onUpdate: () => {
                         animatedLine.geometry.coordinates = (routes as [number, number][]).slice(0, progress.t * (routes?.length as number) + 1) ;
                         const source = mapRef.current?.getSource(`driving-${i}`) as mapboxgl.GeoJSONSource;
