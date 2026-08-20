@@ -90,34 +90,36 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                     }
                 }
                 if (transportation && transportation === "driving") {
-                    fetch(import.meta.env.VITE_DIRECTION_API + `driving/${startLng},${startLat};${endLng},${endLat}?annotations=maxspeed&overview=full&geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_API}`)
-                    .then(response => response.json())
-                    .then((body: RouteResBody)=> {
-                        mapRef.current?.addSource(`driving-${i}`, {
-                            type: "geojson",
-                            "data": {
-                                type: "Feature",
-                                properties: {},
-                                geometry: {
-                                    type: "LineString",
-                                    coordinates: body.routes[0].geometry.coordinates
+                    if (!mapRef.current?.getSource(`driving-${i}`)) {
+                        fetch(import.meta.env.VITE_DIRECTION_API + `driving/${startLng},${startLat};${endLng},${endLat}?annotations=maxspeed&overview=full&geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_API}`)
+                        .then(response => response.json())
+                        .then((body: RouteResBody)=> {
+                            mapRef.current?.addSource(`driving-${i}`, {
+                                type: "geojson",
+                                "data": {
+                                    type: "Feature",
+                                    properties: {},
+                                    geometry: {
+                                        type: "LineString",
+                                        coordinates: body.routes[0].geometry.coordinates
+                                    }
                                 }
-                            }
-                        });
-                        mapRef.current?.addLayer({
-                            'id': `driving-${i}`,
-                            'type': 'line',
-                            'source': `driving-${i}`,
-                            'layout': {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            'paint': {
-                                'line-color': '#3887be',
-                                'line-width': 5,
-                            }
-                        });
-                    })
+                            });
+                            mapRef.current?.addLayer({
+                                'id': `driving-${i}`,
+                                'type': 'line',
+                                'source': `driving-${i}`,
+                                'layout': {
+                                    'line-cap': 'round',
+                                    'line-join': 'round'
+                                },
+                                'paint': {
+                                    'line-color': '#3887be',
+                                    'line-width': 5,
+                                }
+                            });
+                        })
+                    }
                 }
             }
         }
