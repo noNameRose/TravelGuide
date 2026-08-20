@@ -3,7 +3,7 @@ export type coordinate = {
     lat: number
 };
 
-type Transportation = "flight" | "driving" | "cycling" | "walking";
+export type Transportation = "flight" | "driving" | "cycling" | "walking";
 
 export class Spot {
     public name: string;
