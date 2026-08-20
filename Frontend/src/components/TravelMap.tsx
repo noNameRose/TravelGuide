@@ -13,7 +13,15 @@ const INITIAL_ZOOM = 10.12;
 export type Trip = {
     start: coordinate,
     end: coordinate
-}
+};
+
+type RouteResBody = {
+    routes: {
+        geometry: {
+            coordinates: [number, number][]
+        }
+    }[]
+};
 
 const TravelMap = ({spotList}: {spotList: SpotList}) => {
     const trips = spotList.getTrips();
@@ -52,27 +60,64 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         if (isPlayContext && !isPlayContext.isPlay) {
             for (let i = 0; i < trips.length; i++) {
                 const trip = trips[i];
-                const origin = turf.point([trip.start.lng, trip.start.lat]);
-                const destination = turf.point([trip.end.lng, trip.end.lat]);
-                const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
-                if (!mapRef.current?.getSource(`${SOURCE_NAME}-${i}`)) {
-                    mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, {
-                        type: "geojson",
-                        "data": arcLine
-                    });
-                    mapRef.current?.addLayer({
-                        'id': `${LAYER_NAME}-${i}`,
-                        'type': 'line',
-                        'source': `${SOURCE_NAME}-${i}`,
-                        'layout': {
-                            'line-cap': 'round',
-                            'line-join': 'round'
-                        },
-                        'paint': {
-                            'line-color': '#3887be',
-                            'line-width': 5,
-                        }
-                    });
+                const transportation = trip.transportation;
+                const startLng = trip.start.lng;
+                const startLat = trip.start.lat;
+                const endLng = trip.end.lng;
+                const endLat = trip.end.lat;
+                if (transportation && transportation === "flight") {
+                    const origin = turf.point([startLng, startLat]);
+                    const destination = turf.point([endLng, endLat]);
+                    const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
+                    if (!mapRef.current?.getSource(`${SOURCE_NAME}-${i}`)) {
+                        mapRef.current?.addSource(`${SOURCE_NAME}-${i}`, {
+                            type: "geojson",
+                            "data": arcLine
+                        });
+                        mapRef.current?.addLayer({
+                            'id': `${LAYER_NAME}-${i}`,
+                            'type': 'line',
+                            'source': `${SOURCE_NAME}-${i}`,
+                            'layout': {
+                                'line-cap': 'round',
+                                'line-join': 'round'
+                            },
+                            'paint': {
+                                'line-color': '#3887be',
+                                'line-width': 5,
+                            }
+                        });
+                    }
+                }
+                if (transportation && transportation === "driving") {
+                    fetch(import.meta.env.VITE_DIRECTION_API + `driving/${startLng},${startLat};${endLng},${endLat}?annotations=maxspeed&overview=full&geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_API}`)
+                    .then(response => response.json())
+                    .then((body: RouteResBody)=> {
+                        mapRef.current?.addSource(`driving-${i}`, {
+                            type: "geojson",
+                            "data": {
+                                type: "Feature",
+                                properties: {},
+                                geometry: {
+                                    type: "LineString",
+                                    coordinates: body.routes[0].geometry.coordinates
+                                }
+                            }
+                        });
+                        mapRef.current?.addLayer({
+                            'id': `driving-${i}`,
+                            'type': 'line',
+                            'source': `driving-${i}`,
+                            'layout': {
+                                'line-cap': 'round',
+                                'line-join': 'round'
+                            },
+                            'paint': {
+                                'line-color': '#3887be',
+                                'line-width': 5,
+                            }
+                        });
+                    })
                 }
             }
         }
