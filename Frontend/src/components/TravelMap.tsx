@@ -197,14 +197,15 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         };
 
         tl.current.to(currentCamera, {
-            zoom: mapRef.current.getZoom(),
+            zoom: trips[0].transportation === "flight" ? 5 : 10,
             lng: trips[0].start.lng,
             lat: trips[0].start.lat,
             duration: 2,
             onUpdate: () => {
                 mapRef.current?.jumpTo({
-                    center: [currentCamera.lng, currentCamera.lat]}
-                )
+                    center: [currentCamera.lng, currentCamera.lat],
+                    zoom: currentCamera.zoom
+                });
             }
         });
 
@@ -254,18 +255,17 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 const velocity = 1000;
                 const duration = totalLength/velocity;
                 const progress = { t: 0 };
-                const currentZoom = mapRef.current?.getZoom() as number;
                 const zoomProgress = {t: 0};
                 tl.current
                 .to(plane.current, {
                     transform: "scale(1)"
                 })
-                if (currentZoom > 5) {
+                if (i > 0 && trips[i - 1].transportation !== "flight") {
                     tl.current.to(zoomProgress, {
                         t: 1,
                         onUpdate: () => {
                             const remaining = zoomProgress.t;
-                            const newZoom = remaining * (5 - (currentZoom)) + (currentZoom);
+                            const newZoom = remaining * -5 + 10;
                             mapRef.current?.jumpTo({
                                 zoom: newZoom
                             });
@@ -338,14 +338,27 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 const velocity = 500;
                 const duration = (totalLength as number)/velocity;
                 const progress = { t: 0 };
-
+                const zoomProgress = { t: 0 };
                 tl.current
                 .to(car.current, {
                     transform: "scale(1)"
-                })
-                .to(progress, {
+                });
+                if (i > 0 && trips[i - 1].transportation !== "driving") {
+                    tl.current.to(zoomProgress, {
+                        t: 1,
+                        duration: 2,
+                        onUpdate: () => {
+                            const remaining = zoomProgress.t;
+                            const newZoom = remaining * 5 + 5;
+                            mapRef.current?.jumpTo({
+                                zoom: newZoom
+                            });
+                        }
+                    });
+                }
+                tl.current.to(progress, {
                     t: 1,
-                    duration: totalLength/20,
+                    duration: totalLength/15,
                     onUpdate: () => {
                         animatedLine.geometry.coordinates = (routes as [number, number][]).slice(0, progress.t * (routes?.length as number) + 1) ;
                         const source = mapRef.current?.getSource(`driving-${i}`) as mapboxgl.GeoJSONSource;
