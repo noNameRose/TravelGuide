@@ -49,6 +49,7 @@ public class GoogleAuthController {
         .queryParam("response_type", "code")
         .queryParam("scope", "openid email profile")
         .queryParam("state", state)
+        .encode()
         .build()
         .toUriString();
 
