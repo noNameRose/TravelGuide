@@ -17,7 +17,7 @@ public class SecurityConfiguration {
 
     http.csrf(c -> c.disable())
         .authorizeHttpRequests(
-            c -> c.requestMatchers("/*", "/auth/google/login").permitAll()
+            c -> c.requestMatchers("/*", "/auth/google/login", "/auth/google/callback").permitAll()
         );
 
     return http.build();
