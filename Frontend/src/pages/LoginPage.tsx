@@ -1,4 +1,19 @@
+import { useEffect } from "react";
+
 const LoginPage = () => {
+
+    useEffect(() => {
+        function handleMessage(event: MessageEvent) {
+            console.log(event.data);
+        }
+
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        }
+    }, []);
+
     const handleClick = () => {
         window.open(import.meta.env.VITE_GOOGLE_LOGIN_URL);
     };
