@@ -1,7 +1,13 @@
 const LoginPage = () => {
+    const handleClick = () => {
+        window.open("/")
+    };
     return (
         <div className="w-screen min-h-screen flex items-center justify-center">
-            <button className="flex text-2xl font-medium items-center justify-center gap-1 border-2 py-[.5em] px-[2em] rounded-[.5em] cursor-pointer">
+            <button 
+                className="flex text-2xl font-medium items-center justify-center gap-1 border-2 py-[.5em] px-[2em] rounded-[.5em] cursor-pointer"
+                onClick={handleClick}
+            >
                 <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     viewBox="0 0 24 24" 
