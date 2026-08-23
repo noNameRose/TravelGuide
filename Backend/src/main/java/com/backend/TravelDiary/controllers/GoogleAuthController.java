@@ -79,7 +79,6 @@ public class GoogleAuthController {
 
   @GetMapping("/auth/google/callback")
   public String callback(
-      Model page,
       @RequestParam String code,
       @RequestParam String state,
       @CookieValue("state") String expectedState
