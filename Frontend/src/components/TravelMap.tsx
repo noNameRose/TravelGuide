@@ -335,6 +335,10 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
 
                 const totalLength = (routeMap.current.get(`driving-${i}`)?.distance as number)/1000;
                 const routes = routeMap.current.get(`driving-${i}`)?.route;
+
+                const routLine = turf.lineString(routes?.map(route => [route[0], route[1]]) as [number, number][]);
+
+
                 const velocity = 500;
                 const duration = (totalLength as number)/velocity;
                 const progress = { t: 0 };
@@ -358,9 +362,16 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 }
                 tl.current.to(progress, {
                     t: 1,
-                    duration: totalLength/15,
+                    duration: totalLength/velocity,
                     onUpdate: () => {
-                        animatedLine.geometry.coordinates = (routes as [number, number][]).slice(0, progress.t * (routes?.length as number) + 1) ;
+
+                        const drawn = Math.max(0, Math.min(totalLength, totalLength * progress.t));
+                        const sliced = drawn > 0 ? 
+                                (turf.lineSliceAlong(routLine, 0, drawn)).geometry.coordinates as [number, number][] : 
+                                []
+                        ;
+
+                        animatedLine.geometry.coordinates = sliced;
                         const source = mapRef.current?.getSource(`driving-${i}`) as mapboxgl.GeoJSONSource;
                         source?.setData(animatedLine);
                         
