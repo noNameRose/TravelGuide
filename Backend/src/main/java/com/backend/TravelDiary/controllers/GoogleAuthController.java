@@ -1,16 +1,20 @@
 package com.backend.TravelDiary.controllers;
 
 
+import com.backend.TravelDiary.dto.GoogleAccessTokenRequest;
+import com.backend.TravelDiary.dto.GoogleAccessTokenResponse;
+import com.backend.TravelDiary.dto.GoogleUserProfile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.rmi.server.UID;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -23,6 +27,19 @@ public class GoogleAuthController {
   private String clientSecret;
   @Value("${google.redirect-url}")
   private String redirectUri;
+  @Value("${google.user-info-url}")
+  private String userInfoUrl;
+  @Value("${google.access-token-url}")
+  private String accessTokenUrl;
+  @Value("${google.auth-server-url}")
+  private String googleAuthServerUrl;
+
+  @Autowired
+  private final RestTemplate rest;
+
+  public GoogleAuthController(RestTemplate rest) {
+    this.rest = rest;
+  }
 
   @GetMapping("/")
   public String test() {
@@ -43,7 +60,7 @@ public class GoogleAuthController {
         .build();
 
     String url = UriComponentsBuilder
-        .fromUriString("https://accounts.google.com/o/oauth2/v2/auth")
+        .fromUriString(this.googleAuthServerUrl)
         .queryParam("client_id", clientId)
         .queryParam("redirect_uri", redirectUri)
         .queryParam("response_type", "code")
@@ -56,6 +73,57 @@ public class GoogleAuthController {
     return ResponseEntity
         .status(HttpStatus.FOUND)
         .location(URI.create(url))
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
         .build();
+  }
+
+  @GetMapping("/auth/google/callback")
+  public ResponseEntity<Void> callback(
+      @RequestParam String code,
+      @RequestParam String state,
+      @CookieValue("state") String expectedState
+  ) {
+    if (!state.equals(expectedState)) {
+      return null;
+    }
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+    HttpEntity<String> httpEntity = new HttpEntity<>(
+        GoogleAccessTokenRequest.builder()
+            .code(code)
+            .client_id(this.clientId)
+            .client_secret(this.clientSecret)
+            .redirect_url(this.redirectUri)
+            .grant_type("authorization_code")
+            .build()
+            .toString()
+    , headers);
+
+    ResponseEntity<GoogleAccessTokenResponse> response =
+        rest.exchange(
+            this.accessTokenUrl,
+            HttpMethod.POST,
+            httpEntity,
+            GoogleAccessTokenResponse.class
+        );
+
+    String accessToken = response.getBody().getAccess_token();
+
+    HttpHeaders getHeader = new HttpHeaders();
+    getHeader.add("Authorization", "Bearer " + accessToken);
+
+    HttpEntity entity = new HttpEntity(null, getHeader);
+
+    ResponseEntity<GoogleUserProfile> profileResponse =
+        rest.exchange(
+            this.userInfoUrl,
+            HttpMethod.GET,
+            entity,
+            GoogleUserProfile.class
+        );
+    System.out.println(profileResponse.getBody().toString());
+    return null;
   }
 }
