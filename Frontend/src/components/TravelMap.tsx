@@ -10,6 +10,9 @@ import { createPortal } from "react-dom";
 
 const INITIAL_ZOOM = 10.12;
 
+const DRIVING_ROUTE_ZOOM = 5;
+const FLYING_ROUTE_ZOOM = 3;
+
 export type Trip = {
     start: coordinate,
     end: coordinate
@@ -197,7 +200,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         };
 
         tl.current.to(currentCamera, {
-            zoom: trips[0].transportation === "flight" ? 5 : 10,
+            zoom: trips[0].transportation === "flight" ? FLYING_ROUTE_ZOOM : DRIVING_ROUTE_ZOOM,
             lng: trips[0].start.lng,
             lat: trips[0].start.lat,
             duration: 2,
@@ -265,7 +268,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                         t: 1,
                         onUpdate: () => {
                             const remaining = zoomProgress.t;
-                            const newZoom = remaining * -5 + 10;
+                            const newZoom = remaining * -(DRIVING_ROUTE_ZOOM - FLYING_ROUTE_ZOOM) + DRIVING_ROUTE_ZOOM;
                             mapRef.current?.jumpTo({
                                 zoom: newZoom
                             });
@@ -353,7 +356,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                         duration: 2,
                         onUpdate: () => {
                             const remaining = zoomProgress.t;
-                            const newZoom = remaining * 5 + 5;
+                            const newZoom = remaining * (DRIVING_ROUTE_ZOOM - FLYING_ROUTE_ZOOM)  + FLYING_ROUTE_ZOOM;
                             mapRef.current?.jumpTo({
                                 zoom: newZoom
                             });
