@@ -1,10 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const LoginPage = () => {
+    const popupWindow = useRef<Window | null>(null);
 
     useEffect(() => {
         function handleMessage(event: MessageEvent) {
-            console.log(event.data);
+            if (popupWindow.current && event.origin === import.meta.env.VITE_SERVER_ORIGIN) {
+                console.log(event.data);
+                popupWindow.current.close();
+            }
         }
 
         window.addEventListener("message", handleMessage);
@@ -15,7 +19,7 @@ const LoginPage = () => {
     }, []);
 
     const handleClick = () => {
-        window.open(import.meta.env.VITE_GOOGLE_LOGIN_URL);
+        popupWindow.current =  window.open(import.meta.env.VITE_GOOGLE_LOGIN_URL);
     };
     return (
         <div className="w-screen min-h-screen flex items-center justify-center">
