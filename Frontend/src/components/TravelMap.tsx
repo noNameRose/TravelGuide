@@ -339,7 +339,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 const routLine = turf.lineString(routes?.map(route => [route[0], route[1]]) as [number, number][]);
 
 
-                const velocity = 500;
+                const velocity = 100;
                 const duration = (totalLength as number)/velocity;
                 const progress = { t: 0 };
                 const zoomProgress = { t: 0 };
@@ -362,7 +362,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 }
                 tl.current.to(progress, {
                     t: 1,
-                    duration: totalLength/velocity,
+                    duration: duration,
                     onUpdate: () => {
 
                         const drawn = Math.max(0, Math.min(totalLength, totalLength * progress.t));
