@@ -1,6 +1,6 @@
 const LoginPage = () => {
     const handleClick = () => {
-        window.open("/")
+        window.open(import.meta.env.VITE_GOOGLE_LOGIN_URL);
     };
     return (
         <div className="w-screen min-h-screen flex items-center justify-center">
