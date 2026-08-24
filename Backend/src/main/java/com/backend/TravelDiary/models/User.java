@@ -14,6 +14,7 @@ import java.util.List;
 
 
 @Data
+@Entity
 @Table(name = "users")
 @Getter
 @Setter
