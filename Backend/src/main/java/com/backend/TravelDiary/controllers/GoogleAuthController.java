@@ -4,6 +4,7 @@ package com.backend.TravelDiary.controllers;
 import com.backend.TravelDiary.dto.GoogleAccessTokenRequest;
 import com.backend.TravelDiary.dto.GoogleAccessTokenResponse;
 import com.backend.TravelDiary.dto.GoogleUserProfile;
+import com.backend.TravelDiary.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -35,9 +36,12 @@ public class GoogleAuthController {
 
   @Autowired
   private final RestTemplate rest;
+  @Autowired
+  private final UserService userService;
 
-  public GoogleAuthController(RestTemplate rest) {
+  public GoogleAuthController(RestTemplate rest, UserService userService) {
     this.rest = rest;
+    this.userService = userService;
   }
 
   @GetMapping("/")
@@ -123,7 +127,8 @@ public class GoogleAuthController {
             entity,
             GoogleUserProfile.class
         );
-    System.out.println(profileResponse.getBody().toString());
+    GoogleUserProfile profile = profileResponse.getBody();
+    userService.createUser(profile.getEmail(), profile.getName(), profile.getEmail_verified());
     return "index.html";
   }
 }
