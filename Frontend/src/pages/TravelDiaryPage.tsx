@@ -78,7 +78,7 @@ const TravelDiaryPage = () => {
             value={contextValue}
         >
             <div className="flex">
-                <div className="w-[70vw] h-screen">
+                <div className="w-[70vw] h-screen overflow-hidden p-[1em]">
                     <TravelMap
                         spotList={spotList}
                     />
