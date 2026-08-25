@@ -419,7 +419,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
 
     return (
         <>
-            <div id="map-container" ref={mapContainerRef} className="w-full h-full">
+            <div id="map-container" ref={mapContainerRef} className="w-full h-full rounded-[1em]">
             </div>
             {
                 createPortal(
