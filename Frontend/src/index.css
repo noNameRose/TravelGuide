@@ -5,5 +5,12 @@
 }
 
 body {
-    background-color: #F2F2F2;
+    background-color: #ECF7F9;
+}
+@theme {
+    --color-blue_50: #ECF7F9;
+    --color-blue_100: #D8EFF3;
+    --color-blue_200: #B2DFE6;
+    --color-blue_300: #8BCFDA;
+    --color-blue_400: #64BECE;
 }
