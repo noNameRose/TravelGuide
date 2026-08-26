@@ -1,71 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import Map from "../components/Map";
-import SearchTab, { type Place } from "../components/SearchTab";
-import PlaceList from "../components/PlaceList";
-import SearchRadiusContext from "../contexts/SearchRadiusContext";
-import searchPlaces from "../utils/searchPlaces";
-
-export type CenterType = [number, number];
-
-const INITIAL_CENTER = [
-    -74.0242,
-    40.6941
-];
-
-const INITIAL_SEARCH_RADIUS = 2;
-const MAX_SEARCH_RADIUS = 20;
-const MIN_SEARCH_RADIUS = 2;
-
 const LandingPage = () => {
-    const [center, setCenter] = useState<CenterType>(INITIAL_CENTER as CenterType);
-    const [searchRadius, setSearchRadius] = useState<number>(INITIAL_SEARCH_RADIUS);
-    const [location, setLocation] = useState<[number, number] | null>(null);
-    const [data, setData] = useState<Place[]>([]);
-
-    const timeoutId = useRef<number | null>(null);
-    const DEBOUNCE_TIME = 1000;
-
-    useEffect(() => {
-        if (!location) {
-            return;
-        }
-        if (timeoutId.current) {
-            clearTimeout(timeoutId.current);
-        }
-        
-        timeoutId.current = setTimeout(async () => {
-            const body = (await searchPlaces(location, searchRadius * 1000)) as {places: Place[]};
-            setData(body.places);
-        }, DEBOUNCE_TIME);
-
-    }, [searchRadius]);
-
     return (
-        <SearchRadiusContext
-            value={{
-                radius: searchRadius,
-                maxRadius: MAX_SEARCH_RADIUS,
-                handleRadiusChange: setSearchRadius,
-                minRadius: MIN_SEARCH_RADIUS
-            }}
-        >
-            <div className="flex">
-                <div className="w-[50vw] h-screen">
-                    <SearchTab 
-                        handleCenterChange={setCenter}
-                        handleData={setData}
-                        handleLocationChange={setLocation}
-                    />
-                    <PlaceList
-                        places={data}
-                    />
-                </div>
-                <Map 
-                    center={center} 
-                    places={data}
-                />
-            </div>
-        </SearchRadiusContext>
+        <>
+            Hello
+        </>
     );
 };
 

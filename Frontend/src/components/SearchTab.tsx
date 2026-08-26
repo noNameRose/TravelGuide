@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState} from "react";
-import type { CenterType } from "../pages/LandingPage";
+import type { CenterType } from "../pages/ExplorePage";
 import SearchRadiusContext from "../contexts/SearchRadiusContext";
 import searchPlaces from "../utils/searchPlaces";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
