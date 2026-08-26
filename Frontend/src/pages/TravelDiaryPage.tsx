@@ -78,11 +78,6 @@ const TravelDiaryPage = () => {
             value={contextValue}
         >
             <div className="flex">
-                <div className="w-[70vw] h-screen overflow-hidden p-[1em]">
-                    <TravelMap
-                        spotList={spotList}
-                    />
-                </div>
                 <div className="w-[30vw] h-screen flex flex-col gap-4 overflow-scroll">
                     <DiaryList
                         spotList={spotList}
@@ -134,7 +129,12 @@ const TravelDiaryPage = () => {
                             >{showInput ? "Close" : "Add"}</button>
                             <button className="bg-amber-300 p-2 cursor-pointer"  onClick={() => setIsPlay(true)}>Play</button>
                         </div>
-                    </div>
+                </div>
+                <div className="w-[70vw] h-screen overflow-hidden p-[1em]">
+                    <TravelMap
+                        spotList={spotList}
+                    />
+                </div>
             </div>
          </IsPlayContext>
     );
