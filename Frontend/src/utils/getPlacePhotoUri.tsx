@@ -6,8 +6,8 @@ type PhotoResponseBody = {
 
 type Photo = {
     name: string,
-    width: number, 
-    height: number
+    widthPx: number, 
+    heightPx: number
 };
 
 const getPlacePhotoUri = async (placeName: string) => {
@@ -21,7 +21,7 @@ const getPlacePhotoUri = async (placeName: string) => {
         }
     });
     const body = (await response.json()) as PhotoResponseBody;
-    return import.meta.env.VITE_PLACE_PICTURE_API_URL + body.photos[0].name + `/media?key=${import.meta.env.VITE_PLACE_API_KEY}&maxHeightPx=${body.photos[0].height}&maxWidthPx=${body.photos[0].width}`;
+    return import.meta.env.VITE_PLACE_PICTURE_API_URL + body.photos[0].name + `/media?key=${import.meta.env.VITE_PLACE_API_KEY}&maxHeightPx=${body.photos[0].heightPx}&maxWidthPx=${body.photos[0].widthPx}`;
 };
 
 export default getPlacePhotoUri;
