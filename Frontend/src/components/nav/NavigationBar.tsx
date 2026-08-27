@@ -1,3 +1,5 @@
+import NavIcon, { type IconName } from "./NavIcon";
+
 const navList = [
     {
         name: "profile",
@@ -16,7 +18,13 @@ const navList = [
 const NavigationBar = () => {
     return (
         <div className="w-[10vw] min-h-screen bg-blue_200">
-            
+            {navList.map((nav) => (
+                <NavIcon
+                    name={nav.name as IconName}
+                    path={nav.path}
+                    className="w-[4rem]"
+                />
+            ))}
         </div>
     );
 };
