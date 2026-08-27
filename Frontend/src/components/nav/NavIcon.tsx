@@ -1,3 +1,6 @@
+import gsap from "gsap";
+import { useEffect, useRef, useState } from "react";
+
 export type IconName = "profile" | "explore" | "diary";
 
 type NavIconType = {
@@ -9,6 +12,24 @@ type NavIconType = {
 const NavIcon = ({name, path, className}: NavIconType) => {
     let icon = null;
     const svgClass = "w-full h-full";
+    const iconWrapper = useRef<HTMLDivElement | null>(null);
+    const [isHover, setIsHover] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (isHover) {
+            gsap.to(iconWrapper.current, {
+                scale: 1.2,
+                ease: "power4.out"
+            });
+        }
+        else {
+            gsap.to(iconWrapper.current, {
+                scale: 1,
+                ease: "power4.out"
+            })
+        }
+    }, [isHover]);
+
     if (name === "profile") {
         icon = (
             <svg 
@@ -48,7 +69,12 @@ const NavIcon = ({name, path, className}: NavIconType) => {
         );
     }
     return (
-        <div className={className}>
+        <div 
+            className={className}
+            ref={iconWrapper}
+            onMouseOver={() => setIsHover(true)}
+            onMouseOut={() => setIsHover(false)}
+        >
             {icon}
         </div>
     );
