@@ -5,11 +5,20 @@ import SpotComponent from "./SpotComponent";
 const DiaryList = ({spotList}: {spotList: SpotList}) => {
     const spots = spotList.getSpotsList();
     return (
-        <div className="flex flex-col gap-4 items-center w-full">
+        <div className="flex flex-col items-center w-full">
             {spots.map(spot => (
-                <SpotComponent
-                    name={spot.name}
-                />
+                <>
+                    {spot.getHereBy && (
+                        <div className="w-[80%] h-[150px] relative">
+                            <div className="h-full w-[5%] bg-blue_200 absolute left-1/2 top-0 -translate-x-1/2">
+
+                            </div>
+                        </div>
+                    )}
+                    <SpotComponent
+                        name={spot.name}
+                    />
+                </>
             ))}
         </div>
     );
