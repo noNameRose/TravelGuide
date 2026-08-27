@@ -35,7 +35,8 @@ export class SpotList {
         while (current != null) {
             list.push({
                 name: current.name,
-                location: current.location
+                location: current.location,
+                getHereBy: current.getHereBy
             });
             current = current.next;
         }
