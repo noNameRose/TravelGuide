@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
+import NavigationController from './components/nav/NavigationController.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <StrictMode>
-      <App />
+      <NavigationController>
+        <App />
+      </NavigationController>
     </StrictMode>,
   </BrowserRouter>
 )
