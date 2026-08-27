@@ -4,7 +4,8 @@ type GeoCodingResult = {
             lat: number,
             lng: number
         }
-    }
+    },
+    place_id: string
 };
 
 export type GeoCodingResBody = {
