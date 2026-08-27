@@ -14,7 +14,7 @@ const SpotComponent = ({name}: {name: string}) => {
 
     return (
         <div
-            className="rounded-2xl w-[270px] h-[230px]"
+            className="rounded-2xl w-[80%] h-[180px]"
             style={
                 {
                     backgroundImage: `url(${placeURL})`,

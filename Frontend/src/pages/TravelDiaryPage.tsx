@@ -9,44 +9,48 @@ import IsPlayContext from "../contexts/IsPlayContext";
 
 const INITIAL_LIST = new SpotList();
 
-// INITIAL_LIST.addSpot(Spot.builder()
-//                         .name("Minneapolis")
-//                         .location({
-//                             lng: -93.26384,
-//                             lat: 44.97997
-//                         })
-//                         .build()
-// );
-// INITIAL_LIST.addSpot(Spot.builder()
-//                         .name("Chicago")
-//                         .location({
-//                             lng: -87.6298,
-//                             lat: 41.8781
-//                         })
-//                         .build()
-// );
-// INITIAL_LIST.addSpot(Spot.builder()
-//                         .name("Las Vegas")
-//                         .location({
-//                             lng: -115.137,
-//                             lat: 36.175
-//                         })
-//                         .build()
-// );
-// INITIAL_LIST.addSpot(Spot.builder()
-//                         .name("Incline Village")
-//                         .location({
-//                             lng: -119.9730,
-//                             lat: 39.2513
-//                         })
-//                         .build()
-// );
+INITIAL_LIST.addSpot(Spot.builder()
+                        .name("Minneapolis")
+                        .location({
+                            lng: -93.26384,
+                            lat: 44.97997
+                        })
+                        .build()
+);
+INITIAL_LIST.addSpot(Spot.builder()
+                        .name("Chicago")
+                        .location({
+                            lng: -87.6298,
+                            lat: 41.8781
+                        })
+                        .getHereBy("flight")
+                        .build()
+);
+INITIAL_LIST.addSpot(Spot.builder()
+                        .name("Las Vegas")
+                        .location({
+                            lng: -115.137,
+                            lat: 36.175
+                        })
+                        .getHereBy("flight")
+                        .build()
+);
+INITIAL_LIST.addSpot(Spot.builder()
+                        .name("Incline Village")
+                        .location({
+                            lng: -119.9730,
+                            lat: 39.2513
+                        })
+                        .getHereBy("flight")
+                        .build()
+);
 INITIAL_LIST.addSpot(Spot.builder()
                         .name("Hanoi")
                         .location({
                             lng: 105.8048,
                             lat: 21.0285
                         })
+                        .getHereBy("flight")
                         .build()
 );
 
@@ -77,7 +81,7 @@ const TravelDiaryPage = () => {
         <IsPlayContext
             value={contextValue}
         >
-            <div className="flex">
+            <div className="flex py-[1em] items-center justify-center pr-[1em]">
                 <div className="w-[22vw] h-screen flex flex-col gap-4 overflow-scroll">
                     <DiaryList
                         spotList={spotList}
@@ -130,7 +134,7 @@ const TravelDiaryPage = () => {
                             <button className="bg-amber-300 p-2 cursor-pointer"  onClick={() => setIsPlay(true)}>Play</button>
                         </div>
                 </div>
-                <div className="w-[70vw] h-screen overflow-hidden p-[1em]">
+                <div className="w-[70vw] h-screen">
                     <TravelMap
                         spotList={spotList}
                     />
