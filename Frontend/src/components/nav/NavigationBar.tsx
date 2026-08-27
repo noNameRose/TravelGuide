@@ -17,14 +17,16 @@ const navList = [
 
 const NavigationBar = () => {
     return (
-        <div className="w-[10vw] min-h-screen bg-blue_200">
-            {navList.map((nav) => (
-                <NavIcon
-                    name={nav.name as IconName}
-                    path={nav.path}
-                    className="w-[4rem]"
-                />
-            ))}
+        <div className="w-[10vw] min-h-screen bg-blue_200 flex flex-col items-center">
+            <div className="flex flex-col gap-[2rem] py-[2em]">
+                {navList.map((nav) => (
+                    <NavIcon
+                        name={nav.name as IconName}
+                        path={nav.path}
+                        className="w-[4rem]"
+                    />
+                ))}
+            </div>
         </div>
     );
 };
