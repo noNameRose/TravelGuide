@@ -23,7 +23,7 @@ const NavigationBar = () => {
                     <NavIcon
                         name={nav.name as IconName}
                         path={nav.path}
-                        className="w-[4rem] cursor-pointer"
+                        className="w-[3rem] cursor-pointer"
                     />
                 ))}
             </div>
