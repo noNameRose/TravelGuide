@@ -17,7 +17,7 @@ const navList = [
 
 const NavigationBar = () => {
     return (
-        <div className="w-[10vw] min-h-screen bg-blue_200 flex flex-col items-center">
+        <div className="w-[8vw] min-h-screen bg-blue_200 flex flex-col items-center">
             <div className="flex flex-col gap-[2rem] py-[2em]">
                 {navList.map((nav) => (
                     <NavIcon

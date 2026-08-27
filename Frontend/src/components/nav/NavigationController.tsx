@@ -11,7 +11,7 @@ const NavigationController = ({children}: NavigationControllerProp) => {
     const showNavigationBar = location.pathname !== "/";
 
     return (
-        <div>
+        <div className="flex">
             { showNavigationBar && <NavigationBar/>}
             {children}
         </div>

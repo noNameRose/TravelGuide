@@ -78,7 +78,7 @@ const TravelDiaryPage = () => {
             value={contextValue}
         >
             <div className="flex">
-                <div className="w-[30vw] h-screen flex flex-col gap-4 overflow-scroll">
+                <div className="w-[22vw] h-screen flex flex-col gap-4 overflow-scroll">
                     <DiaryList
                         spotList={spotList}
                     />
