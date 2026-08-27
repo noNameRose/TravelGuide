@@ -8,10 +8,11 @@ type NavigationControllerProp = {
 
 const NavigationController = ({children}: NavigationControllerProp) => {
     const location = useLocation();
-    const showNavigationBar = location.pathname;
+    const showNavigationBar = location.pathname === "/";
+
     return (
         <div>
-            <NavigationBar/>
+            { showNavigationBar && <NavigationBar/>}
             {children}
         </div>
     );
