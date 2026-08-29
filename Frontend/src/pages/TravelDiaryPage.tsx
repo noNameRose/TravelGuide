@@ -82,57 +82,19 @@ const TravelDiaryPage = () => {
             value={contextValue}
         >
             <div className="flex py-[1em] items-center justify-center pr-[1em]">
-                <div className="w-[22vw] h-screen flex flex-col gap-4 overflow-scroll">
+                <div className="w-[22vw] h-screen flex flex-col gap-6 overflow-scroll items-center">
+                    <button className="w-[3rem]">
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 640 640"
+                            className="w-full h-full"
+                        >
+                            <path className="fill-blue_400" d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM296 408L296 344L232 344C218.7 344 208 333.3 208 320C208 306.7 218.7 296 232 296L296 296L296 232C296 218.7 306.7 208 320 208C333.3 208 344 218.7 344 232L344 296L408 296C421.3 296 432 306.7 432 320C432 333.3 421.3 344 408 344L344 344L344 408C344 421.3 333.3 432 320 432C306.7 432 296 421.3 296 408z"/>
+                        </svg>
+                    </button>
                     <DiaryList
                         spotList={spotList}
                     />
-                    <div className="flex flex-col gap-2">
-                        {showInput && 
-                                <div className="flex gap-4">
-                                    <input
-                                            className="border-2 p-2"
-                                            placeholder="Place"
-                                            value={query}
-                                            onChange={e => setQuery(e.target.value)}
-                                    />
-                                    <input
-                                            className="border-2 p-2"
-                                            placeholder="Get here by"
-                                            value={transQuery}
-                                            onChange={e => setTransQuery(e.target.value)}
-                                    />
-                                    <button 
-                                        className="bg-green-400 p-2"
-                                        disabled={!isInputValid}
-                                        style={
-                                            {
-                                                opacity: !isInputValid ? 0.5 : 1
-                                            }
-                                        }
-                                        onClick={async () => {
-                                            const geoCodeBody = (await searchCoordinate(query)) as GeoCodingResBody;
-                                            const lng = geoCodeBody.results[0].geometry.location.lng;
-                                            const lat = geoCodeBody.results[0].geometry.location.lat;
-                                            const newList = spotList.clone();
-                                            newList.addSpot(Spot.builder()
-                                                                .name(query)
-                                                                .getHereBy(transQuery as Transportation)
-                                                                .location({
-                                                                    lng: lng,
-                                                                    lat: lat,
-                                                                }).build()
-                                            );
-                                            setSpotList(newList)
-                                        }}
-                                    >Save</button>
-                                </div>
-                            }
-                            <button 
-                                className="p-[.5em] rounded-[.3em] bg-blue-200 cursor-pointer"
-                                onClick={() => setShowInput(!showInput)}
-                            >{showInput ? "Close" : "Add"}</button>
-                            <button className="bg-amber-300 p-2 cursor-pointer"  onClick={() => setIsPlay(true)}>Play</button>
-                        </div>
                 </div>
                 <div className="w-[70vw] h-screen">
                     <TravelMap
