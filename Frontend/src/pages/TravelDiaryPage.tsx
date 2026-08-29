@@ -70,6 +70,7 @@ const TravelDiaryPage = () => {
     const plusButton = useRef<HTMLButtonElement | null>(null);
     const [isPlusButtonHover, setPlusButtonHover] = useState(false);
     const [isMouseDown, setIsMouseDown] = useState(false);
+    const [showPortal, setShowPortal] = useState(false);
 
     const contextValue = useMemo(() => {
         return {
@@ -115,6 +116,7 @@ const TravelDiaryPage = () => {
                         onMouseOut={() => setPlusButtonHover(false)}
                         onMouseDown={() => setIsMouseDown(true)}
                         onMouseUp={() => setIsMouseDown(false)}
+                        onClick={() => setShowPortal(true)}
                     >
                         <svg 
                             xmlns="http://www.w3.org/2000/svg" 
@@ -133,7 +135,10 @@ const TravelDiaryPage = () => {
                         spotList={spotList}
                     />
                 </div>
-                <PlacePortal/>
+                <PlacePortal
+                    isShow={showPortal}
+                    handleShow={setShowPortal}
+                />
             </div>
          </IsPlayContext>
     );

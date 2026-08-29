@@ -1,12 +1,49 @@
+import { useEffect, useRef } from "react";
 import type { Transportation } from "../features/SpotRender/Spot";
 import VehicleOption from "./VehicleOption";
+import gsap from "gsap";
 
 const VEHICLES: Transportation[] = ["driving", "flight", "walking"];
 
-const PlacePortal = () => {
+type PlacePortalType = {
+    isShow: boolean,
+    handleShow: (show: boolean) => void
+};
+
+const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
+    const portalRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        if (isShow) {
+            gsap.to(portalRef.current, {
+                scale: 1,
+                ease: "power4"
+            });
+        }
+        else {
+             gsap.to(portalRef.current, {
+                scale: 0,
+                ease: "power4"
+            });
+        }
+    }, [isShow]);
     return (
-        <div className="fixed top-1/2 left-1/2 -translate-1/2 bg-blue_50 rounded-[1em] flex flex-col gap-4 p-[2em]">
-            <button className="self-end cursor-pointer">
+        <div    className="fixed 
+                        top-1/2 
+                        left-1/2 
+                        -translate-1/2 
+                        bg-blue_50 
+                        rounded-[1em] 
+                        flex 
+                        flex-col 
+                        scale-0
+                        origin-center
+                        gap-4 p-[2em]"
+                ref={portalRef}
+        >
+            <button 
+                className="self-end cursor-pointer"
+                onClick={() => handleShow(false)}
+            >
                 <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     viewBox="0 0 640 640"
