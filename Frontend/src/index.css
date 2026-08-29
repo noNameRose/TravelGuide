@@ -14,4 +14,10 @@ body {
     --color-blue_300: #8BCFDA;
     --color-blue_400: #64BECE;
     --color-blue_950: #0C2327;
+
+    --color-yellow_50: #F9F9EC;
+    --color-yellow_100: #F3F3D8;
+    --color-yellow_200: #E6E6B2;
+    --color-yellow_300: #DADA8B;
+    --color-yellow_950: #27270C;
 }
