@@ -82,7 +82,7 @@ const TravelDiaryPage = () => {
             value={contextValue}
         >
             <div className="flex py-[1em] items-center justify-center pr-[1em]">
-                <div className="h-screen flex flex-col gap-6 overflow-scroll items-center">
+                <div className="w-[22vw] h-screen flex flex-col gap-6 overflow-scroll items-center">
                     <button className="w-[3rem]">
                         <svg 
                             xmlns="http://www.w3.org/2000/svg" 

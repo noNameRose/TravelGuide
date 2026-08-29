@@ -9,7 +9,7 @@ const DiaryList = ({spotList}: {spotList: SpotList}) => {
             {spots.map(spot => (
                 <>
                     {spot.getHereBy && (
-                        <div className="w-[20rem] h-[10rem] relative">
+                        <div className="w-[80%] h-[10rem] relative">
                             <div className="h-full w-[5%] bg-blue_200 absolute left-1/2 top-0 -translate-x-1/2">
 
                             </div>
