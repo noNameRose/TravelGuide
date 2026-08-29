@@ -100,7 +100,7 @@ const TravelDiaryPage = () => {
         >
             <div className="flex py-[1em] items-center justify-center pr-[1em]">
                 <div className="w-[22vw] h-screen flex flex-col gap-6 overflow-scroll items-center">
-                    <button className="w-[3rem]"
+                    <button className="w-[3rem] cursor-pointer"
                         ref={plusButton}
                         onMouseOver={() => setPlusButtonHover(true)}
                         onMouseOut={() => setPlusButtonHover(false)}
