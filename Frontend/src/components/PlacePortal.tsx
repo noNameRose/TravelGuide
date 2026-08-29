@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Transportation } from "../features/SpotRender/Spot";
 import VehicleOption from "./VehicleOption";
 import gsap from "gsap";
@@ -12,6 +12,7 @@ type PlacePortalType = {
 
 const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
     const portalRef = useRef<HTMLDivElement | null>(null);
+    const [query, setQuery] = useState<string>("");
     useEffect(() => {
         if (isShow) {
             gsap.to(portalRef.current, {
@@ -65,6 +66,8 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
                         <p>What is your next destination?</p>
                     </label>
                     <input
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
                         className="bg-blue_950 text-[1rem] p-[0.3em] rounded-[.5em] text-white"
                     />
                 </div>
