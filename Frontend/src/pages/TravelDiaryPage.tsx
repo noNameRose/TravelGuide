@@ -6,6 +6,7 @@ import DiaryList from "../components/DiaryList";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 import IsPlayContext from "../contexts/IsPlayContext";
 import gsap from "gsap";
+import PlacePortal from "../components/PlacePortal";
 
 
 const INITIAL_LIST = new SpotList();
@@ -132,6 +133,7 @@ const TravelDiaryPage = () => {
                         spotList={spotList}
                     />
                 </div>
+                <PlacePortal/>
             </div>
          </IsPlayContext>
     );
