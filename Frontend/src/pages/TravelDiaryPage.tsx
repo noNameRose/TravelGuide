@@ -68,6 +68,7 @@ const TravelDiaryPage = () => {
     const [isPlay, setIsPlay] = useState<boolean>(false);
     const plusButton = useRef<HTMLButtonElement | null>(null);
     const [isPlusButtonHover, setPlusButtonHover] = useState(false);
+    const [isMouseDown, setIsMouseDown] = useState(false);
 
     const contextValue = useMemo(() => {
         return {
@@ -92,7 +93,14 @@ const TravelDiaryPage = () => {
                 ease: "power4.out"
             });
         }
-    }, [isPlusButtonHover]);
+        
+        if (isMouseDown) {
+            gsap.to(plusButton.current, {
+                scale: 1,
+                ease: "power4.out"
+            });
+        }
+    }, [isPlusButtonHover, isMouseDown]);
     
     return (
         <IsPlayContext
@@ -104,6 +112,8 @@ const TravelDiaryPage = () => {
                         ref={plusButton}
                         onMouseOver={() => setPlusButtonHover(true)}
                         onMouseOut={() => setPlusButtonHover(false)}
+                        onMouseDown={() => setIsMouseDown(true)}
+                        onMouseUp={() => setIsMouseDown(false)}
                     >
                         <svg 
                             xmlns="http://www.w3.org/2000/svg" 
