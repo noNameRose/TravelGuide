@@ -5,6 +5,7 @@ import { SpotList } from "../features/SpotRender/SpotList";
 import DiaryList from "../components/DiaryList";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 import IsPlayContext from "../contexts/IsPlayContext";
+import gsap from "gsap";
 
 
 const INITIAL_LIST = new SpotList();
@@ -65,6 +66,8 @@ const TravelDiaryPage = () => {
     const [query, setQuery] = useState<string>("");
     const [transQuery, setTransQuery] = useState<string>("");
     const [isPlay, setIsPlay] = useState<boolean>(false);
+    const plusButton = useRef<HTMLButtonElement | null>(null);
+    const [isPlusButtonHover, setPlusButtonHover] = useState(false);
 
     const contextValue = useMemo(() => {
         return {
@@ -73,9 +76,23 @@ const TravelDiaryPage = () => {
         }
     }, [isPlay]);
 
-    
     const validTransportation = ["flight", "driving", "cycling", "walking"];
     const isInputValid = (validTransportation.includes(transQuery)) && (query !== "");
+
+    useEffect(() => {
+        if (isPlusButtonHover) {
+            gsap.to(plusButton.current, {
+                scale: 1.2,
+                ease: "power4.out"
+            });
+        }
+        else {
+            gsap.to(plusButton.current, {
+                scale: 1,
+                ease: "power4.out"
+            });
+        }
+    }, [isPlusButtonHover]);
     
     return (
         <IsPlayContext
@@ -83,7 +100,11 @@ const TravelDiaryPage = () => {
         >
             <div className="flex py-[1em] items-center justify-center pr-[1em]">
                 <div className="w-[22vw] h-screen flex flex-col gap-6 overflow-scroll items-center">
-                    <button className="w-[3rem]">
+                    <button className="w-[3rem]"
+                        ref={plusButton}
+                        onMouseOver={() => setPlusButtonHover(true)}
+                        onMouseOut={() => setPlusButtonHover(false)}
+                    >
                         <svg 
                             xmlns="http://www.w3.org/2000/svg" 
                             viewBox="0 0 640 640"
