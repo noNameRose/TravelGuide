@@ -12,50 +12,50 @@ import SpotListContext from "../contexts/SpotListContext";
 
 const INITIAL_LIST = new SpotList();
 
-INITIAL_LIST.addSpot(Spot.builder()
-                        .name("Minneapolis")
-                        .location({
-                            lng: -93.26384,
-                            lat: 44.97997
-                        })
-                        .build()
-);
-INITIAL_LIST.addSpot(Spot.builder()
-                        .name("Chicago")
-                        .location({
-                            lng: -87.6298,
-                            lat: 41.8781
-                        })
-                        .getHereBy("flight")
-                        .build()
-);
-INITIAL_LIST.addSpot(Spot.builder()
-                        .name("Las Vegas")
-                        .location({
-                            lng: -115.137,
-                            lat: 36.175
-                        })
-                        .getHereBy("flight")
-                        .build()
-);
-INITIAL_LIST.addSpot(Spot.builder()
-                        .name("Incline Village")
-                        .location({
-                            lng: -119.9730,
-                            lat: 39.2513
-                        })
-                        .getHereBy("flight")
-                        .build()
-);
-INITIAL_LIST.addSpot(Spot.builder()
-                        .name("Hanoi")
-                        .location({
-                            lng: 105.8048,
-                            lat: 21.0285
-                        })
-                        .getHereBy("flight")
-                        .build()
-);
+// INITIAL_LIST.addSpot(Spot.builder()
+//                         .name("Minneapolis")
+//                         .location({
+//                             lng: -93.26384,
+//                             lat: 44.97997
+//                         })
+//                         .build()
+// );
+// INITIAL_LIST.addSpot(Spot.builder()
+//                         .name("Chicago")
+//                         .location({
+//                             lng: -87.6298,
+//                             lat: 41.8781
+//                         })
+//                         .getHereBy("flight")
+//                         .build()
+// );
+// INITIAL_LIST.addSpot(Spot.builder()
+//                         .name("Las Vegas")
+//                         .location({
+//                             lng: -115.137,
+//                             lat: 36.175
+//                         })
+//                         .getHereBy("flight")
+//                         .build()
+// );
+// INITIAL_LIST.addSpot(Spot.builder()
+//                         .name("Incline Village")
+//                         .location({
+//                             lng: -119.9730,
+//                             lat: 39.2513
+//                         })
+//                         .getHereBy("flight")
+//                         .build()
+// );
+// INITIAL_LIST.addSpot(Spot.builder()
+//                         .name("Hanoi")
+//                         .location({
+//                             lng: 105.8048,
+//                             lat: 21.0285
+//                         })
+//                         .getHereBy("flight")
+//                         .build()
+// );
 
 export const SOURCE_NAME = "flight-arc";
 export const LAYER_NAME = "flight-arc-layer";
