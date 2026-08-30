@@ -1,4 +1,26 @@
+import { useEffect, useRef } from "react";
+
 const LandingPage = () => {
+    const popupWindow = useRef<Window | null>(null);
+    
+    useEffect(() => {
+        function handleMessage(event: MessageEvent) {
+            if (popupWindow.current && event.origin === import.meta.env.VITE_SERVER_ORIGIN) {
+                popupWindow.current.close();
+            }
+        }
+
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        }
+    }, []);
+
+    const handleClick = () => {
+        popupWindow.current = window.open(import.meta.env.VITE_GOOGLE_LOGIN_URL);
+    }
+
     return (
         <div className="flex w-[70rem] min-h-screen m-auto justify-center items-center gap-[2rem]">
             <svg
@@ -157,14 +179,19 @@ const LandingPage = () => {
             </svg>
             <div className="flex flex-col w-1/2 gap-[3rem]">
                 <p className="text-[2rem] font-bold text-blue_400 text-center">Browse places that you want to go and add them to your diary!</p>
-                <button className="flex bg-blue_400 items-center justify-center rounded-[1em] self-center py-[.5em] px-[3em] cursor-pointer">
+                <button 
+                    className="flex bg-blue_400 items-center justify-center rounded-[1em] self-center py-[.5em] px-[3em] cursor-pointer"
+                >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
                         className="w-[3em]"
                     >
                         <path fill="#ecf7f9" d="M564 325.8C564 467.3 467.1 568 324 568C186.8 568 76 457.2 76 320C76 182.8 186.8 72 324 72C390.8 72 447 96.5 490.3 136.9L422.8 201.8C334.5 116.6 170.3 180.6 170.3 320C170.3 406.5 239.4 476.6 324 476.6C422.2 476.6 459 406.2 464.8 369.7L324 369.7L324 284.4L560.1 284.4C562.4 297.1 564 309.3 564 325.8z"/>
                     </svg>
-                    <p className="font-bold text-blue_50">Continue with Google</p>
+                    <p 
+                        className="font-bold text-blue_50"
+                        onClick={handleClick}
+                    >Continue with Google</p>
                 </button>
             </div>
         </div>
