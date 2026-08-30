@@ -1,4 +1,5 @@
-import { useState } from "react";
+import gsap from "gsap";
+import { useEffect, useRef, useState } from "react";
 
 type CreateDiaryPortalType = {
     isShow: boolean,
@@ -7,8 +8,28 @@ type CreateDiaryPortalType = {
 
 const CreateDiaryPortal = ({isShow, handleIsShow}: CreateDiaryPortalType) => {
     const [name, setName] = useState<string>("");
+    const container = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (isShow) {
+            gsap.to(container.current, {
+                scale: 1,
+                ease: "power4"
+            });
+        }
+        else {
+            gsap.to(container.current, {
+                scale: 0,
+                 ease: "power4"
+            });
+        }
+    }, [isShow]);
+
     return (
-        <div className="fixed left-1/2 top-1/2 -translate-1/2 bg-blue-50 flex flex-col gap-4 justify-center items-center p-[2em] rounded-[1.5em] origin-center scale-0">
+        <div 
+            className="fixed left-1/2 top-1/2 -translate-1/2 bg-blue-50 flex flex-col gap-4 justify-center items-center p-[2em] rounded-[1.5em] origin-center scale-0"
+            ref={container}
+        >
             <p className="text-[2rem] font-bold text-blue_400">Give your diary a name</p>
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 
