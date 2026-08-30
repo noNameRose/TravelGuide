@@ -3,7 +3,7 @@ import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
 import type { SpotList } from "../features/SpotRender/SpotList";
 import type { coordinate } from "../features/SpotRender/Spot";
-import { LAYER_NAME, SOURCE_NAME } from "../pages/TravelDiaryPage";
+import { LAYER_NAME, SOURCE_NAME } from "../pages/EditDiaryPage";
 import IsPlayContext from "../contexts/IsPlayContext";
 import gsap from "gsap";
 import { createPortal } from "react-dom";
