@@ -1,3 +1,5 @@
+import CreateDiaryPortal from "../components/CreateDiaryPortal";
+
 const TravelDiaryPage = () => {
     return (
         <div className="justify-self-center grow flex items-center py-[2em] flex-col">
@@ -58,6 +60,7 @@ const TravelDiaryPage = () => {
                     </div>
                 </div>
             </div>
+            <CreateDiaryPortal/>
         </div>
     );
 };
