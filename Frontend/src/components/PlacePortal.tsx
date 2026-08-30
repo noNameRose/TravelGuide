@@ -1,7 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import type { Transportation } from "../features/SpotRender/Spot";
+import { useContext, useEffect, useRef, useState, type SubmitEventHandler } from "react";
+import { Spot, type Transportation } from "../features/SpotRender/Spot";
 import VehicleOption from "./VehicleOption";
 import gsap from "gsap";
+import SpotListContext from "../contexts/SpotListContext";
+import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
+import type { SpotList } from "../features/SpotRender/SpotList";
 
 const VEHICLES: Transportation[] = ["driving", "flight", "walking"];
 
@@ -14,6 +17,25 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
     const portalRef = useRef<HTMLDivElement | null>(null);
     const [query, setQuery] = useState<string>("");
     const [vehicle, setVehicle] = useState<Transportation | null>(null);
+    const spotListContext = useContext(SpotListContext);
+
+    const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
+        e.preventDefault();
+        const geoCodeBody = (await searchCoordinate(query)) as GeoCodingResBody;
+        const lng = geoCodeBody.results[0].geometry.location.lng;
+        const lat = geoCodeBody.results[0].geometry.location.lat;
+        const newList = spotListContext?.spotList.clone();
+        newList?.addSpot(Spot.builder()
+                        .name(query)
+                        .getHereBy(vehicle)
+                        .location({
+                            lng: lng,
+                            lat: lat
+                        }).build()
+        );
+        spotListContext?.handleSpotListChange(newList as SpotList);
+    };
+
     useEffect(() => {
         if (isShow) {
             gsap.to(portalRef.current, {
@@ -54,7 +76,10 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
                     <path fill="#0c2327" d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM231 231C240.4 221.6 255.6 221.6 264.9 231L319.9 286L374.9 231C384.3 221.6 399.5 221.6 408.8 231C418.1 240.4 418.2 255.6 408.8 264.9L353.8 319.9L408.8 374.9C418.2 384.3 418.2 399.5 408.8 408.8C399.4 418.1 384.2 418.2 374.9 408.8L319.9 353.8L264.9 408.8C255.5 418.2 240.3 418.2 231 408.8C221.7 399.4 221.6 384.2 231 374.9L286 319.9L231 264.9C221.6 255.5 221.6 240.3 231 231z"/>
                 </svg>
             </button>
-            <form className="flex flex-col gap-4">
+            <form 
+                className="flex flex-col gap-4"
+                onSubmit={handleSubmit}
+            >
                 <div className="flex flex-col gap-4">
                     <label className="font-bold text-[1.5rem] flex gap-4 items-center">
                         <svg 
