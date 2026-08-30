@@ -44,7 +44,7 @@ const TravelDiaryPage = () => {
                 <div className="self-stretch">
                     <div className="flex justify-between">
                         <p className="font-bold text-[1.5rem] text-blue_400">Your Diaries</p>
-                        <button className="bg-blue_400 px-[2em] rounded-[1em]">
+                        <button className="bg-blue_400 px-[2em] rounded-[1em] cursor-pointer">
                             <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
                                 viewBox="0 0 640 640"
