@@ -13,6 +13,7 @@ type PlacePortalType = {
 const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
     const portalRef = useRef<HTMLDivElement | null>(null);
     const [query, setQuery] = useState<string>("");
+    const [vehicle, setVehicle] = useState<Transportation | null>(null);
     useEffect(() => {
         if (isShow) {
             gsap.to(portalRef.current, {
