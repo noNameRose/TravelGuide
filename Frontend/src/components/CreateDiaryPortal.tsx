@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-const CreateDiaryPortal = () => {
+type CreateDiaryPortalType = {
+    isShow: boolean,
+    handleIsShow: (show: boolean) => void
+};
+
+const CreateDiaryPortal = ({isShow, handleIsShow}: CreateDiaryPortalType) => {
     const [name, setName] = useState<string>("");
     return (
         <div className="fixed left-1/2 top-1/2 -translate-1/2 bg-blue-50 flex flex-col gap-4 justify-center items-center p-[2em] rounded-[1.5em] origin-center scale-0">
