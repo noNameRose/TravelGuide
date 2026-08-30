@@ -41,8 +41,9 @@ const CreateDiaryPortal = ({isShow, handleIsShow}: CreateDiaryPortalType) => {
             <div className="self-stretch">
                 <input
                     value={name}
-                    className="bg-blue_400 w-full p-[.5em] text-blue_50 font-bold text-[1rem]"
+                    className="bg-blue_400 w-full p-[.5em] text-blue_50 font-bold text-[1rem] rounded-[.5em]"
                     onChange={e => setName(e.target.value)}
+                    placeholder="Name of your diary"
                 />
             </div>
             <button 
