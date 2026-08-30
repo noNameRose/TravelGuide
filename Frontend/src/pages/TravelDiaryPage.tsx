@@ -1,6 +1,8 @@
+import { useState } from "react";
 import CreateDiaryPortal from "../components/CreateDiaryPortal";
 
 const TravelDiaryPage = () => {
+    const [showCreatePortal, setShowCreatePortal] = useState(false);
     return (
         <div className="justify-self-center grow flex items-center py-[2em] flex-col">
             <div className="flex flex-col gap-8">
@@ -46,7 +48,10 @@ const TravelDiaryPage = () => {
                 <div className="self-stretch">
                     <div className="flex justify-between">
                         <p className="font-bold text-[1.5rem] text-blue_400">Your Diaries</p>
-                        <button className="bg-blue_400 px-[2em] rounded-[1em] cursor-pointer">
+                        <button 
+                            className="bg-blue_400 px-[2em] rounded-[1em] cursor-pointer"
+                            onClick={() => setShowCreatePortal(true)}
+                        >
                             <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
                                 viewBox="0 0 640 640"
@@ -60,7 +65,10 @@ const TravelDiaryPage = () => {
                     </div>
                 </div>
             </div>
-            <CreateDiaryPortal/>
+            <CreateDiaryPortal
+                isShow={showCreatePortal}
+                handleIsShow={setShowCreatePortal}
+            />
         </div>
     );
 };
