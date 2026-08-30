@@ -89,6 +89,7 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
                         {VEHICLES.map(trans => (
                             <VehicleOption
                                 vehicle={trans}
+                                handleVehicleChange={setVehicle}
                             />
                         ))}
                     </div>

@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import type { Transportation } from "../features/SpotRender/Spot";
 import gsap from "gsap";
 
-const VehicleOption = ({vehicle}: {vehicle: Transportation}) => {
+const VehicleOption = ({vehicle, handleVehicleChange}: {
+                vehicle: Transportation, 
+                handleVehicleChange: (vehicle: Transportation) => void
+}) => {
     let icon = null;
     const iconRef = useRef<SVGPathElement | null>(null);
     const container = useRef<HTMLDivElement | null>(null);
@@ -84,6 +87,7 @@ const VehicleOption = ({vehicle}: {vehicle: Transportation}) => {
             ref={container}
             onMouseOver={() => setIsHover(true)}
             onMouseOut={() => setIsHover(false)}
+            onClick={() => handleVehicleChange(vehicle)}
             className="bg-blue_950 p-[0.5em] rounded-[.5em] cursor-pointer"
         >
             {icon}
