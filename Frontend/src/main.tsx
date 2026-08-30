@@ -11,6 +11,6 @@ createRoot(document.getElementById('root')!).render(
       <NavigationController>
         <App />
       </NavigationController>
-    </StrictMode>,
+    </StrictMode>
   </BrowserRouter>
 )
