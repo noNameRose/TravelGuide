@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +38,9 @@ public class User implements UserDetails {
   private Timestamp createAt;
   @UpdateTimestamp
   private Timestamp updateAt;
+
+  @OneToMany(mappedBy = "user")
+  private List<Diary> diaries = new ArrayList<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
