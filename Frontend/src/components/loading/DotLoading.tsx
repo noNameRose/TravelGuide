@@ -15,9 +15,6 @@ const DotLoading = ({dotColor, style}: {dotColor: string, style: CSSProperties})
         tl.current = gsap.timeline({
             repeat: -1, 
             yoyo: true,
-            defaults: {
-                ease: "expo"
-            }
         });
         tl.current
         .to(dot1.current, {
