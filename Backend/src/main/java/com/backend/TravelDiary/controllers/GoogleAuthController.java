@@ -4,6 +4,8 @@ package com.backend.TravelDiary.controllers;
 import com.backend.TravelDiary.dto.GoogleAccessTokenRequest;
 import com.backend.TravelDiary.dto.GoogleAccessTokenResponse;
 import com.backend.TravelDiary.dto.GoogleUserProfile;
+import com.backend.TravelDiary.models.RefreshToken;
+import com.backend.TravelDiary.models.User;
 import com.backend.TravelDiary.services.RefreshTokenService;
 import com.backend.TravelDiary.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -134,9 +136,9 @@ public class GoogleAuthController {
             GoogleUserProfile.class
         );
     GoogleUserProfile profile = profileResponse.getBody();
-    userService.createUser(profile.getEmail(), profile.getName(), profile.getEmail_verified());
-
+    User user = userService.createUser(profile.getEmail(), profile.getName(), profile.getEmail_verified());
     String refreshToken = this.refreshTokenService.generateToken();
+    this.refreshTokenService.saveToken(refreshToken, user);
 
     ResponseCookie cookie = ResponseCookie
         .from("refreshToken", refreshToken)
