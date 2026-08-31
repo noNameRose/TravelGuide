@@ -4,7 +4,9 @@ package com.backend.TravelDiary.controllers;
 import com.backend.TravelDiary.dto.GoogleAccessTokenRequest;
 import com.backend.TravelDiary.dto.GoogleAccessTokenResponse;
 import com.backend.TravelDiary.dto.GoogleUserProfile;
+import com.backend.TravelDiary.services.RefreshTokenService;
 import com.backend.TravelDiary.services.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -38,10 +40,13 @@ public class GoogleAuthController {
   private final RestTemplate rest;
   @Autowired
   private final UserService userService;
+  @Autowired
+  private final RefreshTokenService refreshTokenService;
 
-  public GoogleAuthController(RestTemplate rest, UserService userService) {
+  public GoogleAuthController(RestTemplate rest, UserService userService, RefreshTokenService refreshTokenService) {
     this.rest = rest;
     this.userService = userService;
+    this.refreshTokenService = refreshTokenService;
   }
 
   @GetMapping("/")
@@ -85,7 +90,8 @@ public class GoogleAuthController {
   public String callback(
       @RequestParam String code,
       @RequestParam String state,
-      @CookieValue("state") String expectedState
+      @CookieValue("state") String expectedState,
+      HttpServletResponse res
   ) {
     if (!state.equals(expectedState)) {
       return null;
@@ -129,6 +135,20 @@ public class GoogleAuthController {
         );
     GoogleUserProfile profile = profileResponse.getBody();
     userService.createUser(profile.getEmail(), profile.getName(), profile.getEmail_verified());
+
+    String refreshToken = this.refreshTokenService.generateToken();
+
+    ResponseCookie cookie = ResponseCookie
+        .from("refreshToken", refreshToken)
+        .httpOnly(true)
+        .secure(true)
+        .sameSite("Lax")
+        .maxAge(Duration.ofDays(7))
+        .path("/")
+        .build();
+
+    res.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
     return "index.html";
   }
 }
