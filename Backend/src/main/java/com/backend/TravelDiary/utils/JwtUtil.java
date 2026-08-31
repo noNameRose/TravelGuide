@@ -71,5 +71,9 @@ public class JwtUtil {
     return this.extractClaim(token, Claims::getExpiration);
   }
 
+  public boolean isTokenValid(String token) {
+    return this.extractExpiration(token).before(new Date());
+  }
+
 
 }
