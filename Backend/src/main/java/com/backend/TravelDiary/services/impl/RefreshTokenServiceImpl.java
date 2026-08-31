@@ -12,9 +12,9 @@ import java.util.UUID;
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
+  @Autowired
   private final RefreshTokenRepo refreshTokenRepo;
 
-  @Autowired
   public RefreshTokenServiceImpl(RefreshTokenRepo refreshTokenRepo) {
     this.refreshTokenRepo = refreshTokenRepo;
   }

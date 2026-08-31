@@ -23,14 +23,15 @@ import java.util.List;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
+  @Autowired
   private final JwtUtil jwtUtil;
+  @Autowired
   private final UserDetailsService userDetailsService;
   private final List<String> PUBLIC_URLS = List.of(
       "/auth/google/login",
       "/auth/google/callback"
   );
 
-  @Autowired
   public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
     this.jwtUtil = jwtUtil;
     this.userDetailsService = userDetailsService;
