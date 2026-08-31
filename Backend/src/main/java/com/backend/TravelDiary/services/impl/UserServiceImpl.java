@@ -6,6 +6,8 @@ import com.backend.TravelDiary.services.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
     User newUser = User.builder()
         .email(email)
         .name(name)
+        .userId(UUID.randomUUID().toString())
         .isAccountVerified(isAccountVerified)
         .build();
     this.userRepo.save(newUser);
