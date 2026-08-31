@@ -8,7 +8,8 @@ type User = {
 
 export type AuthContextType = {
     user: User | null,
-    accessToken: string | null
+    accessToken: string | null,
+    updateAccessToken: (token: string) => void
 }
 
 const AuthProvider = ({children}: {children: ReactNode}) => {   
@@ -18,7 +19,8 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
     const authContextValue = useMemo(() => {
         return {
             user: user,
-            accessToken: accessToken
+            accessToken: accessToken,
+            updateAccessToken: setAccessToken
         };
     }, [user, accessToken]);
 
