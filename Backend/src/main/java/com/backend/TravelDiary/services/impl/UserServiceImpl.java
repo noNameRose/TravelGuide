@@ -3,7 +3,6 @@ package com.backend.TravelDiary.services.impl;
 import com.backend.TravelDiary.models.User;
 import com.backend.TravelDiary.repos.UserRepo;
 import com.backend.TravelDiary.services.UserService;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void createUser(String email, String name, boolean isAccountVerified) {
+  public User createUser(String email, String name, boolean isAccountVerified) {
     if (this.userRepo.existsByEmail(email)) {
-      return;
+      return this.loadUserByUsername(email);
     }
     User newUser = User.builder()
         .email(email)
@@ -27,6 +26,7 @@ public class UserServiceImpl implements UserService {
         .isAccountVerified(isAccountVerified)
         .build();
     this.userRepo.save(newUser);
+    return newUser;
   }
 
   @Override
