@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import DotLoading from "../components/loading/DotLoading";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../contexts/AuthContext";
 
 type AccessTokenResBody = {
     accessToken: string
@@ -10,6 +11,7 @@ const LandingPage = () => {
     const popupWindow = useRef<Window | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const authContext = useContext(AuthContext);
     
     useEffect(() => {
         async function handleMessage(event: MessageEvent) {
@@ -21,7 +23,8 @@ const LandingPage = () => {
                 });
                 if (response.ok) {
                     const body = (await response.json()) as AccessTokenResBody;
-                    navigate("/profile");
+                    authContext?.updateAccessToken(body.accessToken);
+                    navigate("/profile")
                 }
             }
         }
