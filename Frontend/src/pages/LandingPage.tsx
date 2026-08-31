@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import DotLoading from "../components/loading/DotLoading";
+import { useNavigate } from "react-router-dom";
 
 type AccessTokenResBody = {
     accessToken: string
@@ -8,6 +9,7 @@ type AccessTokenResBody = {
 const LandingPage = () => {
     const popupWindow = useRef<Window | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
     
     useEffect(() => {
         async function handleMessage(event: MessageEvent) {
@@ -19,6 +21,7 @@ const LandingPage = () => {
                 });
                 if (response.ok) {
                     const body = (await response.json()) as AccessTokenResBody;
+                    navigate("/profile");
                 }
             }
         }
