@@ -27,7 +27,7 @@ public class SecurityConfiguration {
 
     http.csrf(c -> c.disable())
         .authorizeHttpRequests(
-            c -> c.requestMatchers("/*", "/auth/google/login", "/auth/google/callback").permitAll()
+            c -> c.requestMatchers("/*", "/auth/google/login", "/auth/google/callback", "/auth/access_token").permitAll()
         ).addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(c -> c.disable());
 

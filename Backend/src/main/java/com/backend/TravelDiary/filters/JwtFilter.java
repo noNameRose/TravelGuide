@@ -29,7 +29,8 @@ public class JwtFilter extends OncePerRequestFilter {
   private final UserDetailsService userDetailsService;
   private final List<String> PUBLIC_URLS = List.of(
       "/auth/google/login",
-      "/auth/google/callback"
+      "/auth/google/callback",
+      "/auth/access_token"
   );
 
   public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
