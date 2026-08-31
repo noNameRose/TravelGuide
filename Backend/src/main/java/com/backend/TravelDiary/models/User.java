@@ -39,6 +39,9 @@ public class User implements UserDetails {
   @UpdateTimestamp
   private Timestamp updateAt;
 
+  @Enumerated(EnumType.STRING)
+  private RoleName role;
+
   @OneToMany(mappedBy = "user")
   private List<Diary> diaries = new ArrayList<>();
 
