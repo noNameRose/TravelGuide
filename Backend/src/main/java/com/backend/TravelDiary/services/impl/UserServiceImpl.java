@@ -27,7 +27,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return null;
+  public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    return this.userRepo
+            .findByEmail(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Account does not exist"));
   }
 }
