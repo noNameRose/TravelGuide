@@ -23,10 +23,10 @@ import java.util.function.Function;
 public class JwtUtil {
 
 
-  @Value(value = "")
+  @Value(value = "${jwt.secret.key}")
   private String SECRET_KEY;
 
-  @Value(value = "")
+  @Value(value = "${jwt.time.expires}")
   private Long REFRESH_TOKEN_EXPIRES_IN;
 
   public String generateToken(User user) {
