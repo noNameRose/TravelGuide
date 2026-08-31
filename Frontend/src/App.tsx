@@ -4,6 +4,7 @@ import TravelDiaryPage from "./pages/TravelDiaryPage";
 import LoginPage from "./pages/LoginPage";
 import ExplorePage from "./pages/ExplorePage";
 import EditDiaryPage from "./pages/EditDiaryPage";
+import ProfilePage from "./pages/ProfilePage";
 
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/explore" element={<ExplorePage/>}/>
+        <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/travel-diary" element={<TravelDiaryPage/>}/>
         <Route path="/edit" element={<EditDiaryPage/>}/>
         <Route path="/login" element={<LoginPage/>}/>
