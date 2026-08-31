@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import DotLoading from "../components/loading/DotLoading";
 
+type AccessTokenResBody = {
+    accessToken: string
+};
+
 const LandingPage = () => {
     const popupWindow = useRef<Window | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -10,9 +14,12 @@ const LandingPage = () => {
             if (popupWindow.current && event.origin === import.meta.env.VITE_SERVER_ORIGIN) {
                 popupWindow.current.close();
                 setIsLoading(true);
-                await fetch(import.meta.env.VITE_SERVER_ORIGIN + "/auth/access_token", {
+                const response = await fetch(import.meta.env.VITE_SERVER_ORIGIN + "/auth/access_token", {
                     credentials: "include"
                 });
+                if (response.ok) {
+                    const body = (await response.json()) as AccessTokenResBody;
+                }
             }
         }
 
@@ -187,6 +194,7 @@ const LandingPage = () => {
                 <p className="text-[2rem] font-bold text-blue_400 text-center">Browse places that you want to go and add them to your diary!</p>
                 <button 
                     className="flex bg-blue_400 items-center justify-center rounded-[1em] self-center py-[.5em] px-[3em] cursor-pointer relative"
+                    onClick={handleClick}
                 >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
@@ -196,7 +204,6 @@ const LandingPage = () => {
                     </svg>
                     <p 
                         className="font-bold text-blue_50"
-                        onClick={handleClick}
                         style={
                             {
                                 opacity: isLoading ? 0 : 1
