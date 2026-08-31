@@ -3,6 +3,7 @@ package com.backend.TravelDiary.utils;
 
 import com.backend.TravelDiary.models.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -49,6 +50,26 @@ public class JwtUtil {
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
+  private Claims extractAllClaims(String token) {
+    return Jwts
+            .parser()
+            .setSigningKey(this.getKey())
+            .build().parseClaimsJws(token)
+            .getBody();
+  }
+
+  public <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
+    Claims claims = this.extractAllClaims(token);
+    return claimResolver.apply(claims);
+  }
+
+  public String extractEmail(String token) {
+    return this.extractClaim(token, Claims::getSubject);
+  }
+
+  public Date extractExpiration(String token) {
+    return this.extractClaim(token, Claims::getExpiration);
+  }
 
 
 }
