@@ -18,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void createUser(String email, String name, boolean isAccountVerified) {
+    if (this.userRepo.existsByEmail(email)) {
+      return;
+    }
     User newUser = User.builder()
         .email(email)
         .name(name)
