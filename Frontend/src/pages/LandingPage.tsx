@@ -1,12 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import DotLoading from "../components/loading/DotLoading";
 
 const LandingPage = () => {
     const popupWindow = useRef<Window | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     
     useEffect(() => {
-        function handleMessage(event: MessageEvent) {
+        async function handleMessage(event: MessageEvent) {
             if (popupWindow.current && event.origin === import.meta.env.VITE_SERVER_ORIGIN) {
                 popupWindow.current.close();
+                setIsLoading(true);
+                await fetch(import.meta.env.VITE_SERVER_ORIGIN + "/auth/access_token", {
+                    credentials: "include"
+                });
             }
         }
 
@@ -180,7 +186,7 @@ const LandingPage = () => {
             <div className="flex flex-col w-1/2 gap-[3rem]">
                 <p className="text-[2rem] font-bold text-blue_400 text-center">Browse places that you want to go and add them to your diary!</p>
                 <button 
-                    className="flex bg-blue_400 items-center justify-center rounded-[1em] self-center py-[.5em] px-[3em] cursor-pointer"
+                    className="flex bg-blue_400 items-center justify-center rounded-[1em] self-center py-[.5em] px-[3em] cursor-pointer relative"
                 >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
@@ -191,7 +197,24 @@ const LandingPage = () => {
                     <p 
                         className="font-bold text-blue_50"
                         onClick={handleClick}
+                        style={
+                            {
+                                opacity: isLoading ? 0 : 1
+                            }
+                        }
                     >Continue with Google</p>
+                    <DotLoading
+                        dotColor="bg-blue_50"
+                        style={
+                            {
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                opacity: isLoading ? 1 : 0
+                            }
+                        }
+                    />
                 </button>
             </div>
         </div>
