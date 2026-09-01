@@ -2,6 +2,7 @@ package com.backend.TravelDiary.services.impl;
 
 
 import com.backend.TravelDiary.dto.DiaryResponse;
+import com.backend.TravelDiary.exceptions.DiaryNotFoundException;
 import com.backend.TravelDiary.models.Diary;
 import com.backend.TravelDiary.models.User;
 import com.backend.TravelDiary.repos.DiaryRepo;
@@ -23,6 +24,14 @@ public class DiaryServiceImp implements DiaryService {
   public List<Diary> findDiariesByUser(User user) {
     List<Diary> diaries = this.diaryRepo.findByUser(user).orElseThrow(() -> new RuntimeException());
     return diaries;
+  }
+
+  @Override
+  public Diary findByDiaryId(String diaryId) {
+    Diary diary = this.diaryRepo.findByDiaryId(diaryId).orElseThrow(() -> {
+      return new DiaryNotFoundException("Diary not found");
+    });
+    return diary;
   }
 
   public Diary createDiary(String name, User user) {

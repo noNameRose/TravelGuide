@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface DiaryRepo extends JpaRepository<Diary, Long> {
 
   Optional<List<Diary>> findByUser(User user);
+  Optional<Diary> findByDiaryId(String diaryId);
 }
