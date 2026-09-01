@@ -15,4 +15,5 @@ public class CreatePlaceRequest {
   private double lng;
   private double lat;
   private String getHereBy;
+  private String diaryId;
 }
