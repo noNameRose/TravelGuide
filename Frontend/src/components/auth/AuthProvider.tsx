@@ -41,8 +41,14 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
         }
         catch (exc) {
             if (exc instanceof InvalidAccessTokenException) {
-                const accessToken = await getAccessToken();
-                setAccessToken(accessToken as string);
+                try {
+                    const accessToken = await getAccessToken();
+                    setAccessToken(accessToken as string);
+                }
+                catch (exc) {
+                    navigate("/");
+                }
+
             }
             else {
                 navigate("/");

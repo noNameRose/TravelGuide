@@ -10,6 +10,9 @@ const getAccessToken = async () => {
         const body = (await response.json()) as AccessTokenResBody;
         return body.accessToken;
     }
+    else {
+        throw new Error("Invalid refresh token");
+    }
 };
 
 export default getAccessToken;
