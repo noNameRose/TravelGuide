@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import DotLoading from "../components/loading/DotLoading";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
+import getAccessToken from "../utils/getAccessToken";
 
 type AccessTokenResBody = {
     accessToken: string
@@ -18,14 +19,10 @@ const LandingPage = () => {
             if (popupWindow.current && event.origin === import.meta.env.VITE_SERVER_ORIGIN) {
                 popupWindow.current.close();
                 setIsLoading(true);
-                const response = await fetch(import.meta.env.VITE_SERVER_ORIGIN + "/auth/access_token", {
-                    credentials: "include"
-                });
-                if (response.ok) {
-                    const body = (await response.json()) as AccessTokenResBody;
-                    authContext?.updateAccessToken(body.accessToken);
-                    navigate("/profile")
-                }
+                const accessToken = await getAccessToken();
+                authContext?.updateAccessToken(accessToken as string);
+                navigate("/profile");
+                setIsLoading(false);
             }
         }
 
