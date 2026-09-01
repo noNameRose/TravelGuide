@@ -1,10 +1,7 @@
 package com.backend.TravelDiary.models;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,10 +19,15 @@ public class Place {
   private Long id;
   private String name;
   private String googlePlaceId;
+  private Integer index;
   private Double lng;
   private Double lat;
   @Column(nullable = true)
   private String getHereBy;
+
+  @ManyToOne()
+  @JoinColumn(nullable = false, name = "diaryId")
+  private Diary diary;
 
   @CreationTimestamp
   @Column(updatable = false)
