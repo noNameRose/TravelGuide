@@ -1,5 +1,6 @@
 package com.backend.TravelDiary.services.impl;
 
+import com.backend.TravelDiary.exceptions.TokenNotFoundException;
 import com.backend.TravelDiary.models.RefreshToken;
 import com.backend.TravelDiary.models.User;
 import com.backend.TravelDiary.repos.RefreshTokenRepo;
@@ -8,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.HexFormat;
 import java.util.UUID;
 
 @Service
@@ -27,9 +32,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
   @Override
   public String hashToken(String token) {
-    byte[] randomBytes = new byte[64];
-    new SecureRandom().nextBytes(randomBytes);
-    return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    try {
+      MessageDigest digest = MessageDigest.getInstance("SHA-256");
+      byte[] hashBytes = digest.digest(token.getBytes(StandardCharsets.UTF_8));
+      return HexFormat.of().formatHex(hashBytes);
+    } catch (NoSuchAlgorithmException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -54,5 +63,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         .expiresAt(System.currentTimeMillis() + this.REFRESH_TOKEN_EXPIRES_IN)
         .build();
     this.refreshTokenRepo.save(newToken);
+  }
+
+  @Override
+  public RefreshToken findToken(String token) {
+    String hashedToken = this.hashToken(token);
+    return this.refreshTokenRepo.findByHashedToken(hashedToken).orElseThrow(() -> new TokenNotFoundException("Token does not exist"));
   }
 }
