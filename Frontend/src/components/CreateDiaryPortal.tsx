@@ -1,5 +1,7 @@
 import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import createDiary from "../utils/createDiary";
+import AuthContext from "../contexts/AuthContext";
 
 type CreateDiaryPortalType = {
     isShow: boolean,
@@ -9,6 +11,7 @@ type CreateDiaryPortalType = {
 const CreateDiaryPortal = ({isShow, handleIsShow}: CreateDiaryPortalType) => {
     const [name, setName] = useState<string>("");
     const container = useRef<HTMLDivElement | null>(null);
+    const authContext = useContext(AuthContext);
 
     useEffect(() => {
         if (isShow) {
@@ -49,6 +52,9 @@ const CreateDiaryPortal = ({isShow, handleIsShow}: CreateDiaryPortalType) => {
             <button 
                 className="bg-blue_400 self-stretch py-[.5em] font-bold text-[1em] rounded-[.5em] text-blue_50 cursor-pointer"
                 disabled={name === ""}    
+                onClick={async () => {
+                   const diary = await createDiary(name, authContext?.accessToken as string);
+                }}
             >
                 Create
             </button>
