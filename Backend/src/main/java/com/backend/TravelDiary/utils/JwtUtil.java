@@ -41,7 +41,7 @@ public class JwtUtil {
         .subject(email)
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + this.REFRESH_TOKEN_EXPIRES_IN))
-        .signWith(this.getKey(), SignatureAlgorithm.ES256)
+        .signWith(this.getKey())
         .compact();
   }
 
@@ -72,7 +72,7 @@ public class JwtUtil {
   }
 
   public boolean isTokenValid(String token) {
-    return this.extractExpiration(token).before(new Date());
+    return this.extractExpiration(token).after(new Date());
   }
 
 
