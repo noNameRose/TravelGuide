@@ -4,6 +4,8 @@ import DotLoading from "../loading/DotLoading";
 import getUserProfile from "../../utils/getUserProfile";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
+import getAccessToken from "../../utils/getAccessToken";
+import { InvalidAccessTokenException } from "../../exceptions/InvalidAccessTokenException";
 
 type User = {
     email: string, 
@@ -31,18 +33,28 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
         };
     }, [user, accessToken]);
 
-    useEffect(() => {
+    const fetchUserProfile = async (accessToken: string | null) => {
         setIsLoading(true);
-        getUserProfile(accessToken)
-        .then((user) => {
+        try {
+            const user = await getUserProfile(accessToken);
             setUser({email: user?.email as string, name: user?.name as string});
-        })
-        .catch(err => {
-            navigate("/");
-        })
-        .finally(() => {
+        }
+        catch (exc) {
+            if (exc instanceof InvalidAccessTokenException) {
+                const accessToken = await getAccessToken();
+                setAccessToken(accessToken as string);
+            }
+            else {
+                navigate("/");
+            }
+        }
+        finally {
             setIsLoading(false);
-        })
+        }
+    };
+
+    useEffect(() => {
+        fetchUserProfile(accessToken);
     }, [accessToken]);
 
     useEffect(() => {
