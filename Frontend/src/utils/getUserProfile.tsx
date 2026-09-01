@@ -1,3 +1,4 @@
+import { InvalidAccessTokenException } from "../exceptions/InvalidAccessTokenException";
 import getAccessToken from "./getAccessToken";
 
 type UserResBody = {
@@ -24,7 +25,7 @@ const getUserProfile = async (accessToken: string | null) => {
         return body;
     }
     else {
-        throw new Error("Something went wrong");
+        throw new InvalidAccessTokenException("Token is in valid");
     }
 };
 
