@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import CreateDiaryPortal from "../components/CreateDiaryPortal";
 import getDiaries, { type Diary } from "../utils/getDiaries";
 import AuthContext from "../contexts/AuthContext";
+import DiaryComponent from "../components/diary/DiaryComponent";
 
 
 const TravelDiaryPage = () => {
@@ -81,9 +82,12 @@ const TravelDiaryPage = () => {
                     </div>
                     <div>
                         {diaries.map(diary => (
-                            <div className="text-4xl">
-                                {diary.name}
-                            </div>))
+                            <DiaryComponent
+                                diary={diary}
+                                key={diary.diaryId}
+                            />
+                            )
+                        )
                         }
                     </div>
                 </div>
