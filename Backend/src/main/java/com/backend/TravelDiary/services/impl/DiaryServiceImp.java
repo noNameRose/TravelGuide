@@ -1,7 +1,6 @@
 package com.backend.TravelDiary.services.impl;
 
 
-import com.backend.TravelDiary.dto.DiariesResponse;
 import com.backend.TravelDiary.dto.DiaryResponse;
 import com.backend.TravelDiary.models.Diary;
 import com.backend.TravelDiary.models.User;
