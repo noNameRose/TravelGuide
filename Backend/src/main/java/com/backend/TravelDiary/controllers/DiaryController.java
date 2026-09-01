@@ -2,7 +2,6 @@ package com.backend.TravelDiary.controllers;
 
 
 import com.backend.TravelDiary.dto.CreateDiaryRequest;
-import com.backend.TravelDiary.dto.DiariesResponse;
 import com.backend.TravelDiary.dto.DiaryResponse;
 import com.backend.TravelDiary.models.Diary;
 import com.backend.TravelDiary.models.User;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
