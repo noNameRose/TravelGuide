@@ -6,8 +6,10 @@ import SpotListContext from "../contexts/SpotListContext";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 import type { SpotList } from "../features/SpotRender/SpotList";
 import { useSearchParams } from "react-router-dom";
+import addPlaceToDiary from "../utils/addPlaceToDiary";
+import AuthContext from "../contexts/AuthContext";
 
-const VEHICLES: Transportation[] = ["driving", "flight", "walking"];
+const VEHICLES: Transportation[] = ["driving", "flying", "walking"];
 
 type PlacePortalType = {
     isShow: boolean,
@@ -21,12 +23,15 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
     const spotListContext = useContext(SpotListContext);
     const [searchParams, setSearchParams] = useSearchParams();
     const diaryId = searchParams.get("id");
+    const placeListContext = useContext(SpotListContext);
+    const authContext = useContext(AuthContext);
 
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
         const geoCodeBody = (await searchCoordinate(query)) as GeoCodingResBody;
         const lng = geoCodeBody.results[0].geometry.location.lng;
         const lat = geoCodeBody.results[0].geometry.location.lat;
+        const placeId = geoCodeBody.results[0].place_id;
         const newList = spotListContext?.spotList.clone();
         newList?.addSpot(Spot.builder()
                         .name(query)
@@ -36,6 +41,13 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
                             lat: lat
                         }).build()
         );
+        await addPlaceToDiary({
+            name: query,
+            lat: lat,
+            lng: lng,
+            googlePlaceId: placeId,
+            getHereBy: vehicle
+        }, diaryId, authContext?.accessToken as string);
         spotListContext?.handleSpotListChange(newList as SpotList);
     };
 
