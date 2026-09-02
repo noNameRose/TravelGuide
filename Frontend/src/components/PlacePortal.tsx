@@ -5,6 +5,7 @@ import gsap from "gsap";
 import SpotListContext from "../contexts/SpotListContext";
 import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 import type { SpotList } from "../features/SpotRender/SpotList";
+import { useSearchParams } from "react-router-dom";
 
 const VEHICLES: Transportation[] = ["driving", "flight", "walking"];
 
@@ -18,6 +19,8 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
     const [query, setQuery] = useState<string>("");
     const [vehicle, setVehicle] = useState<Transportation | null>(null);
     const spotListContext = useContext(SpotListContext);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const diaryId = searchParams.get("id");
 
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
