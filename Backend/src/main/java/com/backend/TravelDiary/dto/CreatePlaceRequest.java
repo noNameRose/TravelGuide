@@ -11,7 +11,6 @@ import lombok.*;
 public class CreatePlaceRequest {
   private String name;
   private String googlePlaceId;
-  private int index;
   private double lng;
   private double lat;
   private String getHereBy;
