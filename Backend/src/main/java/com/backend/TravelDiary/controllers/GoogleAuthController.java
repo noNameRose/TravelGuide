@@ -51,10 +51,6 @@ public class GoogleAuthController {
     this.refreshTokenService = refreshTokenService;
   }
 
-  @GetMapping("/")
-  public String test() {
-    return "Hello";
-  }
 
   @GetMapping("/auth/google/login")
   @ResponseBody
