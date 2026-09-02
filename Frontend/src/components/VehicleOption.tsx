@@ -13,7 +13,7 @@ const VehicleOption = ({vehicle, handleVehicleChange}: {
     const [isHover, setIsHover] = useState(false);
     const tl = useRef<GSAPTimeline | null>(null);
 
-    if (vehicle === "flight") {
+    if (vehicle === "flying") {
         icon = (
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 

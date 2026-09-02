@@ -75,7 +75,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 const startLat = trip.start.lat;
                 const endLng = trip.end.lng;
                 const endLat = trip.end.lat;
-                if (transportation && transportation === "flight") {
+                if (transportation && transportation === "flying") {
                     const origin = turf.point([startLng, startLat]);
                     const destination = turf.point([endLng, endLat]);
                     const arcLine = turf.greatCircle(origin, destination, {npoints: 1000});
@@ -200,7 +200,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
         };
 
         tl.current.to(currentCamera, {
-            zoom: trips[0].transportation === "flight" ? FLYING_ROUTE_ZOOM : DRIVING_ROUTE_ZOOM,
+            zoom: trips[0].transportation === "flying" ? FLYING_ROUTE_ZOOM : DRIVING_ROUTE_ZOOM,
             lng: trips[0].start.lng,
             lat: trips[0].start.lat,
             duration: 2,
@@ -221,7 +221,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             tl.current.to({}, {
                 onUpdate: () => {
                     const bearing = turf.bearing(origin, destination);
-                    if (transportation === "flight") {
+                    if (transportation === "flying") {
                         markerRef.current?.setLngLat([trip.start.lng, trip.start.lat]).setRotation(bearing);
                     }
                     else if (transportation === "driving") {
@@ -230,7 +230,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 }
             });
 
-            if (transportation === "flight") {
+            if (transportation === "flying") {
                 const arcLine = turf.greatCircle(origin, destination, { npoints: 1000 });
                 const segments: GeoJSON.Feature<GeoJSON.LineString>[] =
                     arcLine.geometry.type === "MultiLineString"
@@ -263,7 +263,7 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
                 .to(plane.current, {
                     transform: "scale(1)"
                 })
-                if (i > 0 && trips[i - 1].transportation !== "flight") {
+                if (i > 0 && trips[i - 1].transportation !== "flying") {
                     tl.current.to(zoomProgress, {
                         t: 1,
                         onUpdate: () => {
