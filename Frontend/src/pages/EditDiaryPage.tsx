@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import TravelMap from "../components/TravelMap";
 import { Spot, type Transportation } from "../features/SpotRender/Spot";
 import { SpotList } from "../features/SpotRender/SpotList";
@@ -8,6 +8,9 @@ import IsPlayContext from "../contexts/IsPlayContext";
 import gsap from "gsap";
 import PlacePortal from "../components/PlacePortal";
 import SpotListContext from "../contexts/SpotListContext";
+import getPlaceList from "../utils/getPlaceList";
+import { useSearchParams } from "react-router-dom";
+import AuthContext from "../contexts/AuthContext";
 
 
 const INITIAL_LIST = new SpotList();
@@ -72,6 +75,9 @@ const EditDiaryPage = () => {
     const [isPlusButtonHover, setPlusButtonHover] = useState(false);
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [showPortal, setShowPortal] = useState(false);
+    const [searchParam, setSearchParam] = useSearchParams();
+    const diaryId = searchParam.get("id");
+    const authContext = useContext(AuthContext);
 
     const contextValue = useMemo(() => {
         return {
@@ -112,6 +118,18 @@ const EditDiaryPage = () => {
             });
         }
     }, [isPlusButtonHover, isMouseDown]);
+
+    useEffect(() => {
+        if (diaryId && authContext?.accessToken) {
+            getPlaceList(diaryId, authContext.accessToken)
+            .then(places => {
+                if (places) {
+                    setSpotList(SpotList.parse(places));
+                }
+            })
+            ;
+        }
+    }, [authContext]);
     
     return (
         <IsPlayContext
