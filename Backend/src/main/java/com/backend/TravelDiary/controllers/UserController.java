@@ -15,6 +15,11 @@ public class UserController {
 
   private final UserService userService;
 
+  @GetMapping("/")
+  public String testEndPoint() {
+      return "Hello from srping boot";
+  }
+
 
   @GetMapping("/user")
   public ResponseEntity<UserResponse> getUserProfile(
