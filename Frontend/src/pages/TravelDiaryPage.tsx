@@ -62,7 +62,7 @@ const TravelDiaryPage = () => {
                         </svg>
                     </div>
                 </div>
-                <div className="self-stretch">
+                <div className="self-stretch flex flex-col gap-5">
                     <div className="flex justify-between">
                         <p className="font-bold text-[1.5rem] text-blue_400">Your Diaries</p>
                         <button 
@@ -80,8 +80,9 @@ const TravelDiaryPage = () => {
                             </svg>
                         </button>
                     </div>
-                    <div>
-                        {diaries.map(diary => (
+                    <div className="flex flex-col gap-5">
+                        
+                        {diaries && diaries.map(diary => (
                             <DiaryComponent
                                 diary={diary}
                                 key={diary.diaryId}
