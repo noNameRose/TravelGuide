@@ -65,7 +65,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
         }
 
         return () => {
-            if (!mapRef.current) {
+            if (!mapRef.current || !mapLoaded) {
                 return;
             }
             if (mapRef.current.getLayer("circle")) {
