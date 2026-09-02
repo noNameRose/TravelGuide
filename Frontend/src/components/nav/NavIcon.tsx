@@ -1,5 +1,6 @@
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export type IconName = "profile" | "explore" | "diary";
 
@@ -15,6 +16,7 @@ const NavIcon = ({name, path, className}: NavIconType) => {
     const pathClass = "fill-blue_50";
     const iconWrapper = useRef<HTMLDivElement | null>(null);
     const [isHover, setIsHover] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (isHover) {
@@ -77,6 +79,7 @@ const NavIcon = ({name, path, className}: NavIconType) => {
             ref={iconWrapper}
             onMouseOver={() => setIsHover(true)}
             onMouseOut={() => setIsHover(false)}
+            onClick={() => navigate(path)}
         >
             {icon}
         </div>
