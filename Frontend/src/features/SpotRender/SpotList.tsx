@@ -1,3 +1,4 @@
+import type { PlaceResponse } from "../../utils/getPlaceList";
 import { Spot, type coordinate } from "./Spot";
 
 export class SpotList {
@@ -57,7 +58,6 @@ export class SpotList {
             }
             current = current.next;
         }
-
         return trips;
     }
 
@@ -70,6 +70,23 @@ export class SpotList {
             }
             current = current.next;
         }
+        return newList;
+    }
+
+    public static parse(places: PlaceResponse[]) {
+        const newList = new SpotList();
+        for (let place of places) {
+            newList.addSpot(Spot.builder()
+            .getHereBy(place.getHereBy)
+            .name(place.name)
+            .location({
+                lng: place.lng,
+                lat: place.lat
+            })
+            .build()
+            );
+        }
+        console.log(newList);
         return newList;
     }
 }
