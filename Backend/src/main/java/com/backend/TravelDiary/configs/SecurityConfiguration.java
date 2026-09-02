@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     http.csrf(c -> c.disable())
         .authorizeHttpRequests(
             c -> c
-                .requestMatchers("/*", "/auth/google/login", "/auth/google/callback", "/auth/access_token", "/")
+                .requestMatchers("/*", "/auth/google/login", "/auth/google/callback", "/auth/access_token", "/", "/actuator/health")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
