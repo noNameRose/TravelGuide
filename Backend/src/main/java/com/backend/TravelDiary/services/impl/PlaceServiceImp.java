@@ -1,6 +1,7 @@
 package com.backend.TravelDiary.services.impl;
 
 import com.backend.TravelDiary.dto.CreatePlaceRequest;
+import com.backend.TravelDiary.dto.PlaceResponse;
 import com.backend.TravelDiary.exceptions.DiaryNotFoundException;
 import com.backend.TravelDiary.models.Diary;
 import com.backend.TravelDiary.models.Place;
@@ -9,6 +10,7 @@ import com.backend.TravelDiary.services.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,5 +35,29 @@ public class PlaceServiceImp implements PlaceService {
     this.placeRepo.save(newPlace);
     return newPlace;
   }
+
+  @Override
+  public List<Place> getPlacesInOrder(String diaryId) {
+    return this.placeRepo.findByDiaryDiaryIdOrderByIndexAsc(diaryId).orElseThrow(() -> new DiaryNotFoundException("Diary Not Found exception"));
+  }
+
+  @Override
+  public List<PlaceResponse> getPlaceResponse(String diaryId) {
+    List<Place> places = this.getPlacesInOrder(diaryId);
+    List<PlaceResponse> responses = new ArrayList<>();
+    for (Place place: places) {
+      responses.add(PlaceResponse
+          .builder()
+              .name(place.getName())
+              .googlePlaceId(place.getGooglePlaceId())
+              .getHereBy(place.getGetHereBy())
+              .lat(place.getLat())
+              .lng(place.getLng())
+              .index(place.getIndex())
+          .build());
+    }
+    return responses;
+  }
+
 
 }

@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface PlaceRepo extends JpaRepository<Place, Long> {
   Optional<List<Place>> findByDiary(Diary diary);
+  Optional<List<Place>> findByDiaryDiaryIdOrderByIndexAsc(String diaryId);
 }
