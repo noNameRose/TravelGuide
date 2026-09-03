@@ -21,9 +21,9 @@ const PlacePortal = ({isShow, handleShow}: PlacePortalType) => {
     const [query, setQuery] = useState<string>("");
     const [vehicle, setVehicle] = useState<Transportation | null>(null);
     const spotListContext = useContext(SpotListContext);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const diaryId = searchParams.get("id");
-    const placeListContext = useContext(SpotListContext);
+    //const placeListContext = useContext(SpotListContext);
     const authContext = useContext(AuthContext);
 
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {

@@ -1,5 +1,3 @@
-import RatingList from "./RatingList";
-
 type PlaceProp = {
     name: string,
     uri: string,

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import TravelMap from "../components/TravelMap";
-import { Spot, type Transportation } from "../features/SpotRender/Spot";
+// import { Spot, type Transportation } from "../features/SpotRender/Spot";
 import { SpotList } from "../features/SpotRender/SpotList";
 import DiaryList from "../components/DiaryList";
-import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
+// import searchCoordinate, { type GeoCodingResBody } from "../utils/searchCoordinate";
 import IsPlayContext from "../contexts/IsPlayContext";
 import gsap from "gsap";
 import PlacePortal from "../components/PlacePortal";
@@ -67,15 +67,15 @@ export const LAYER_NAME = "flight-arc-layer";
 
 const EditDiaryPage = () => {
     const [spotList, setSpotList] = useState<SpotList>(INITIAL_LIST);
-    const [showInput, setShowInput] = useState<boolean>(false);
-    const [query, setQuery] = useState<string>("");
-    const [transQuery, setTransQuery] = useState<string>("");
+    //const [showInput, setShowInput] = useState<boolean>(false);
+    //const [query, setQuery] = useState<string>("");
+    //const [transQuery] = useState<string>("");
     const [isPlay, setIsPlay] = useState<boolean>(false);
     const plusButton = useRef<HTMLButtonElement | null>(null);
     const [isPlusButtonHover, setPlusButtonHover] = useState(false);
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [showPortal, setShowPortal] = useState(false);
-    const [searchParam, setSearchParam] = useSearchParams();
+    const [searchParam] = useSearchParams();
     const diaryId = searchParam.get("id");
     const authContext = useContext(AuthContext);
 
@@ -94,8 +94,8 @@ const EditDiaryPage = () => {
     }, [spotList]);
     
 
-    const validTransportation = ["flight", "driving", "cycling", "walking"];
-    const isInputValid = (validTransportation.includes(transQuery)) && (query !== "");
+    //const validTransportation = ["flight", "driving", "cycling", "walking"];
+    //const isInputValid = (validTransportation.includes(transQuery)) && (query !== "");
 
     useEffect(() => {
         if (isPlusButtonHover) {

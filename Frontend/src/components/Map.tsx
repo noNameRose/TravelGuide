@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import mapboxgl, { GeoJSONSource, type Source } from "mapbox-gl";
+import mapboxgl, { GeoJSONSource} from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { CenterType } from "../pages/LandingPage";
+import type { CenterType } from "../pages/ExplorePage";
 import type { Place } from "./SearchTab";
 import Marker from "./Marker";
 import SelectedPlaceContext from "../contexts/SelectedPlaceContext";
@@ -15,7 +15,7 @@ const Map = ({center, places}: {center: CenterType, places: Place[]}) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
-    const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
+    const [zoom] = useState<number>(INITIAL_ZOOM);
     const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
     const searchRadiusContext = useContext(SearchRadiusContext);
 

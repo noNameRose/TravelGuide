@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState, type Ref, type RefObject } from "react";
+import { useContext, useEffect, useRef, useState} from "react";
 import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
 import type { SpotList } from "../features/SpotRender/SpotList";

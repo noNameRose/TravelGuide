@@ -1,5 +1,5 @@
 import { InvalidAccessTokenException } from "../exceptions/InvalidAccessTokenException";
-import getAccessToken from "./getAccessToken";
+// import getAccessToken from "./getAccessToken";
 
 type UserResBody = {
     email: string,

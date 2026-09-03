@@ -25,9 +25,9 @@ type Photo = {
     heightPx: number
 };
 
-type ResponseBody = {
-    places: Place[]
-};
+// type ResponseBody = {
+//     places: Place[]
+// };
 
 
 type SearchTabProp = {
@@ -40,17 +40,17 @@ type Prediction = {
     description: "string"
 };
 
-type PredictionResBody = {
-    predictions: Prediction[];
-}
+// type PredictionResBody = {
+//     predictions: Prediction[];
+// }
 
 const SearchTab = ({handleCenterChange, handleData, handleLocationChange}: SearchTabProp) => {
     const searchRadiusContext = useContext(SearchRadiusContext);
     const [query, setQuery] = useState<string>("");
-    const [searchResults, setSearchResults] = useState<Prediction[]>([]);
-    const sessionToken = useRef<string>(crypto.randomUUID());
-    const timeoutId = useRef<number | null>(null);
-    const DEBOUNCE_TIME = 1000;
+    // const [searchResults, setSearchResults] = useState<Prediction[]>([]);
+    // const sessionToken = useRef<string>(crypto.randomUUID());
+    // const timeoutId = useRef<number | null>(null);
+    // const DEBOUNCE_TIME = 1000;
 
     // useEffect(() => {
     //     if (timeoutId.current) {

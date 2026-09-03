@@ -8,7 +8,7 @@ type CreateDiaryPortalType = {
     handleIsShow: (show: boolean) => void
 };
 
-const CreateDiaryPortal = ({isShow, handleIsShow}: CreateDiaryPortalType) => {
+const CreateDiaryPortal = ({isShow}: CreateDiaryPortalType) => {
     const [name, setName] = useState<string>("");
     const container = useRef<HTMLDivElement | null>(null);
     const authContext = useContext(AuthContext);
@@ -53,7 +53,7 @@ const CreateDiaryPortal = ({isShow, handleIsShow}: CreateDiaryPortalType) => {
                 className="bg-blue_400 self-stretch py-[.5em] font-bold text-[1em] rounded-[.5em] text-blue_50 cursor-pointer"
                 disabled={name === ""}    
                 onClick={async () => {
-                   const diary = await createDiary(name, authContext?.accessToken as string);
+                   await createDiary(name, authContext?.accessToken as string);
                 }}
             >
                 Create
