@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState} from "react";
+import { useContext, useState} from "react";
 import type { CenterType } from "../pages/ExplorePage";
 import SearchRadiusContext from "../contexts/SearchRadiusContext";
 import searchPlaces from "../utils/searchPlaces";
@@ -36,9 +36,9 @@ type SearchTabProp = {
     handleLocationChange: (location: [number, number]) => void
 };
 
-type Prediction = {
-    description: "string"
-};
+// type Prediction = {
+//     description: "string"
+// };
 
 // type PredictionResBody = {
 //     predictions: Prediction[];

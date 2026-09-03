@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import getAccessToken from "../utils/getAccessToken";
 
-type AccessTokenResBody = {
-    accessToken: string
-};
+// type AccessTokenResBody = {
+//     accessToken: string
+// };
 
 const LandingPage = () => {
     const popupWindow = useRef<Window | null>(null);

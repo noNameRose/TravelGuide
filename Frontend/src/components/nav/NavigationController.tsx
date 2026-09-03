@@ -9,7 +9,7 @@ type NavigationControllerProp = {
 
 const NavigationController = ({children}: NavigationControllerProp) => {
     const location = useLocation();
-    const [currentPath, setCurrentPath] = useState(location.pathname);
+    const [currentPath] = useState(location.pathname);
     const showNavigationBar = location.pathname !== "/";
     const authContext = useContext(AuthContext);
     const navigage = useNavigate();

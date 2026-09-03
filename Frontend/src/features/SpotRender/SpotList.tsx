@@ -1,5 +1,5 @@
 import type { PlaceResponse } from "../../utils/getPlaceList";
-import { Spot, type coordinate } from "./Spot";
+import { Spot } from "./Spot";
 
 export class SpotList {
     public start: Spot | null;
@@ -86,7 +86,6 @@ export class SpotList {
             .build()
             );
         }
-        console.log(newList);
         return newList;
     }
 }
