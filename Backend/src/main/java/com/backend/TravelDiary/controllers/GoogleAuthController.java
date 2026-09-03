@@ -140,7 +140,7 @@ public class GoogleAuthController {
         .from("refreshToken", refreshToken)
         .httpOnly(true)
         .secure(true)
-        .sameSite("None")
+        .sameSite("Lax")
         .maxAge(Duration.ofDays(7))
         .path("/")
         .build();
