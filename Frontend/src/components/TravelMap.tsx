@@ -49,7 +49,6 @@ const TravelMap = ({spotList}: {spotList: SpotList}) => {
             container: mapContainerRef.current as HTMLDivElement,
             zoom: INITIAL_ZOOM,
             center: [105.8048, 21.0285],
-            projection: "globe",
             style: import.meta.env.VITE_MAP_STYLE
         });
 
